@@ -151,7 +151,7 @@ export function RolesBoard({
   return (
     <div className="space-y-5">
       <div className="flex items-end justify-between gap-3">
-        <p className="text-sm text-mute">
+        <p className="text-sm text-mute" data-testid="roles-count">
           <span className="font-mono tabular-nums text-fg">{results.length}</span> open roles
           {posted.length ? ` · ${posted.length} posted this session` : ""}
         </p>

@@ -32,5 +32,10 @@
   "include": [
     "src",
     "server"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+    "tests",
+    "playwright.config.ts"
   ]
 }

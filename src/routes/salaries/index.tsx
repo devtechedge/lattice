@@ -88,7 +88,7 @@ function Page() {
         </table>
       </div>
       <section className="mt-12 grid gap-8 lg:grid-cols-2">
-        <div className="space-y-3 rounded-md border border-line bg-raised p-4">
+        <div className="space-y-3 rounded-md border border-line bg-raised p-4" data-testid="comp-calc">
           <h2 className="font-medium">Calculator</h2>
           <p className="text-xs text-mute">After cliff, year-1 token value = allocation × implied price × (months vested in year 1 / vesting months). Fully-diluted = cash + full token + equity mark.</p>
           <div className="grid grid-cols-2 gap-3">

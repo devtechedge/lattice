@@ -30,6 +30,7 @@ export function JobCard({
   const sal = salaryLabel(role);
   return (
     <article
+      data-testid="job-card"
       className={cn(
         "relative rounded-md border border-line bg-raised p-4 pl-4 transition-colors hover:border-line-strong",
         role.featured && "pl-3.5 shadow-[inset_3px_0_0_0_var(--gold)]",
