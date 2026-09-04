@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f4f1ea;
+  --bg-raised: #ffffff;
+  --bg-inset: #ebe6db;
+  --fg: #16181d;
+  --mute: #5c6478;
+  --line: color-mix(in oklab, #16181d 12%, transparent);
+  --line-strong: color-mix(in oklab, #16181d 22%, transparent);
+  --signal: #3f7d14;
+  --signal-fg: #f4f1ea;
+  --gold: #8a6a1a;
+  --cyan: #0e6e78;
+  --danger: #b4232e;
+  --violet: #5b4db3;
+  --scrollbar: color-mix(in oklab, #16181d 28%, transparent);
+}
+
+.dark {
+  --bg: #07080b;
+  --bg-raised: #101218;
+  --bg-inset: #0c0e14;
+  --fg: #e7e9ee;
+  --mute: #8b93a7;
+  --line: #1c2030;
+  --line-strong: color-mix(in oklab, #e7e9ee 18%, transparent);
+  --signal: #b6f75d;
+  --signal-fg: #10180a;
+  --gold: #e4c36a;
+  --cyan: #7cdbe6;
+  --danger: #f07178;
+  --violet: #9b8cff;
+  --scrollbar: color-mix(in oklab, #b6f75d 45%, transparent);
+}
+
+@theme inline {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-bg: var(--bg);
+  --color-raised: var(--bg-raised);
+  --color-inset: var(--bg-inset);
+  --color-fg: var(--fg);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-signal: var(--signal);
+  --color-signal-fg: var(--signal-fg);
+  --color-gold: var(--gold);
+  --color-cyan: var(--cyan);
+  --color-danger: var(--danger);
+  --color-violet: var(--violet);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html {
+    color-scheme: light;
+    background: var(--bg);
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Document bars stay hidden. Never reveal on html/body hover. */
+  html,
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--signal) 35%, transparent);
+    color: var(--fg);
+  }
+}
+
+/* Overlay hover-reveal on inner panes only. Never html/body. */
+.overflow-auto,
+.overflow-y-auto,
+.overflow-x-auto,
+pre {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.overflow-auto:hover,
+.overflow-auto:focus-within,
+.overflow-y-auto:hover,
+.overflow-y-auto:focus-within,
+.overflow-x-auto:hover,
+.overflow-x-auto:focus-within,
+pre:hover,
+pre:focus-within {
+  scrollbar-color: var(--scrollbar) transparent;
+}
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.overflow-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 99px;
+}
+.overflow-auto:hover::-webkit-scrollbar-thumb,
+.overflow-auto:focus-within::-webkit-scrollbar-thumb,
+.overflow-y-auto:hover::-webkit-scrollbar-thumb,
+.overflow-y-auto:focus-within::-webkit-scrollbar-thumb,
+.overflow-x-auto:hover::-webkit-scrollbar-thumb,
+.overflow-x-auto:focus-within::-webkit-scrollbar-thumb,
+pre:hover::-webkit-scrollbar-thumb,
+pre:focus-within::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
