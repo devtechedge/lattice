@@ -6,7 +6,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
   <img src="public/favicon.svg" width="48" height="48" alt="Lattice mark" />
 </p>
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://lattice-devtechedge1.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://lattice-beta-livid.vercel.app)
 [![TanStack Start](https://img.shields.io/badge/TanStack%20Start-black)](https://tanstack.com/start)
 [![React](https://img.shields.io/badge/React-19-0052CC?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -17,7 +17,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 
 ## Live Demo
 
-**https://lattice-devtechedge1.vercel.app**
+**https://lattice-beta-livid.vercel.app**
 
 > **Status:** Production is a **seeded demo catalog** (~149 roles, 50 teams, 34 talent profiles, 22 gigs). Compensation is fictional. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Not an offering. No wallet connect.
 
