@@ -1,0 +1,40 @@
+# deps & build
+node_modules/
+dist/
+.output/
+.nitro/
+.vercel/
+.tanstack/
+.wrangler/
+
+# grok sandbox / local only
+.grok/
+artifacts/
+AGENTS.md
+AGENTS.project.md
+LATTICE-BUILD-PROMPT.md
+.project_id
+.node_modules.lock
+public/__grok/
+
+# env
+.env
+.env.*
+!.env.example
+*.local
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# local db dumps (do not glob *.data — that strips PGLite's fs bundle from Vercel)
+/pglite.data
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# live-preview captures (product shots live in docs/screenshots)
+screenshots/app-builder-*
