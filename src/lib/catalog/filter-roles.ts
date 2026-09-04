@@ -1,5 +1,5 @@
 import type { Role, RoleFilters, Company } from "./types";
-import { COMPANIES } from "./data";
+import { COMPANIES } from "./data.ts";
 
 const companyMap = new Map(COMPANIES.map((c) => [c.id, c]));
 

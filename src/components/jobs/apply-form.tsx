@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import { submitApplication } from "@/lib/server/actions";
+import { safeHttpsUrl } from "@/lib/sanitize";
 import type { Role } from "@/lib/catalog/types";
 
 export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void }) {
@@ -18,7 +19,8 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (role.applyUrl) {
-      window.open(role.applyUrl, "_blank", "noopener");
+      const href = safeHttpsUrl(role.applyUrl);
+      if (href) window.open(href, "_blank", "noopener,noreferrer");
     }
     if (!user) {
       window.location.href = "/login";
@@ -47,7 +49,7 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
+    <form onSubmit={onSubmit} className="space-y-3" data-testid="apply-form">
       <div className="space-y-1">
         <Label htmlFor="an">Name</Label>
         <Input id="an" required value={name} onChange={(e) => setName(e.target.value)} />

@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getSql } from "@/lib/db";
 import { authMiddleware } from "@/lib/auth/middleware";
+import { safeHttpsUrl } from "@/lib/sanitize";
 import type { Role } from "@/lib/catalog/types";
 
 export type BookmarkRow = { role_id: string };
@@ -62,7 +63,7 @@ export const listBookmarks = createServerFn({ method: "GET" })
 
 export const toggleBookmark = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ roleId: z.string() }))
+  .validator(z.object({ roleId: z.string().max(80) }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     const existing = await sql<{ role_id: string }>`select role_id from bookmarks where user_id = ${context.userId} and role_id = ${data.roleId}`;
@@ -78,15 +79,15 @@ export const submitApplication = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator(
     z.object({
-      roleId: z.string(),
-      name: z.string().min(1),
-      email: z.string().email(),
-      github: z.string().optional(),
-      linkedin: z.string().optional(),
-      telegram: z.string().optional(),
-      location: z.string().optional(),
-      coverLetter: z.string(),
-      answers: z.array(z.string()),
+      roleId: z.string().max(80),
+      name: z.string().min(1).max(120),
+      email: z.string().email().max(200),
+      github: z.string().max(200).optional(),
+      linkedin: z.string().max(200).optional(),
+      telegram: z.string().max(64).optional(),
+      location: z.string().max(120).optional(),
+      coverLetter: z.string().max(8000),
+      answers: z.array(z.string().max(2000)).max(12),
     }),
   )
   .handler(async ({ context, data }) => {
@@ -113,7 +114,10 @@ export const listStudioApplications = createServerFn({ method: "GET" })
 
 export const setApplicationStage = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ id: z.string(), stage: z.string() }))
+  .validator(z.object({
+    id: z.string().max(80),
+    stage: z.enum(["applied", "screen", "interview", "offer", "hired", "rejected"]),
+  }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     await sql`update applications set stage = ${data.stage}
@@ -121,29 +125,34 @@ export const setApplicationStage = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+const httpsUrl = z
+  .string()
+  .max(2048)
+  .refine((v) => !!safeHttpsUrl(v), "https url required");
+
 const rolePayload = z.object({
-  title: z.string().min(2),
-  department: z.string(),
-  seniority: z.string(),
-  type: z.string(),
-  locationMode: z.string(),
-  remoteRegion: z.string().optional(),
-  locations: z.array(z.string()).optional(),
-  chains: z.array(z.string()),
-  scenes: z.array(z.string()),
-  tags: z.array(z.string()),
-  descriptionMarkdown: z.string().min(20),
+  title: z.string().min(2).max(140),
+  department: z.string().max(40),
+  seniority: z.string().max(40),
+  type: z.string().max(40),
+  locationMode: z.string().max(40),
+  remoteRegion: z.string().max(40).optional(),
+  locations: z.array(z.string().max(80)).max(12).optional(),
+  chains: z.array(z.string().max(40)).max(12),
+  scenes: z.array(z.string().max(40)).max(12),
+  tags: z.array(z.string().max(40)).max(24),
+  descriptionMarkdown: z.string().min(20).max(20_000),
   salaryMin: z.number().optional(),
   salaryMax: z.number().optional(),
-  salaryCurrency: z.string().optional(),
+  salaryCurrency: z.string().max(8).optional(),
   tokenAllocation: z.number().optional(),
-  tokenTicker: z.string().optional(),
+  tokenTicker: z.string().max(12).optional(),
   vestingMonths: z.number().optional(),
   cliffMonths: z.number().optional(),
-  applyEmail: z.string().optional(),
-  applyUrl: z.string().optional(),
-  companyName: z.string().min(2),
-  screeningQuestions: z.array(z.string()).optional(),
+  applyEmail: z.string().email().max(200).optional(),
+  applyUrl: httpsUrl.optional(),
+  companyName: z.string().min(2).max(120),
+  screeningQuestions: z.array(z.string().max(280)).max(8).optional(),
 });
 
 export const publishRole = createServerFn({ method: "POST" })
@@ -177,7 +186,7 @@ export const publishRole = createServerFn({ method: "POST" })
       vestingMonths: data.vestingMonths,
       cliffMonths: data.cliffMonths,
       applyEmail: data.applyEmail,
-      applyUrl: data.applyUrl,
+      applyUrl: data.applyUrl ? safeHttpsUrl(data.applyUrl) ?? undefined : undefined,
       benefits: [],
       featured: false,
       publishedAt: new Date().toISOString(),
@@ -212,13 +221,13 @@ export const publishGig = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator(
     z.object({
-      title: z.string().min(4),
-      category: z.string(),
-      description: z.string().min(20),
+      title: z.string().min(4).max(140),
+      category: z.string().max(40),
+      description: z.string().min(20).max(20_000),
       priceBasic: z.number(),
       priceStandard: z.number(),
       pricePro: z.number(),
-      token: z.string(),
+      token: z.string().max(16),
     }),
   )
   .handler(async ({ context, data }) => {
@@ -232,13 +241,13 @@ export const publishProject = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator(
     z.object({
-      title: z.string().min(4),
-      description: z.string().min(20),
+      title: z.string().min(4).max(140),
+      description: z.string().min(20).max(20_000),
       budgetMin: z.number(),
       budgetMax: z.number(),
-      token: z.string(),
+      token: z.string().max(16),
       durationWeeks: z.number(),
-      companyName: z.string(),
+      companyName: z.string().max(120),
     }),
   )
   .handler(async ({ context, data }) => {
@@ -252,17 +261,17 @@ export const saveProfile = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator(
     z.object({
-      displayName: z.string().min(2),
-      headline: z.string().min(4),
-      bio: z.string(),
-      skills: z.array(z.string()),
-      chains: z.array(z.string()),
-      what: z.string(),
+      displayName: z.string().min(2).max(80),
+      headline: z.string().min(4).max(160),
+      bio: z.string().max(4000),
+      skills: z.array(z.string().max(40)).max(24),
+      chains: z.array(z.string().max(40)).max(12),
+      what: z.string().max(40),
       privacy: z.enum(["public", "network", "hidden"]),
       openToGigs: z.boolean(),
       womenInWeb3: z.boolean(),
-      location: z.string(),
-      seniority: z.string(),
+      location: z.string().max(80),
+      seniority: z.string().max(40),
     }),
   )
   .handler(async ({ context, data }) => {
@@ -298,9 +307,9 @@ export const createContract = createServerFn({ method: "POST" })
   .validator(
     z.object({
       kind: z.enum(["gig", "project"]),
-      sourceId: z.string(),
-      talentId: z.string().optional(),
-      payload: z.record(z.string(), z.any()),
+      sourceId: z.string().max(80),
+      talentId: z.string().max(80).optional(),
+      payload: z.record(z.string(), z.unknown()),
     }),
   )
   .handler(async ({ context, data }) => {
@@ -320,7 +329,10 @@ export const listMyContracts = createServerFn({ method: "GET" })
 
 export const advanceContract = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ id: z.string(), status: z.string() }))
+  .validator(z.object({
+    id: z.string().max(80),
+    status: z.enum(["funded", "in-progress", "delivered", "accepted", "released", "disputed", "cancelled"]),
+  }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     await sql`update contracts set status = ${data.status} where id = ${data.id} and (user_id = ${context.userId} or talent_id = ${context.userId})`;
@@ -330,14 +342,14 @@ export const advanceContract = createServerFn({ method: "POST" })
 export const submitSalary = createServerFn({ method: "POST" })
   .validator(
     z.object({
-      roleKey: z.string(),
-      seniority: z.string().optional(),
-      region: z.string().optional(),
+      roleKey: z.string().max(40),
+      seniority: z.string().max(40).optional(),
+      region: z.string().max(40).optional(),
       cash: z.number(),
       tokenValue: z.number(),
       equityValue: z.number(),
       year: z.number(),
-      note: z.string().optional(),
+      note: z.string().max(500).optional(),
     }),
   )
   .handler(async ({ data }) => {
@@ -350,7 +362,11 @@ export const submitSalary = createServerFn({ method: "POST" })
 
 export const createAlert = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ channel: z.string(), cadence: z.string(), filter: z.record(z.string(), z.any()) }))
+  .validator(z.object({
+    channel: z.string().max(40),
+    cadence: z.string().max(40),
+    filter: z.record(z.string(), z.unknown()),
+  }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     const id = crypto.randomUUID();
@@ -367,7 +383,7 @@ export const listMyAlerts = createServerFn({ method: "GET" })
 
 export const toggleShortlist = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ talentId: z.string() }))
+  .validator(z.object({ talentId: z.string().max(80) }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     const existing = await sql`select talent_id from shortlists where user_id = ${context.userId} and talent_id = ${data.talentId}`;
@@ -388,7 +404,7 @@ export const listShortlist = createServerFn({ method: "GET" })
 
 export const submitProposal = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .validator(z.object({ projectId: z.string(), note: z.string().min(8) }))
+  .validator(z.object({ projectId: z.string().max(80), note: z.string().min(8).max(4000) }))
   .handler(async ({ context, data }) => {
     const sql = await getSql();
     const id = crypto.randomUUID();

@@ -6,7 +6,7 @@ import { listBookmarks, listMyApplications, listMyAlerts, listMyContracts, advan
 import { ROLES } from "@/lib/catalog/data";
 import { Button } from "@/components/ui/button";
 
-const FLOW = ["funded", "in-progress", "delivered", "accepted", "released"];
+const FLOW = ["funded", "in-progress", "delivered", "accepted", "released"] as const;
 
 export const Route = createFileRoute("/me/")({ component: Page });
 
@@ -63,7 +63,7 @@ function Page() {
         <ul className="mt-2 space-y-3">
           {contracts.map((c) => {
             const payload = JSON.parse(c.payload_json) as { title?: string };
-            const idx = FLOW.indexOf(c.status);
+            const idx = (FLOW as readonly string[]).indexOf(c.status);
             return (
               <li key={c.id} className="rounded-md border border-line p-3">
                 <p className="text-sm font-medium">{payload.title ?? c.kind}</p>
@@ -79,6 +79,7 @@ function Page() {
                     variant="secondary"
                     onClick={async () => {
                       const next = FLOW[idx + 1];
+                      if (!next) return;
                       await advanceContract({ data: { id: c.id, status: next } });
                       setContracts((prev) => prev.map((x) => (x.id === c.id ? { ...x, status: next } : x)));
                     }}

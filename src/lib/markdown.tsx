@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from "react";
+import { safeHref } from "./sanitize";
 
 function inline(text: string): ReactNode[] {
   const parts: ReactNode[] = [];
@@ -13,7 +14,24 @@ function inline(text: string): ReactNode[] {
     else if (token.startsWith("`")) parts.push(<code key={k++} className="font-mono text-[0.9em] text-cyan">{token.slice(1, -1)}</code>);
     else {
       const mm = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-      if (mm) parts.push(<a key={k++} href={mm[2]} className="underline decoration-line underline-offset-2 hover:text-signal">{mm[1]}</a>);
+      if (mm) {
+        const href = safeHref(mm[2]);
+        if (href) {
+          const external = href.startsWith("http");
+          parts.push(
+            <a
+              key={k++}
+              href={href}
+              className="underline decoration-line underline-offset-2 hover:text-signal"
+              {...(external ? { rel: "noopener noreferrer", target: "_blank" } : {})}
+            >
+              {mm[1]}
+            </a>,
+          );
+        } else {
+          parts.push(mm[1]);
+        }
+      }
     }
     last = m.index + token.length;
   }
