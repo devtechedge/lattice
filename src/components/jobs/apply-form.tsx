@@ -21,6 +21,7 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
     if (role.applyUrl) {
       const href = safeHttpsUrl(role.applyUrl);
       if (href) window.open(href, "_blank", "noopener,noreferrer");
+      if (role.source === "ats") return;
     }
     if (!user) {
       window.location.href = "/login";
@@ -46,6 +47,27 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
     } finally {
       setBusy(false);
     }
+  }
+
+  if (role.source === "ats") {
+    const href = role.applyUrl ? safeHttpsUrl(role.applyUrl) : null;
+    return (
+      <div className="space-y-3" data-testid="apply-form">
+        <p className="text-sm text-mute">This listing is live from Coinbase careers. Application happens on their site. Lattice does not collect a resume.</p>
+        {href ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-full items-center justify-center rounded-sm bg-signal text-sm font-medium text-signal-fg"
+          >
+            Apply on Coinbase
+          </a>
+        ) : (
+          <p className="text-sm text-danger">Apply link unavailable.</p>
+        )}
+      </div>
+    );
   }
 
   return (

@@ -274,7 +274,7 @@ export type Role = {
   publishedAt: string;
   screeningQuestions: string[];
   status: "open" | "closed";
-  source: "catalog" | "user";
+  source: "catalog" | "user" | "ats";
 };
 
 export type Talent = {

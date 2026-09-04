@@ -20,7 +20,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 
 **https://lattice-beta-livid.vercel.app**
 
-> **Status:** Production is a **seeded demo catalog** (~149 roles, 50 teams, 34 talent profiles, 22 gigs). Compensation is fictional. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Not an offering. No wallet connect.
+> **Status:** Production mixes a **seeded demo catalog** (~149 roles, 50 teams, 34 talent profiles, 22 gigs) with **live Coinbase listings** from Coinbase’s public Greenhouse board. Seeded compensation is fictional. Coinbase pay is whatever Coinbase publishes (usually undisclosed here). Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Apply for Coinbase roles on coinbase.com. Not an offering. No wallet connect.
 
 This is the **only** public repo for the product.
 
@@ -46,8 +46,9 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 
 ## Features
 
-- Editorial homepage: featured role, new-this-week, companies hiring, manifesto
+- Editorial homepage: featured role, live Coinbase strip, new-this-week, companies hiring, manifesto
 - Roles index with table and card views, persisted locally
+- Live Coinbase openings from the official Greenhouse board (apply on coinbase.com; no invented pay)
 - Filters for chain, scene, department, seniority, remote region, benefits, pay-in-crypto
 - Compensation as cash + token + equity, with vesting and cliff on the card
 - Gigs marketplace and simulated digital contracts

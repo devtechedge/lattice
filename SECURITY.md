@@ -17,7 +17,7 @@ We will acknowledge valid reports and patch production before any write-up.
 
 ## What this app is
 
-Lattice is a free Web3 career board: catalog roles, gigs, talent, salaries, and companies. Production is [lattice-beta-livid.vercel.app](https://lattice-beta-livid.vercel.app). Search does not require an account. Compensation figures in the seed catalog are fictional. Contracts on `/contracts` are a **demo state machine**, not on-chain escrow and not a financial product. Not an offering. No wallet connect.
+Lattice is a free Web3 career board: catalog roles, gigs, talent, salaries, and companies, plus live Coinbase openings from Coinbase’s public Greenhouse JSON. Production is [lattice-beta-livid.vercel.app](https://lattice-beta-livid.vercel.app). Search does not require an account. Compensation figures in the seed catalog are fictional. Coinbase pay is whatever Coinbase publishes. Contracts on `/contracts` are a **demo state machine**, not on-chain escrow and not a financial product. Not an offering. No wallet connect.
 
 ## In scope
 
@@ -47,6 +47,7 @@ Lattice is a free Web3 career board: catalog roles, gigs, talent, salaries, and 
 - Public talent directory returns only profiles with `privacy === "public"`
 - Markdown links pass through `safeHref` (`http:` / `https:` / same-origin path). `javascript:`, `data:`, and protocol-relative URLs render as text
 - `applyUrl` on a posted role must be `https:`
+- Live Coinbase fetch is server-side only: `https://boards-api.greenhouse.io/v1/boards/coinbase/jobs`, host allow-list, `redirect: error`, 8s abort, 10-minute in-memory cache. Apply URLs must be `www.coinbase.com` / `coinbase.com`
 - Guest and authed listing payloads are size-capped (title, Markdown, arrays)
 - Application stage updates accept a fixed enum
 - Security headers (CSP, `nosniff`, `SAMEORIGIN`, COOP, Permissions-Policy, Referrer-Policy) via `vercel.json`

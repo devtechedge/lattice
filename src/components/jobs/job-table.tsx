@@ -44,7 +44,7 @@ export function JobTable({
                 </td>
                 <td className="px-3 py-2.5 text-mute">{c?.name ?? "—"}</td>
                 <td className="px-3 py-2.5 font-mono tabular-nums">{typeof sal === "string" ? sal : <span className="text-mute underline decoration-dashed">{sal.estimate}</span>}</td>
-                <td className="px-3 py-2.5 text-mute">{r.locationMode === "remote" && r.remoteRegion ? REMOTE_LABEL[r.remoteRegion] : r.locations[0] ?? r.locationMode}</td>
+                <td className="px-3 py-2.5 text-mute">{r.locations[0] ?? (r.locationMode === "remote" && r.remoteRegion ? REMOTE_LABEL[r.remoteRegion] : r.locationMode)}</td>
                 <td className="px-3 py-2.5 text-mute">{r.tags.slice(0, 3).join(", ")}</td>
                 <td className="px-3 py-2.5 font-mono text-xs text-mute">{timeAgo(r.publishedAt)}</td>
                 <td>

@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { COMPANIES, ROLES } from "@/lib/catalog/data";
 import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
 import { COMPANY_TYPES, SCENES } from "@/lib/catalog/types";
+import { listCoinbaseRoles } from "@/lib/server/coinbase";
 
 export const Route = createFileRoute("/companies/")({ component: Page });
 
@@ -12,11 +13,18 @@ function Page() {
   const [type, setType] = useState("");
   const [scene, setScene] = useState("");
   const [hiring, setHiring] = useState(false);
+  const [liveCount, setLiveCount] = useState(0);
+  useEffect(() => {
+    listCoinbaseRoles()
+      .then((rows) => setLiveCount(rows.length))
+      .catch(() => setLiveCount(0));
+  }, []);
   const counts = useMemo(() => {
     const m = new Map<string, number>();
     ROLES.forEach((r) => m.set(r.companyId, (m.get(r.companyId) ?? 0) + 1));
+    if (liveCount) m.set("coinbase", liveCount);
     return m;
-  }, []);
+  }, [liveCount]);
   const list = COMPANIES.filter((c) => !q || c.name.toLowerCase().includes(q.toLowerCase()))
     .filter((c) => !type || c.type === type)
     .filter((c) => !scene || c.scenes.includes(scene as never))
@@ -25,7 +33,7 @@ function Page() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <h1 className="font-serif text-3xl tracking-tight">Companies</h1>
-      <p className="mt-2 text-sm text-mute">{COMPANIES.length} teams. {ROLES.length} open roles.</p>
+      <p className="mt-2 text-sm text-mute">{COMPANIES.length} teams. {ROLES.length + liveCount} open roles{liveCount ? ` · ${liveCount} live from Coinbase` : ""}.</p>
       <div className="mt-6 flex flex-wrap gap-2">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search teams" className="h-10 rounded-sm border border-line bg-raised px-3 text-sm" />
         <select value={type} onChange={(e) => setType(e.target.value)} className="h-10 rounded-sm border border-line bg-raised px-3 text-sm">

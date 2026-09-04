@@ -86,27 +86,51 @@ const RAW: CIn[] = [
   { slug: "praxis-grants", name: "Praxis Grants", type: "dao", size: "1-10", hq: "Remote", remotePolicy: "remote-first", foundedYear: 2022, scenes: ["dao"], chains: ["ethereum", "optimism", "base"], benefits: ["remote-first", "pay-in-crypto", "flexible-hours"], about: "Praxis runs an independent grants stack used by several ecosystems. Applications, milestones, and public reporting. The DAO is the customer." },
 ];
 
-export const COMPANIES: Company[] = RAW.map((c) => ({
-  id: c.slug,
-  slug: c.slug,
-  name: c.name,
-  website: `https://${c.slug.replace(/and-co/, "sable")}.xyz`,
-  twitter: `https://x.com/${c.slug.replace(/-/g, "")}`,
-  github: `https://github.com/${c.slug}`,
-  discord: `https://discord.gg/${c.slug}`,
-  scenes: c.scenes,
-  chains: c.chains.filter((x) => x !== ("depin" as Chain) && x !== ("opbnb" as Chain) && x !== ("immutable" as Chain)) as Chain[],
-  size: c.size,
-  type: c.type,
-  hq: c.hq,
-  remotePolicy: c.remotePolicy,
-  verified: true,
-  foundedYear: c.foundedYear,
-  about: c.about,
-  tokenTicker: c.ticker,
-  benefits: c.benefits,
-  hue: hue(c.slug),
-}));
+export const COMPANIES: Company[] = [
+  {
+    id: "coinbase",
+    slug: "coinbase",
+    name: "Coinbase",
+    website: "https://www.coinbase.com/careers",
+    twitter: "https://x.com/coinbase",
+    github: "https://github.com/coinbase",
+    discord: "",
+    scenes: ["crypto"],
+    chains: ["bitcoin", "ethereum", "solana", "base", "multi-chain"],
+    size: "1000+",
+    type: "exchange",
+    hq: "San Francisco",
+    remotePolicy: "remote-first",
+    verified: true,
+    foundedYear: 2012,
+    about:
+      "Coinbase is a public crypto exchange and onchain platform. Listings on Lattice are pulled live from Coinbase’s public Greenhouse board and apply on coinbase.com. Compensation is whatever Coinbase publishes — Lattice does not invent a band.",
+    tokenTicker: "COIN",
+    benefits: ["remote-first", "healthcare", "visa-sponsorship", "parental-leave", "unlimited-pto"],
+    hue: 220,
+  },
+  ...RAW.map((c) => ({
+    id: c.slug,
+    slug: c.slug,
+    name: c.name,
+    website: `https://${c.slug.replace(/and-co/, "sable")}.xyz`,
+    twitter: `https://x.com/${c.slug.replace(/-/g, "")}`,
+    github: `https://github.com/${c.slug}`,
+    discord: `https://discord.gg/${c.slug}`,
+    scenes: c.scenes,
+    chains: c.chains.filter((x) => x !== ("depin" as Chain) && x !== ("opbnb" as Chain) && x !== ("immutable" as Chain)) as Chain[],
+    size: c.size,
+    type: c.type,
+    hq: c.hq,
+    remotePolicy: c.remotePolicy,
+    verified: true,
+    foundedYear: c.foundedYear,
+    about: c.about,
+    tokenTicker: c.ticker,
+    benefits: c.benefits,
+    hue: hue(c.slug),
+  })),
+];
 
 type Tpl = {
   title: string;
@@ -236,6 +260,7 @@ export const ROLES: Role[] = (() => {
   let n = 0;
   for (let ci = 0; ci < COMPANIES.length; ci++) {
     const c = COMPANIES[ci];
+    if (c.id === "coinbase") continue;
     const count = 2 + (ci % 3);
     const used = new Set<string>();
     for (let k = 0; k < count; k++) {

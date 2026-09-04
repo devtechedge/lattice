@@ -8,6 +8,7 @@ import { COMPANIES, ROLES } from "@/lib/catalog/data";
 import { applyRoleFilters, toSearch } from "@/lib/catalog/filter-roles";
 import type { Role, RoleFilters, Company } from "@/lib/catalog/types";
 import { listBookmarks, listPostedRoles, toggleBookmark } from "@/lib/server/actions";
+import { listCoinbaseRoles } from "@/lib/server/coinbase";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -66,6 +67,7 @@ export function RolesBoard({
 }) {
   const [filters, setFilters] = useState<RoleFilters>(initial);
   const [posted, setPosted] = useState<Role[]>([]);
+  const [live, setLive] = useState<Role[]>([]);
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [limit, setLimit] = useState(40);
   const user = useCurrentUser();
@@ -81,6 +83,9 @@ export function RolesBoard({
     listPostedRoles()
       .then((rows) => setPosted(parsePosted(rows)))
       .catch(() => setPosted([]));
+    listCoinbaseRoles()
+      .then(setLive)
+      .catch(() => setLive([]));
   }, []);
 
   useEffect(() => {
@@ -98,7 +103,7 @@ export function RolesBoard({
     }
   };
 
-  const all = useMemo(() => [...posted, ...ROLES], [posted]);
+  const all = useMemo(() => [...posted, ...live, ...ROLES], [posted, live]);
   const results = useMemo(() => applyRoleFilters(all, filters), [all, filters]);
   const shown = results.slice(0, limit);
 
@@ -154,6 +159,7 @@ export function RolesBoard({
         <p className="text-sm text-mute" data-testid="roles-count">
           <span className="font-mono tabular-nums text-fg">{results.length}</span> open roles
           {posted.length ? ` · ${posted.length} posted this session` : ""}
+          {live.length ? ` · ${live.length} live from Coinbase` : ""}
         </p>
         {!hideHero && (
           <div className="flex rounded-sm border border-line">

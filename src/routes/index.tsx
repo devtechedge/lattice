@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { RolesBoard } from "@/components/jobs/board";
 import { JobCard } from "@/components/jobs/job-card";
@@ -5,6 +6,8 @@ import { COMPANIES, GIGS, ROLES, TALENT } from "@/lib/catalog/data";
 import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { CompanyMark } from "@/components/company-mark";
 import { timeAgo } from "@/lib/utils";
+import { listCoinbaseRoles } from "@/lib/server/coinbase";
+import type { Role } from "@/lib/catalog/types";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
@@ -13,12 +16,26 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const search = parseRoleSearch(Route.useSearch());
+  const [live, setLive] = useState<Role[]>([]);
+  useEffect(() => {
+    listCoinbaseRoles()
+      .then(setLive)
+      .catch(() => setLive([]));
+  }, []);
+
   const featured = ROLES.find((r) => r.featured) ?? ROLES[0];
   const week = ROLES.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).slice(0, 8);
-  const hiring = COMPANIES.filter((c) => ROLES.some((r) => r.companyId === c.id)).slice(0, 14);
+  const coinbase = COMPANIES.find((c) => c.id === "coinbase");
+  const hiring = [
+    ...(live.length && coinbase ? [coinbase] : []),
+    ...COMPANIES.filter((c) => c.id !== "coinbase" && ROLES.some((r) => r.companyId === c.id)),
+  ].slice(0, 14);
   const publicTalent = TALENT.filter((t) => t.privacy === "public").length;
-  const latest = ROLES.slice(0, 3);
+  const latest = live.length ? [live[0], ...ROLES.slice(0, 2)] : ROLES.slice(0, 3);
   const featuredCompany = COMPANIES.find((c) => c.id === featured?.companyId);
+  const eng = live.filter((r) => r.department === "engineering");
+  const rest = live.filter((r) => r.department !== "engineering");
+  const livePreview = [...eng.slice(0, 3), ...rest.slice(0, 3)];
 
   return (
     <div>
@@ -45,7 +62,7 @@ function Home() {
           <div className="rounded-md border border-line bg-raised p-4">
             <p className="font-mono text-xs uppercase tracking-wider text-mute">Open now</p>
             <div className="mt-3 grid grid-cols-2 gap-3 font-mono tabular-nums">
-              <Stat n={ROLES.length} label="roles" to="/roles" />
+              <Stat n={ROLES.length + live.length} label="roles" to="/roles" />
               <Stat n={COMPANIES.length} label="teams" to="/companies" />
               <Stat n={GIGS.length} label="gigs" to="/gigs" />
               <Stat n={publicTalent} label="talent" to="/talent" />
@@ -70,6 +87,29 @@ function Home() {
             <p className="text-xs uppercase tracking-wider text-gold">Featured</p>
             <div className="mt-3">
               <JobCard role={featured} company={featuredCompany} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {livePreview.length > 0 && (
+        <section className="border-b border-line" data-testid="coinbase-live">
+          <div className="mx-auto max-w-7xl px-4 py-8">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-cyan">Live from Coinbase</p>
+                <p className="mt-1 max-w-xl text-sm text-mute">
+                  {live.length} open roles from Coinbase’s public board. Apply on coinbase.com — Lattice does not invent a band.
+                </p>
+              </div>
+              <Link to="/companies/$slug" params={{ slug: "coinbase" }} className="text-sm text-signal hover:underline">
+                All {live.length} · Coinbase
+              </Link>
+            </div>
+            <div className="mt-3 grid gap-2">
+              {livePreview.map((r) => (
+                <JobCard key={r.id} role={r} company={coinbase} />
+              ))}
             </div>
           </div>
         </section>

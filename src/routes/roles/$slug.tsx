@@ -10,6 +10,8 @@ import { COMPANIES, ROLES, companyById } from "@/lib/catalog/data";
 import { BENEFIT_LABEL, REMOTE_LABEL } from "@/lib/catalog/types";
 import { formatUsd, timeAgo } from "@/lib/utils";
 import { listBookmarks, listPostedRoles, toggleBookmark } from "@/lib/server/actions";
+import { getCoinbaseRole, listCoinbaseRoles } from "@/lib/server/coinbase";
+import { parseCoinbaseSlug } from "@/lib/catalog/greenhouse";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import type { Role } from "@/lib/catalog/types";
 
@@ -20,7 +22,9 @@ export const Route = createFileRoute("/roles/$slug")({
 function RolePage() {
   const { slug } = Route.useParams();
   const [role, setRole] = useState<Role | undefined>(ROLES.find((r) => r.slug === slug));
+  const [pending, setPending] = useState(() => !!parseCoinbaseSlug(slug) && !ROLES.some((r) => r.slug === slug));
   const [saved, setSaved] = useState(false);
+  const [similarLive, setSimilarLive] = useState<Role[]>([]);
   const user = useCurrentUser();
   const company = role ? companyById(role.companyId) ?? COMPANIES.find((c) => c.id === role.companyId) : undefined;
 
@@ -28,6 +32,15 @@ function RolePage() {
     const found = ROLES.find((r) => r.slug === slug);
     if (found) {
       setRole(found);
+      setPending(false);
+      return;
+    }
+    if (parseCoinbaseSlug(slug)) {
+      setPending(true);
+      getCoinbaseRole({ data: { slug } })
+        .then((r) => setRole(r ?? undefined))
+        .catch(() => setRole(undefined))
+        .finally(() => setPending(false));
       return;
     }
     listPostedRoles()
@@ -39,6 +52,13 @@ function RolePage() {
   }, [slug]);
 
   useEffect(() => {
+    if (!role || role.source !== "ats") return;
+    listCoinbaseRoles()
+      .then((rows) => setSimilarLive(rows.filter((r) => r.id !== role.id && r.department === role.department).slice(0, 4)))
+      .catch(() => setSimilarLive([]));
+  }, [role]);
+
+  useEffect(() => {
     if (!user || !role) return;
     listBookmarks()
       .then((rows) => setSaved(rows.some((r) => r.role_id === role.id)))
@@ -46,6 +66,9 @@ function RolePage() {
   }, [user, role]);
 
   if (!role) {
+    if (pending) {
+      return <main className="mx-auto max-w-3xl px-4 py-16"><div className="h-40 animate-pulse rounded-md bg-raised" /></main>;
+    }
     return (
       <main className="mx-auto max-w-3xl px-4 py-16">
         <h1 className="font-serif text-3xl">Role not found</h1>
@@ -54,7 +77,10 @@ function RolePage() {
     );
   }
 
-  const similar = ROLES.filter((r) => r.id !== role.id && (r.tags.some((t) => role.tags.includes(t)) || r.chains.some((c) => role.chains.includes(c)))).slice(0, 4);
+  const similar =
+    role.source === "ats"
+      ? similarLive
+      : ROLES.filter((r) => r.id !== role.id && (r.tags.some((t) => role.tags.includes(t)) || r.chains.some((c) => role.chains.includes(c)))).slice(0, 4);
 
   return (
     <main className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -63,6 +89,7 @@ function RolePage() {
           <CompanyMark name={company?.name ?? "Role"} hue={company?.hue ?? 140} size={48} />
           <div>
             {role.featured && <p className="text-[11px] font-medium text-gold">Featured</p>}
+            {role.source === "ats" && <p className="text-[11px] uppercase tracking-wider text-cyan">Live from Coinbase careers</p>}
             <h1 className="font-serif text-3xl tracking-tight">{role.title}</h1>
             <p className="mt-1 text-sm text-mute">
               {company ? (
@@ -154,7 +181,7 @@ function RolePage() {
           <ApplyForm role={role} />
         </div>
         <div className="sticky bottom-0 mt-3 flex gap-2 border-t border-line bg-bg p-3 lg:hidden">
-          <Button className="flex-1" onClick={() => document.querySelector("form")?.scrollIntoView({ behavior: "smooth" })}>Apply</Button>
+          <Button className="flex-1" onClick={() => document.querySelector("[data-testid=apply-form]")?.scrollIntoView({ behavior: "smooth" })}>Apply</Button>
         </div>
       </aside>
     </main>

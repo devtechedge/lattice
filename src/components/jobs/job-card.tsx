@@ -12,6 +12,7 @@ export function salaryLabel(role: Role) {
   if (role.salaryMin && role.salaryMax) {
     return `${formatCompactUsd(role.salaryMin)} – ${formatCompactUsd(role.salaryMax)}`;
   }
+  if (role.source === "ats") return "Not disclosed";
   const est = estimateSalary({ department: role.department, seniority: role.seniority, remoteRegion: role.remoteRegion });
   return { estimate: `${formatCompactUsd(est.min)} – ${formatCompactUsd(est.max)}` };
 }
@@ -42,6 +43,7 @@ export function JobCard({
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               {role.featured && <p className="text-[11px] font-medium text-gold">Featured</p>}
+              {role.source === "ats" && <p className="text-[11px] uppercase tracking-wider text-cyan">Live · Coinbase</p>}
               <Link to="/roles/$slug" params={{ slug: role.slug }} className="block truncate font-medium hover:text-signal">
                 {role.title}
               </Link>
@@ -64,7 +66,7 @@ export function JobCard({
                 {sal.estimate}
               </span>
             )}
-            <Badge>{role.locationMode === "remote" && role.remoteRegion ? REMOTE_LABEL[role.remoteRegion] : role.locations[0] ?? role.locationMode}</Badge>
+            <Badge>{role.locations[0] ?? (role.locationMode === "remote" && role.remoteRegion ? REMOTE_LABEL[role.remoteRegion] : role.locationMode)}</Badge>
             <Badge>{role.type}</Badge>
             <Badge tone="cyan">{role.scenes[0]}</Badge>
             {role.tags.slice(0, 3).map((t) => (
