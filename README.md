@@ -7,6 +7,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 </p>
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://lattice-beta-livid.vercel.app)
+[![CI](https://github.com/devtechedge/lattice/actions/workflows/ci.yml/badge.svg)](https://github.com/devtechedge/lattice/actions/workflows/ci.yml)
 [![TanStack Start](https://img.shields.io/badge/TanStack%20Start-black)](https://tanstack.com/start)
 [![React](https://img.shields.io/badge/React-19-0052CC?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
@@ -84,6 +85,8 @@ Without `DATABASE_URL` the app uses embedded PGLite and seeds the catalog on fir
 
 ```bash
 npm run typecheck
+npm test
+npm run test:e2e
 npm run build
 ```
 
@@ -92,6 +95,8 @@ Env template: [.env.example](.env.example). Never commit secrets.
 | Variable | Where | Purpose |
 |----------|--------|---------|
 | `DATABASE_URL` | Vercel | Neon pooled URI (`sslmode=require`). Omit locally. |
+
+See [SECURITY.md](SECURITY.md) for the threat model, reporting, and residual risk (guest posting, anonymous salary submit).
 
 ---
 
