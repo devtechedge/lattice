@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { CompanyMark } from "@/components/company-mark";
 import { Bookmark } from "lucide-react";
 import type { Company, Role } from "@/lib/catalog/types";
 import { REMOTE_LABEL } from "@/lib/catalog/types";
@@ -42,7 +43,16 @@ export function JobTable({
                     {r.title}
                   </Link>
                 </td>
-                <td className="px-3 py-2.5 text-mute">{c?.name ?? "—"}</td>
+                <td className="px-3 py-2.5 text-mute">
+                  {c ? (
+                    <span className="inline-flex items-center gap-2">
+                      <CompanyMark name={c.name} website={c.website} hue={c.hue} size={20} />
+                      <span className="truncate">{c.name}</span>
+                    </span>
+                  ) : (
+                    "—"
+                  )}
+                </td>
                 <td className="px-3 py-2.5 font-mono tabular-nums">
                   <span
                     className={cn((sal.inferred || sal.estimate) && "text-mute underline decoration-dashed")}

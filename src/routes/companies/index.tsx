@@ -54,7 +54,7 @@ function Page() {
       <div className="mt-6 grid gap-3 md:grid-cols-2">
         {list.map((c) => (
           <Link key={c.id} to="/companies/$slug" params={{ slug: c.slug }} className="flex gap-3 rounded-md border border-line bg-raised p-4 hover:border-line-strong">
-            <CompanyMark name={c.name} hue={c.hue} />
+            <CompanyMark name={c.name} website={c.website} hue={c.hue} />
             <div>
               <p className="font-medium">{c.name} {c.verified && <span className="text-gold">●</span>}</p>
               <p className="text-sm text-mute">{c.type} · {c.hq} · {c.size} · {counts.get(c.id) ?? 0} open</p>

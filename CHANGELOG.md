@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 — 2026-09-06
+
+- Show each company's real logo (site favicon) next to their postings, company strips, and company pages. Initials remain the fallback when the icon fails.
+
 ## 1.2.0 — 2026-09-05
 
 - Extract real ATS pay from Greenhouse metadata / HTML and Ashby compensation. Inferred bands are marked `~`. Empty is an em dash. Never fill live rows from the salary observatory.

@@ -49,7 +49,7 @@ export function JobCard({
       )}
     >
       <div className="flex gap-3">
-        <CompanyMark name={company?.name ?? role.title} hue={company?.hue ?? 140} />
+        <CompanyMark name={company?.name ?? role.title} website={company?.website} hue={company?.hue ?? 140} />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
