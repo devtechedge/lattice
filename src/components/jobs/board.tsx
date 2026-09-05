@@ -143,6 +143,7 @@ export function RolesBoard({
         foundedYear: 2026,
         about: "",
         benefits: [],
+        logo: "",
         hue: 140,
       });
     }
