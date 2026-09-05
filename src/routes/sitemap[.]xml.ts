@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { COMPANIES } from "@/lib/catalog/data";
 import { SITE_ORIGIN } from "@/lib/seo";
 import { loadAllLiveRoles } from "@/lib/server/live";
+import { SEO_HUBS } from "@/lib/seo/hubs";
 
 function xmlEscape(s: string): string {
   return s
@@ -29,6 +30,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/terms",
           "/search",
           "/pulse",
+          "/jobs",
+          ...SEO_HUBS.map((h) => `/jobs/${h.slug}`),
           ...COMPANIES.map((c) => `/companies/${c.slug}`),
         ];
 

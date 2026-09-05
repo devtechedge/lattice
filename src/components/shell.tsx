@@ -139,6 +139,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <FooterCol
             title="More"
             links={[
+              { to: "/jobs", label: "Job hubs" },
               { to: "/locations", label: "Locations" },
               { to: "/alerts", label: "Alerts & RSS" },
               { to: "/about", label: "About" },

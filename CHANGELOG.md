@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 — 2026-09-06
+
+- SEO job hubs: `/jobs` index plus `/jobs/solidity`, `/jobs/defi`, `/jobs/ethereum`, `/jobs/remote-web3` with crawlable copy, live filtered boards, sitemap + footer + llms links.
+
+
 ## 1.3.0 — 2026-09-06
 
 - Free SEO pass for Web3/crypto/blockchain job queries: stronger titles and descriptions, keywords meta, hero copy, company/role canonical paths, and sitemap entries for up to 5,000 live role URLs (plus companies). Domain stays on the Vercel host for now.

@@ -30,6 +30,8 @@ import { Route as GigsIndexRouteImport } from './routes/gigs/index'
 import { Route as GigsSlugRouteImport } from './routes/gigs/$slug'
 import { Route as LearnIndexRouteImport } from './routes/learn/index'
 import { Route as LearnSlugRouteImport } from './routes/learn/$slug'
+import { Route as JobsIndexRouteImport } from './routes/jobs/index'
+import { Route as JobsSlugRouteImport } from './routes/jobs/$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations/index'
 import { Route as LocationsSlugRouteImport } from './routes/locations/$slug'
 import { Route as MeIndexRouteImport } from './routes/me/index'
@@ -152,6 +154,16 @@ const LearnSlugRoute = LearnSlugRouteImport.update({
   path: '/learn/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JobsIndexRoute = JobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsSlugRoute = JobsSlugRouteImport.update({
+  id: '/jobs/$slug',
+  path: '/jobs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LocationsIndexRoute = LocationsIndexRouteImport.update({
   id: '/locations/',
   path: '/locations/',
@@ -251,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -264,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/contracts/': typeof ContractsIndexRoute
   '/gigs/': typeof GigsIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/me/': typeof MeIndexRoute
   '/post/': typeof PostIndexRoute
@@ -290,6 +304,7 @@ export interface FileRoutesByTo {
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -330,6 +345,7 @@ export interface FileRoutesById {
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -343,6 +359,7 @@ export interface FileRoutesById {
   '/contracts/': typeof ContractsIndexRoute
   '/gigs/': typeof GigsIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/me/': typeof MeIndexRoute
   '/post/': typeof PostIndexRoute
@@ -371,6 +388,7 @@ export interface FileRouteTypes {
     | '/departments/$slug'
     | '/gigs/$slug'
     | '/learn/$slug'
+    | '/jobs/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -384,6 +402,7 @@ export interface FileRouteTypes {
     | '/contracts/'
     | '/gigs/'
     | '/learn/'
+    | '/jobs/'
     | '/locations/'
     | '/me/'
     | '/post/'
@@ -410,6 +429,7 @@ export interface FileRouteTypes {
     | '/departments/$slug'
     | '/gigs/$slug'
     | '/learn/$slug'
+    | '/jobs/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -449,6 +469,7 @@ export interface FileRouteTypes {
     | '/departments/$slug'
     | '/gigs/$slug'
     | '/learn/$slug'
+    | '/jobs/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -462,6 +483,7 @@ export interface FileRouteTypes {
     | '/contracts/'
     | '/gigs/'
     | '/learn/'
+    | '/jobs/'
     | '/locations/'
     | '/me/'
     | '/post/'
@@ -489,6 +511,8 @@ export interface RootRouteChildren {
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
   GigsSlugRoute: typeof GigsSlugRoute
   LearnSlugRoute: typeof LearnSlugRoute
+  JobsIndexRoute: typeof JobsIndexRoute
+  JobsSlugRoute: typeof JobsSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   MeProfileRoute: typeof MeProfileRoute
   PostContractRoute: typeof PostContractRoute
@@ -653,6 +677,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jobs/': {
+      id: '/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof JobsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs/$slug': {
+      id: '/jobs/$slug'
+      path: '/jobs/$slug'
+      fullPath: '/jobs/$slug'
+      preLoaderRoute: typeof JobsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/$slug': {
       id: '/learn/$slug'
       path: '/learn/$slug'
@@ -793,6 +831,8 @@ const rootRouteChildren: RootRouteChildren = {
   DepartmentsSlugRoute: DepartmentsSlugRoute,
   GigsSlugRoute: GigsSlugRoute,
   LearnSlugRoute: LearnSlugRoute,
+  JobsIndexRoute: JobsIndexRoute,
+  JobsSlugRoute: JobsSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   MeProfileRoute: MeProfileRoute,
   PostContractRoute: PostContractRoute,

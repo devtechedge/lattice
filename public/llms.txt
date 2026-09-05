@@ -8,6 +8,11 @@ Lattice lists still-open Web3 / crypto / blockchain roles pulled from Greenhouse
 
 - Home: https://lattice-devtechedge1.vercel.app/
 - Roles (Web3 & crypto jobs): https://lattice-devtechedge1.vercel.app/roles
+- Job hubs (Solidity, DeFi, Ethereum, Remote): https://lattice-devtechedge1.vercel.app/jobs
+- Solidity jobs: https://lattice-devtechedge1.vercel.app/jobs/solidity
+- DeFi jobs: https://lattice-devtechedge1.vercel.app/jobs/defi
+- Ethereum jobs: https://lattice-devtechedge1.vercel.app/jobs/ethereum
+- Remote Web3 jobs: https://lattice-devtechedge1.vercel.app/jobs/remote-web3
 - Companies: https://lattice-devtechedge1.vercel.app/companies
 - Gigs: https://lattice-devtechedge1.vercel.app/gigs
 - Talent: https://lattice-devtechedge1.vercel.app/talent
