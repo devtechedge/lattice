@@ -2,11 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { RolesBoard } from "@/components/jobs/board";
 import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { listLiveRoles } from "@/lib/server/live";
 import { timeAgo } from "@/lib/utils";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/roles/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
+  loader: async () => {
+    try {
+      const live = await listLiveRoles();
+      return { live };
+    } catch {
+      return { live: [] as Awaited<ReturnType<typeof listLiveRoles>> };
+    }
+  },
   head: () =>
     pageHead({
       title: "Roles — Lattice",
@@ -18,7 +27,8 @@ export const Route = createFileRoute("/roles/")({
 
 function RolesPage() {
   const search = parseRoleSearch(Route.useSearch());
-  const { live } = useLiveRoles();
+  const initial = Route.useLoaderData()?.live;
+  const { live } = useLiveRoles(initial);
   const newest = live[0];
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">

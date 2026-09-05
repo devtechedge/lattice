@@ -5,9 +5,18 @@ import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
 import { COMPANY_TYPES, SCENES } from "@/lib/catalog/types";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { listLiveRoles } from "@/lib/server/live";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/companies/")({
+  loader: async () => {
+    try {
+      const live = await listLiveRoles();
+      return { live };
+    } catch {
+      return { live: [] as Awaited<ReturnType<typeof listLiveRoles>> };
+    }
+  },
   head: () =>
     pageHead({
       title: "Companies — Lattice",
@@ -22,7 +31,8 @@ function Page() {
   const [type, setType] = useState("");
   const [scene, setScene] = useState("");
   const [hiring, setHiring] = useState(false);
-  const { live } = useLiveRoles();
+  const initial = Route.useLoaderData()?.live;
+  const { live } = useLiveRoles(initial);
   const counts = useMemo(() => {
     const m = new Map<string, number>();
     live.forEach((r) => m.set(r.companyId, (m.get(r.companyId) ?? 0) + 1));

@@ -6,11 +6,20 @@ import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { CompanyMark } from "@/components/company-mark";
 import { timeAgo } from "@/lib/utils";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { listLiveRoles } from "@/lib/server/live";
 import { pageHead } from "@/lib/seo";
 import type { Role } from "@/lib/catalog/types";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
+  loader: async () => {
+    try {
+      const live = await listLiveRoles();
+      return { live };
+    } catch {
+      return { live: [] as Awaited<ReturnType<typeof listLiveRoles>> };
+    }
+  },
   head: () =>
     pageHead({
       title: "Lattice — Web3 careers",
@@ -34,7 +43,8 @@ function diverse(roles: Role[], n: number): Role[] {
 
 function Home() {
   const search = parseRoleSearch(Route.useSearch());
-  const { live, ready } = useLiveRoles();
+  const initial = Route.useLoaderData()?.live;
+  const { live, ready } = useLiveRoles(initial);
   const featured = live[0];
   const week = diverse(
     live.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000),
