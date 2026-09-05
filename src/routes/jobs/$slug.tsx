@@ -32,7 +32,7 @@ function JobsHubPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <p className="text-xs uppercase tracking-wider text-mute">
-        <Link to="/jobs" className="hover:text-fg">
+        <Link to="/jobs/" className="hover:text-fg">
           Job hubs
         </Link>
         {" / "}
