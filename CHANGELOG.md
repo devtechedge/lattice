@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.5 — 2026-09-06
+
+- Fix broken company marks: Google’s favicon endpoint 301s to `*.gstatic.com` (blocked by CSP). Use DuckDuckGo icons first, gstatic V2 second, and only reveal the `<img>` after `onLoad` so a failed fetch never shows a broken-image glyph.
+
 ## 1.2.4 — 2026-09-06
 
 - Fix company logos: allow Google/DuckDuckGo favicon hosts in CSP `img-src`, cascade favicon → DuckDuckGo → initials so marks never render empty.

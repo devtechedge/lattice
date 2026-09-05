@@ -3,12 +3,9 @@ import { describe, it } from "node:test";
 import { companyInitials, companyLogoFallbackSrc, companyLogoSrc, hostFromUrl } from "./logo.ts";
 
 describe("company logos", () => {
-  it("builds a favicon URL from the company website", () => {
+  it("builds a duckduckgo icon URL from the company website", () => {
     const src = companyLogoSrc({ website: "https://www.binance.com" });
-    assert.equal(
-      src,
-      "https://www.google.com/s2/favicons?domain=binance.com&sz=128",
-    );
+    assert.equal(src, "https://icons.duckduckgo.com/ip3/binance.com.ico");
   });
 
   it("prefers an explicit https logo", () => {
@@ -30,10 +27,9 @@ describe("company logos", () => {
     assert.equal(companyInitials("Binance"), "BI");
   });
 
-  it("builds a duckduckgo fallback icon URL", () => {
-    assert.equal(
-      companyLogoFallbackSrc("https://www.coinbase.com"),
-      "https://icons.duckduckgo.com/ip3/coinbase.com.ico",
-    );
+  it("builds a gstatic faviconV2 fallback URL", () => {
+    const src = companyLogoFallbackSrc("https://www.coinbase.com");
+    assert.ok(src?.startsWith("https://t0.gstatic.com/faviconV2?"));
+    assert.ok(src?.includes(encodeURIComponent("https://coinbase.com/")));
   });
 });

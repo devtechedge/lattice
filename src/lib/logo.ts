@@ -52,7 +52,7 @@ export function hostFromUrl(url: string | null | undefined): string | null {
   }
 }
 
-/** Company site icon via Google's public favicon endpoint. Initials if it fails. */
+/** DuckDuckGo icons are a direct image response (no CSP-breaking redirect). */
 export function companyLogoSrc(opts: {
   logoUrl?: string | null;
   website?: string | null;
@@ -60,13 +60,15 @@ export function companyLogoSrc(opts: {
   if (opts.logoUrl && publicHttpsUrl(opts.logoUrl)) return opts.logoUrl;
   const host = hostFromUrl(opts.website);
   if (!host) return null;
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`;
+  return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(host)}.ico`;
 }
 
+/** Google faviconV2 on gstatic — use only after allowing *.gstatic.com in CSP. */
 export function companyLogoFallbackSrc(website?: string | null): string | null {
   const host = hostFromUrl(website);
   if (!host) return null;
-  return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(host)}.ico`;
+  const target = encodeURIComponent(`https://${host}/`);
+  return `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${target}&size=128`;
 }
 
 export function companyInitials(name: string): string {

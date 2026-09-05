@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { companyInitials, companyLogoFallbackSrc, companyLogoSrc } from "@/lib/logo";
+import { cn } from "@/lib/utils";
 
 export function CompanyMark({
   name,
@@ -14,10 +15,18 @@ export function CompanyMark({
   hue?: number;
   size?: number;
 }) {
-  const primary = useMemo(() => companyLogoSrc({ logoUrl, website }), [logoUrl, website]);
-  const fallback = useMemo(() => companyLogoFallbackSrc(website), [website]);
-  const [src, setSrc] = useState<string | null>(primary);
-  const [failed, setFailed] = useState(!primary);
+  const candidates = useMemo(() => {
+    const list: string[] = [];
+    const primary = companyLogoSrc({ logoUrl, website });
+    const secondary = companyLogoFallbackSrc(website);
+    if (primary) list.push(primary);
+    if (secondary && secondary !== primary) list.push(secondary);
+    return list;
+  }, [logoUrl, website]);
+
+  const [index, setIndex] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const src = candidates[index] ?? null;
 
   const initials = (
     <span
@@ -34,30 +43,31 @@ export function CompanyMark({
     </span>
   );
 
-  if (failed || !src) return initials;
+  if (!src) return initials;
 
   return (
     <span className="relative inline-grid shrink-0 place-items-center" style={{ width: size, height: size }}>
-      {/* Initials sit underneath so a blocked/broken icon never leaves an empty hole */}
       <span className="absolute inset-0 grid place-items-center overflow-hidden rounded-sm" aria-hidden>
         {initials}
       </span>
       <img
+        key={src}
         src={src}
         alt=""
         width={size}
         height={size}
-        className="relative z-[1] rounded-sm bg-raised object-contain"
+        className={cn(
+          "relative z-[1] rounded-sm bg-raised object-contain",
+          loaded ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
         style={{ width: size, height: size }}
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
+        onLoad={() => setLoaded(true)}
         onError={() => {
-          if (src === primary && fallback && fallback !== primary) {
-            setSrc(fallback);
-            return;
-          }
-          setFailed(true);
+          setLoaded(false);
+          setIndex((i) => i + 1);
         }}
       />
     </span>
