@@ -318,6 +318,7 @@ export interface FileRoutesByTo {
   '/contracts': typeof ContractsIndexRoute
   '/gigs': typeof GigsIndexRoute
   '/learn': typeof LearnIndexRoute
+  '/jobs': typeof JobsIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/me': typeof MeIndexRoute
   '/post': typeof PostIndexRoute
@@ -443,6 +444,7 @@ export interface FileRouteTypes {
     | '/contracts'
     | '/gigs'
     | '/learn'
+    | '/jobs'
     | '/locations'
     | '/me'
     | '/post'
