@@ -2,7 +2,7 @@
 export const SITE_ORIGIN = "https://lattice-devtechedge1.vercel.app";
 
 export const DEFAULT_DESCRIPTION =
-  "Web3 roles, gigs, talent, and salaries. Public listings — not an employer.";
+  "Find blockchain, crypto, and Web3 jobs from live employer boards — Coinbase, Binance, Ripple, and more. Public listings. Not an employer.";
 
 export const OG_IMAGE = `${SITE_ORIGIN}/og.jpg`;
 
@@ -19,6 +19,7 @@ export function pageHead(opts: { title: string; description?: string; path?: str
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "keywords", content: "web3 jobs, crypto jobs, blockchain jobs, web3 careers, crypto careers, solidity jobs" },
       { property: "og:type", content: opts.ogType ?? "website" },
       { property: "og:site_name", content: "Lattice" },
       { property: "og:title", content: title },

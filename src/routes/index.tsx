@@ -22,9 +22,9 @@ export const Route = createFileRoute("/")({
   },
   head: () =>
     pageHead({
-      title: "Lattice — Web3 careers",
+      title: "Web3 Jobs & Crypto Careers — Live Blockchain Roles | Lattice",
       path: "/",
-      description: "Live Web3 roles from twenty crypto teams’ public boards. Gigs, talent, and salaries. Public listings — not an employer.",
+      description: "Search live Web3 jobs, crypto jobs, and blockchain careers from twenty employer ATS boards. Apply on the company site. Public listings — not an employer.",
     }),
   component: Home,
 });
@@ -65,7 +65,7 @@ function Home() {
             <p className="text-xs uppercase tracking-[0.18em] text-mute">Web3 · crypto · blockchain</p>
             <h1 className="mt-3 font-serif text-4xl leading-[1.1] tracking-tight md:text-5xl">One lattice. Every Web3 career.</h1>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-mute">
-              Live roles from twenty crypto teams, pulled from their public boards. Apply on the employer’s site. Public listings. Not an employer. Lattice does not invent pay.
+              Live blockchain, crypto, and Web3 jobs from twenty teams’ public boards. Apply on the employer’s site. Public listings. Not an employer. Lattice does not invent pay.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link to="/roles" className="inline-flex h-10 items-center rounded-sm bg-signal px-4 text-sm font-medium text-signal-fg">

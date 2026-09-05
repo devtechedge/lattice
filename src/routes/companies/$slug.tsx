@@ -5,8 +5,22 @@ import { Badge } from "@/components/ui/badge";
 import { JobCard } from "@/components/jobs/job-card";
 import { BENEFIT_LABEL } from "@/lib/catalog/types";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/companies/$slug")({ component: Page });
+export const Route = createFileRoute("/companies/$slug")({
+  head: ({ params }) => {
+    const c = COMPANIES.find((x) => x.slug === params.slug);
+    const name = c?.name ?? "Company";
+    return pageHead({
+      title: `${name} Web3 Jobs & Careers | Lattice`,
+      path: `/companies/${params.slug}`,
+      description: c
+        ? `Live ${name} crypto and Web3 jobs from their public hiring board. Apply on the employer’s site via Lattice.`
+        : "Crypto company careers on Lattice.",
+    });
+  },
+  component: Page,
+});
 
 function Page() {
   const { slug } = Route.useParams();

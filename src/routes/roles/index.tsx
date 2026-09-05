@@ -18,9 +18,9 @@ export const Route = createFileRoute("/roles/")({
   },
   head: () =>
     pageHead({
-      title: "Roles — Lattice",
+      title: "Web3 & Crypto Jobs — Live Open Roles | Lattice",
       path: "/roles",
-      description: "Live Web3 roles from twenty crypto teams. Filter by chain, seniority, and region. Apply on the employer’s site.",
+      description: "Browse live Web3 jobs and crypto careers. Filter by chain, seniority, and region. Listings from public Greenhouse, Ashby, and Lever boards.",
     }),
   component: RolesPage,
 });

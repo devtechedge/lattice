@@ -1,13 +1,13 @@
 # Lattice
 
-> Web3 roles, gigs, talent, and salaries from public employer ATS boards. Not a marketplace and not an employer.
+> Free board for blockchain, crypto, and Web3 jobs — live roles from public employer ATS boards. Not a marketplace and not an employer.
 
-Lattice lists still-open roles pulled from Greenhouse, Ashby, and Lever JSON. Apply on the employer site. Pay is only shown when the board publishes it.
+Lattice lists still-open Web3 / crypto / blockchain roles pulled from Greenhouse, Ashby, and Lever JSON. Apply on the employer site. Pay is only shown when the board publishes it.
 
 ## Site
 
 - Home: https://lattice-devtechedge1.vercel.app/
-- Roles: https://lattice-devtechedge1.vercel.app/roles
+- Roles (Web3 & crypto jobs): https://lattice-devtechedge1.vercel.app/roles
 - Companies: https://lattice-devtechedge1.vercel.app/companies
 - Gigs: https://lattice-devtechedge1.vercel.app/gigs
 - Talent: https://lattice-devtechedge1.vercel.app/talent

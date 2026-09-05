@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { COMPANIES } from "@/lib/catalog/data";
 import { SITE_ORIGIN } from "@/lib/seo";
+import { loadAllLiveRoles } from "@/lib/server/live";
 
 function xmlEscape(s: string): string {
   return s
@@ -14,7 +15,7 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const urls = [
+        const staticPaths = [
           "",
           "/roles",
           "/gigs",
@@ -24,13 +25,23 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/learn",
           "/about",
           "/post",
-          "/login",
           "/privacy",
           "/terms",
           "/search",
           "/pulse",
           ...COMPANIES.map((c) => `/companies/${c.slug}`),
         ];
+
+        let rolePaths: string[] = [];
+        try {
+          const roles = await loadAllLiveRoles();
+          // Cap keeps the sitemap bounded if boards explode; Google allows 50k/urlset.
+          rolePaths = roles.slice(0, 5000).map((r) => `/roles/${r.slug}`);
+        } catch {
+          rolePaths = [];
+        }
+
+        const urls = [...staticPaths, ...rolePaths];
         const body =
           "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
           "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" +

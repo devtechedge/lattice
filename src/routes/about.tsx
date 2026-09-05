@@ -6,7 +6,7 @@ export const Route = createFileRoute("/about")({
     pageHead({
       title: "About — Lattice",
       path: "/about",
-      description: "Public listings. Not an employer. Live Web3 roles from first-party ATS boards.",
+      description: "Lattice is a free board for blockchain, crypto, and Web3 jobs. Public listings from first-party ATS boards. Not an employer.",
     }),
   component: Page,
 });

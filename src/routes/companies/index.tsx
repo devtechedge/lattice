@@ -19,9 +19,9 @@ export const Route = createFileRoute("/companies/")({
   },
   head: () =>
     pageHead({
-      title: "Companies — Lattice",
+      title: "Crypto Companies Hiring — Web3 Employers | Lattice",
       path: "/companies",
-      description: "Twenty crypto teams hiring from public Greenhouse, Ashby, and Lever boards.",
+      description: "Crypto and Web3 companies hiring now — Coinbase, Binance, Ripple, and more. Live roles from public ATS boards.",
     }),
   component: Page,
 });
