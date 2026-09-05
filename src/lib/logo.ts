@@ -63,6 +63,12 @@ export function companyLogoSrc(opts: {
   return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`;
 }
 
+export function companyLogoFallbackSrc(website?: string | null): string | null {
+  const host = hostFromUrl(website);
+  if (!host) return null;
+  return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(host)}.ico`;
+}
+
 export function companyInitials(name: string): string {
   const parts = name
     .replace(/[^A-Za-z0-9 ]+/g, " ")

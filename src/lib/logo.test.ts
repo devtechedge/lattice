@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { companyInitials, companyLogoSrc, hostFromUrl } from "./logo.ts";
+import { companyInitials, companyLogoFallbackSrc, companyLogoSrc, hostFromUrl } from "./logo.ts";
 
 describe("company logos", () => {
   it("builds a favicon URL from the company website", () => {
@@ -28,5 +28,12 @@ describe("company logos", () => {
   it("makes initials", () => {
     assert.equal(companyInitials("Uniswap Labs"), "UL");
     assert.equal(companyInitials("Binance"), "BI");
+  });
+
+  it("builds a duckduckgo fallback icon URL", () => {
+    assert.equal(
+      companyLogoFallbackSrc("https://www.coinbase.com"),
+      "https://icons.duckduckgo.com/ip3/coinbase.com.ico",
+    );
   });
 });

@@ -1,8 +1,13 @@
 # Changelog
 
+## 1.2.4 — 2026-09-06
+
+- Fix company logos: allow Google/DuckDuckGo favicon hosts in CSP `img-src`, cascade favicon → DuckDuckGo → initials so marks never render empty.
+- Uniform job cards: fixed height, two-line title clamp, single-line meta row.
+
 ## 1.2.3 — 2026-09-06
 
-- Canonical production host is now  (shorter team alias). Updated site.json, SEO, robots, llms.txt, README, and related tests.
+- Canonical production host is now `https://lattice-devtechedge1.vercel.app` (shorter team alias). Updated site.json, SEO, robots, llms.txt, README, and related tests.
 
 ## 1.2.2 — 2026-09-06
 
