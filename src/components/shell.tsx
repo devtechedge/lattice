@@ -126,6 +126,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <a href="https://github.com/devtechedge/lattice" className="mt-3 inline-block text-xs text-mute hover:text-fg">
               GitHub @devtechedge/lattice
             </a>
+            <a
+              href="https://jobrow.vercel.app"
+              className="mt-1 block text-xs text-mute hover:text-fg"
+              rel="noopener noreferrer"
+            >
+              Jobrow — US tech jobs
+            </a>
           </div>
           <FooterCol title="Departments" links={DEPARTMENTS.map((d) => ({ to: `/departments/${d}`, label: DEPARTMENT_LABEL[d] }))} />
           <FooterCol title="Scenes" links={SCENES.map((s) => ({ to: `/scenes/${s}`, label: s }))} />

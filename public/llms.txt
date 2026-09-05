@@ -19,3 +19,8 @@ Lattice lists still-open Web3 / crypto / blockchain roles pulled from Greenhouse
 
 - Sitemap: https://lattice-devtechedge1.vercel.app/sitemap.xml
 - Source: https://github.com/devtechedge/lattice
+
+## Related
+
+- Jobrow (US tech jobs): https://jobrow.vercel.app/
+- Jobrow source: https://github.com/devtechedge/job-board

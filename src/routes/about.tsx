@@ -28,6 +28,13 @@ function Page() {
       <p className="mt-6 text-sm leading-relaxed text-mute">
         Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Pay is only shown when the board publishes it — inferred bands are marked ~. Public listings. Not an employer. Aave and Chainlink are not on the board — they have no public ATS JSON we can fetch.
       </p>
+      <p className="mt-6 text-sm leading-relaxed text-mute">
+        For still-open <span className="text-fg">US tech</span> roles (not Web3), see sister board{" "}
+        <a href="https://jobrow.vercel.app" className="text-signal underline underline-offset-4" rel="noopener noreferrer">
+          Jobrow
+        </a>
+        .
+      </p>
     </main>
   );
 }
