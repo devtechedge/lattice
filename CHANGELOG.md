@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.7 — 2026-09-06
+
+- Fix above-the-fold company marks stuck on initials: cached logos could fire `onLoad` before React attached the handler, so the opacity gate never flipped. Show same-origin logos immediately; fall back to initials only on error.
+
 ## 1.2.6 — 2026-09-06
 
 - Ship real company logos as same-origin assets under `public/logos/{id}.png` for all twenty boards. Marks no longer depend on third-party favicon CDNs (CSP/redirects kept breaking them).
