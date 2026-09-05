@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.9 — 2026-09-06
+
+- Enlarge the header Lattice mark again (`size-7` → `size-9`).
+
 ## 1.2.8 — 2026-09-06
 
 - Enlarge the header Lattice mark (`size-5` → `size-7`) and slightly strengthen the wordmark.

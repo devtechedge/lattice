@@ -38,7 +38,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
           <Link to="/" className="flex items-center gap-2 text-fg">
-            <LatticeMark className="size-7 text-signal" />
+            <LatticeMark className="size-9 text-signal" />
             <span className="text-base font-semibold tracking-tight">Lattice</span>
           </Link>
           <nav className="ml-4 hidden items-center gap-1 lg:flex">
