@@ -131,7 +131,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               className="mt-1 block text-xs text-mute hover:text-fg"
               rel="noopener noreferrer"
             >
-              Jobrow — US tech jobs
+              Jobrow - US tech jobs
             </a>
           </div>
           <FooterCol title="Departments" links={DEPARTMENTS.map((d) => ({ to: `/departments/${d}`, label: DEPARTMENT_LABEL[d] }))} />
