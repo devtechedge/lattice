@@ -20,7 +20,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 
 **https://lattice-beta-livid.vercel.app**
 
-> **Status:** Production mixes a **seeded demo catalog** (~149 roles, 50 teams, 34 talent profiles, 22 gigs) with **live Coinbase listings** from Coinbase’s public Greenhouse board. Seeded compensation is fictional. Coinbase pay is whatever Coinbase publishes (usually undisclosed here). Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Apply for Coinbase roles on coinbase.com. Not an offering. No wallet connect.
+> **Status:** Production is a **live job board**. Roles come from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards (Coinbase, Binance, OKX, Bybit, Ripple, Kraken, Fireblocks, Crypto.com, Chainalysis, Blockchain.com, BitGo, Gemini, Alchemy, Phantom, Circle, Uniswap Labs, Ledger, Consensys, Ethereum Foundation, Solana Labs). Apply on the employer’s site. Lattice does not invent pay — ATS compensation is “Not disclosed” unless the board publishes it. Talent, gigs, and learn remain a small editorial catalog. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Not an offering. No wallet connect.
 
 This is the **only** public repo for the product.
 
@@ -46,9 +46,9 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 
 ## Features
 
-- Editorial homepage: featured role, live Coinbase strip, new-this-week, companies hiring, manifesto
+- Editorial homepage: latest live role, twenty-team strip, new-this-week, companies hiring, manifesto
 - Roles index with table and card views, persisted locally
-- Live Coinbase openings from the official Greenhouse board (apply on coinbase.com; no invented pay)
+- Live openings from twenty first-party ATS boards (Greenhouse, Lever, Ashby). Apply on the employer’s site; no invented pay
 - Filters for chain, scene, department, seniority, remote region, benefits, pay-in-crypto
 - Compensation as cash + token + equity, with vesting and cliff on the card
 - Gigs marketplace and simulated digital contracts
@@ -66,7 +66,7 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 | Layer | Technology |
 |-------|------------|
 | App | TanStack Start, React 19, TypeScript, Tailwind v4 |
-| Data | Seeded catalog in `src/lib/catalog`. Postgres when `DATABASE_URL` is set; embedded PGLite otherwise |
+| Data | Live ATS fetch in `src/lib/server/live.ts`. Talent / gigs / learn in `src/lib/catalog`. Postgres when `DATABASE_URL` is set; embedded PGLite otherwise |
 | Auth | Optional Better Auth session for bookmarks, applications, and profiles |
 | Hosting | Vercel |
 | License | MIT |

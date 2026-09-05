@@ -10,7 +10,7 @@ test("home shows the editorial headline and living stats", async ({ page }) => {
 test("roles index lists open roles", async ({ page }) => {
   await page.goto("/roles");
   await expect(page.getByTestId("roles-count")).toContainText("open roles");
-  await expect(page.getByTestId("job-card").first()).toBeVisible();
+  await expect(page.getByTestId("job-card").first()).toBeVisible({ timeout: 25_000 });
 });
 
 test("role detail exposes the apply form", async ({ page }) => {
@@ -33,9 +33,9 @@ test("URL is the source of truth for role filters", async ({ page }) => {
   await expect(page.getByTestId("roles-count")).toBeVisible();
 });
 
-test("roles board merges live Coinbase listings", async ({ page }) => {
+test("roles board lists live openings", async ({ page }) => {
   await page.goto("/roles");
-  await expect(page.getByTestId("roles-count")).toContainText("live from Coinbase", { timeout: 25_000 });
+  await expect(page.getByTestId("roles-count")).toContainText("live listings", { timeout: 25_000 });
 });
 
 test("coinbase company page lists live roles", async ({ page }) => {
@@ -43,3 +43,4 @@ test("coinbase company page lists live roles", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Coinbase" })).toBeVisible();
   await expect(page.getByTestId("job-card").first()).toBeVisible({ timeout: 25_000 });
 });
+

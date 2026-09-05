@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ApplyForm } from "@/components/jobs/apply-form";
@@ -6,14 +6,16 @@ import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Markdown } from "@/lib/markdown";
-import { COMPANIES, ROLES, companyById } from "@/lib/catalog/data";
+import { COMPANIES, companyById } from "@/lib/catalog/data";
 import { BENEFIT_LABEL, REMOTE_LABEL } from "@/lib/catalog/types";
 import { formatUsd, timeAgo } from "@/lib/utils";
 import { listBookmarks, listPostedRoles, toggleBookmark } from "@/lib/server/actions";
-import { getCoinbaseRole, listCoinbaseRoles } from "@/lib/server/coinbase";
-import { parseCoinbaseSlug } from "@/lib/catalog/greenhouse";
+import { getLiveRole, listLiveRoles } from "@/lib/server/live";
+import { parseLiveSlug } from "@/lib/catalog/greenhouse";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import type { Role } from "@/lib/catalog/types";
+
+const COMPANY_IDS = COMPANIES.map((c) => c.id);
 
 export const Route = createFileRoute("/roles/$slug")({
   component: RolePage,
@@ -21,40 +23,45 @@ export const Route = createFileRoute("/roles/$slug")({
 
 function RolePage() {
   const { slug } = Route.useParams();
-  const [role, setRole] = useState<Role | undefined>(ROLES.find((r) => r.slug === slug));
-  const [pending, setPending] = useState(() => !!parseCoinbaseSlug(slug) && !ROLES.some((r) => r.slug === slug));
+  const [role, setRole] = useState<Role | undefined>(undefined);
+  const [pending, setPending] = useState(true);
   const [saved, setSaved] = useState(false);
   const [similarLive, setSimilarLive] = useState<Role[]>([]);
   const user = useCurrentUser();
   const company = role ? companyById(role.companyId) ?? COMPANIES.find((c) => c.id === role.companyId) : undefined;
 
   useEffect(() => {
-    const found = ROLES.find((r) => r.slug === slug);
-    if (found) {
-      setRole(found);
-      setPending(false);
-      return;
-    }
-    if (parseCoinbaseSlug(slug)) {
-      setPending(true);
-      getCoinbaseRole({ data: { slug } })
-        .then((r) => setRole(r ?? undefined))
-        .catch(() => setRole(undefined))
-        .finally(() => setPending(false));
-      return;
-    }
-    listPostedRoles()
-      .then((rows) => {
-        const hit = rows.find((r) => r.id === slug);
-        if (hit) setRole(JSON.parse(hit.payload_json) as Role);
-      })
-      .catch(() => {});
+    let on = true;
+    setPending(true);
+    setRole(undefined);
+    const load = parseLiveSlug(slug, COMPANY_IDS)
+      ? getLiveRole({ data: { slug } }).then((r) => {
+          if (on) setRole(r ?? undefined);
+        })
+      : listPostedRoles().then((rows) => {
+          const hit = rows.find((r) => r.id === slug);
+          if (on && hit) setRole(JSON.parse(hit.payload_json) as Role);
+        });
+    load.catch(() => {
+      if (on) setRole(undefined);
+    }).finally(() => {
+      if (on) setPending(false);
+    });
+    return () => {
+      on = false;
+    };
   }, [slug]);
 
   useEffect(() => {
     if (!role || role.source !== "ats") return;
-    listCoinbaseRoles()
-      .then((rows) => setSimilarLive(rows.filter((r) => r.id !== role.id && r.department === role.department).slice(0, 4)))
+    listLiveRoles()
+      .then((rows) =>
+        setSimilarLive(
+          rows
+            .filter((r) => r.id !== role.id && (r.companyId === role.companyId || r.department === role.department))
+            .slice(0, 4),
+        ),
+      )
       .catch(() => setSimilarLive([]));
   }, [role]);
 
@@ -77,10 +84,7 @@ function RolePage() {
     );
   }
 
-  const similar =
-    role.source === "ats"
-      ? similarLive
-      : ROLES.filter((r) => r.id !== role.id && (r.tags.some((t) => role.tags.includes(t)) || r.chains.some((c) => role.chains.includes(c)))).slice(0, 4);
+  const similar = role.source === "ats" ? similarLive : [];
 
   return (
     <main className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -89,7 +93,9 @@ function RolePage() {
           <CompanyMark name={company?.name ?? "Role"} hue={company?.hue ?? 140} size={48} />
           <div>
             {role.featured && <p className="text-[11px] font-medium text-gold">Featured</p>}
-            {role.source === "ats" && <p className="text-[11px] uppercase tracking-wider text-cyan">Live from Coinbase careers</p>}
+            {role.source === "ats" && (
+              <p className="text-[11px] uppercase tracking-wider text-cyan">Live from {company?.name ?? "the employer"}</p>
+            )}
             <h1 className="font-serif text-3xl tracking-tight">{role.title}</h1>
             <p className="mt-1 text-sm text-mute">
               {company ? (
@@ -187,5 +193,3 @@ function RolePage() {
     </main>
   );
 }
-
-void notFound;

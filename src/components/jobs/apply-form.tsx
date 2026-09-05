@@ -5,6 +5,7 @@ import { Input, Label, Textarea } from "@/components/ui/input";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import { submitApplication } from "@/lib/server/actions";
 import { safeHttpsUrl } from "@/lib/sanitize";
+import { companyById } from "@/lib/catalog/data";
 import type { Role } from "@/lib/catalog/types";
 
 export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void }) {
@@ -15,6 +16,7 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
   const [github, setGithub] = useState("");
   const [cover, setCover] = useState("");
   const [answer, setAnswer] = useState("");
+  const company = companyById(role.companyId);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -51,9 +53,10 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
 
   if (role.source === "ats") {
     const href = role.applyUrl ? safeHttpsUrl(role.applyUrl) : null;
+    const label = company?.name ?? "the employer";
     return (
       <div className="space-y-3" data-testid="apply-form">
-        <p className="text-sm text-mute">This listing is live from Coinbase careers. Application happens on their site. Lattice does not collect a resume.</p>
+        <p className="text-sm text-mute">This listing is live from {label}. Application happens on their site. Lattice does not collect a resume.</p>
         {href ? (
           <a
             href={href}
@@ -61,7 +64,7 @@ export function ApplyForm({ role, onDone }: { role: Role; onDone?: () => void })
             rel="noopener noreferrer"
             className="inline-flex h-10 w-full items-center justify-center rounded-sm bg-signal text-sm font-medium text-signal-fg"
           >
-            Apply on Coinbase
+            Apply on {label}
           </a>
         ) : (
           <p className="text-sm text-danger">Apply link unavailable.</p>

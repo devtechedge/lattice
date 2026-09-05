@@ -16,7 +16,9 @@ function Page() {
         <li><span className="text-fg">LaborX</span> — roles, contracts, and gigs in one work graph, with a demo escrow timeline.</li>
       </ul>
       <p className="mt-8 text-sm leading-relaxed text-mute">We did not take listing auctions, paid boosts, or resume paywalls. Everything here is the free tier. Featured roles are editorial, not checkout.</p>
-      <p className="mt-6 text-sm leading-relaxed text-mute">No fake urgency. No forced account to follow an external apply URL. Token-heavy offers are labeled as such. Coinbase roles are pulled live from their public Greenhouse board and apply on coinbase.com — Lattice does not invent a salary.</p>
+      <p className="mt-6 text-sm leading-relaxed text-mute">
+        Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Lattice does not invent a salary. Aave and Chainlink are not on the board — they have no public ATS JSON we can fetch.
+      </p>
     </main>
   );
 }

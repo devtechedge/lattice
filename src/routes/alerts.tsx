@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createAlert, listMyAlerts } from "@/lib/server/actions";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
-import { ROLES } from "@/lib/catalog/data";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 
 export const Route = createFileRoute("/alerts")({ component: Page });
 
@@ -13,12 +13,14 @@ function Page() {
   const [cadence, setCadence] = useState("weekly");
   const [channel, setChannel] = useState("email");
   const [items, setItems] = useState<{ id: string; channel: string; cadence: string }[]>([]);
+  const { live } = useLiveRoles();
   useEffect(() => {
     if (!user) return;
     listMyAlerts().then(setItems).catch(() => {});
   }, [user]);
 
-  const rss = `<?xml version="1.0"?><rss version="2.0"><channel><title>Lattice roles</title>${ROLES.slice(0, 20).map((r) => `<item><title>${escapeXml(r.title)}</title><link>/roles/${r.slug}</link></item>`).join("")}</channel></rss>`;
+  const amp = String.fromCharCode(38);
+  const rss = `<?xml version="1.0"?><rss version="2.0"><channel><title>Lattice roles</title>${live.slice(0, 20).map((r) => `<item><title>${escapeXml(r.title, amp)}</title><link>/roles/${r.slug}</link></item>`).join("")}</channel></rss>`;
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
@@ -58,6 +60,6 @@ function Page() {
   );
 }
 
-function escapeXml(s: string) {
-  return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+function escapeXml(s: string, amp: string) {
+  return s.replace(/&/g, amp + "amp;").replace(/</g, amp + "lt;").replace(/>/g, amp + "gt;");
 }

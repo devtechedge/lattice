@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { RolesBoard } from "@/components/jobs/board";
 import { JobCard } from "@/components/jobs/job-card";
-import { COMPANIES, GIGS, ROLES, TALENT } from "@/lib/catalog/data";
+import { COMPANIES, GIGS, TALENT } from "@/lib/catalog/data";
 import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { CompanyMark } from "@/components/company-mark";
 import { timeAgo } from "@/lib/utils";
-import { listCoinbaseRoles } from "@/lib/server/coinbase";
-import type { Role } from "@/lib/catalog/types";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
@@ -16,26 +14,20 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const search = parseRoleSearch(Route.useSearch());
-  const [live, setLive] = useState<Role[]>([]);
-  useEffect(() => {
-    listCoinbaseRoles()
-      .then(setLive)
-      .catch(() => setLive([]));
-  }, []);
-
-  const featured = ROLES.find((r) => r.featured) ?? ROLES[0];
-  const week = ROLES.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).slice(0, 8);
-  const coinbase = COMPANIES.find((c) => c.id === "coinbase");
-  const hiring = [
-    ...(live.length && coinbase ? [coinbase] : []),
-    ...COMPANIES.filter((c) => c.id !== "coinbase" && ROLES.some((r) => r.companyId === c.id)),
-  ].slice(0, 14);
+  const { live, ready } = useLiveRoles();
+  const featured = live[0];
+  const week = live.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).slice(0, 8);
+  const hiringIds = new Set(live.map((r) => r.companyId));
+  const hiring = COMPANIES.filter((c) => hiringIds.has(c.id)).slice(0, 20);
   const publicTalent = TALENT.filter((t) => t.privacy === "public").length;
-  const latest = live.length ? [live[0], ...ROLES.slice(0, 2)] : ROLES.slice(0, 3);
+  const latest = live.slice(0, 3);
   const featuredCompany = COMPANIES.find((c) => c.id === featured?.companyId);
-  const eng = live.filter((r) => r.department === "engineering");
-  const rest = live.filter((r) => r.department !== "engineering");
-  const livePreview = [...eng.slice(0, 3), ...rest.slice(0, 3)];
+  const seen = new Set<string>();
+  const livePreview = live.filter((r) => {
+    if (seen.has(r.companyId)) return false;
+    seen.add(r.companyId);
+    return true;
+  }).slice(0, 6);
 
   return (
     <div>
@@ -45,7 +37,7 @@ function Home() {
             <p className="text-xs uppercase tracking-[0.18em] text-mute">Web3 · crypto · blockchain</p>
             <h1 className="mt-3 font-serif text-4xl leading-[1.1] tracking-tight md:text-5xl">One lattice. Every Web3 career.</h1>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-mute">
-              Roles, gigs, talent, and salaries for crypto, blockchain, NFTs, and the metaverse — without five tabs and a paywall.
+              Live roles from twenty crypto teams, pulled from their public boards. Apply on the employer’s site. Lattice does not invent pay.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link to="/roles" className="inline-flex h-10 items-center rounded-sm bg-signal px-4 text-sm font-medium text-signal-fg">
@@ -62,7 +54,7 @@ function Home() {
           <div className="rounded-md border border-line bg-raised p-4">
             <p className="font-mono text-xs uppercase tracking-wider text-mute">Open now</p>
             <div className="mt-3 grid grid-cols-2 gap-3 font-mono tabular-nums">
-              <Stat n={ROLES.length + live.length} label="roles" to="/roles" />
+              <Stat n={ready ? live.length : undefined} label="roles" to="/roles" />
               <Stat n={COMPANIES.length} label="teams" to="/companies" />
               <Stat n={GIGS.length} label="gigs" to="/gigs" />
               <Stat n={publicTalent} label="talent" to="/talent" />
@@ -84,7 +76,7 @@ function Home() {
       {featured && (
         <section className="border-b border-line">
           <div className="mx-auto max-w-7xl px-4 py-8">
-            <p className="text-xs uppercase tracking-wider text-gold">Featured</p>
+            <p className="text-xs uppercase tracking-wider text-gold">Latest</p>
             <div className="mt-3">
               <JobCard role={featured} company={featuredCompany} />
             </div>
@@ -93,22 +85,22 @@ function Home() {
       )}
 
       {livePreview.length > 0 && (
-        <section className="border-b border-line" data-testid="coinbase-live">
+        <section className="border-b border-line" data-testid="live-strip">
           <div className="mx-auto max-w-7xl px-4 py-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-wider text-cyan">Live from Coinbase</p>
+                <p className="text-xs uppercase tracking-wider text-cyan">Live listings</p>
                 <p className="mt-1 max-w-xl text-sm text-mute">
-                  {live.length} open roles from Coinbase’s public board. Apply on coinbase.com — Lattice does not invent a band.
+                  {live.length} open roles from {hiring.length} public boards. Apply on the employer’s site — Lattice does not invent a band.
                 </p>
               </div>
-              <Link to="/companies/$slug" params={{ slug: "coinbase" }} className="text-sm text-signal hover:underline">
-                All {live.length} · Coinbase
+              <Link to="/roles" className="text-sm text-signal hover:underline">
+                All {live.length} roles
               </Link>
             </div>
             <div className="mt-3 grid gap-2">
               {livePreview.map((r) => (
-                <JobCard key={r.id} role={r} company={coinbase} />
+                <JobCard key={r.id} role={r} company={COMPANIES.find((c) => c.id === r.companyId)} />
               ))}
             </div>
           </div>
@@ -133,6 +125,7 @@ function Home() {
                 </li>
               );
             })}
+            {week.length === 0 && <li className="text-sm text-mute">Fetching live boards…</li>}
           </ul>
         </div>
       </section>
@@ -165,10 +158,10 @@ function Home() {
   );
 }
 
-function Stat({ n, label, to }: { n: number; label: string; to: "/roles" | "/companies" | "/gigs" | "/talent" }) {
+function Stat({ n, label, to }: { n: number | undefined; label: string; to: "/roles" | "/companies" | "/gigs" | "/talent" }) {
   return (
     <Link to={to} className="rounded-sm border border-line px-3 py-2 hover:border-line-strong">
-      <p className="text-2xl text-fg">{n}</p>
+      <p className="text-2xl text-fg">{n == null ? "…" : n}</p>
       <p className="text-[11px] uppercase tracking-wider text-mute">{label}</p>
     </Link>
   );

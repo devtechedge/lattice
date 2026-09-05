@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { RedirectToSignIn } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { listBookmarks, listMyApplications, listMyAlerts, listMyContracts, advanceContract, type ApplicationRow, type ContractRow } from "@/lib/server/actions";
-import { ROLES } from "@/lib/catalog/data";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 import { Button } from "@/components/ui/button";
 
 const FLOW = ["funded", "in-progress", "delivered", "accepted", "released"] as const;
@@ -16,6 +16,7 @@ function Page() {
   const [apps, setApps] = useState<ApplicationRow[]>([]);
   const [contracts, setContracts] = useState<ContractRow[]>([]);
   const [alerts, setAlerts] = useState<{ id: string; channel: string; cadence: string }[]>([]);
+  const { live } = useLiveRoles();
 
   useEffect(() => {
     if (!user) return;
@@ -27,6 +28,9 @@ function Page() {
 
   if (isPending) return <main className="mx-auto max-w-3xl px-4 py-16"><div className="h-40 animate-pulse rounded-md bg-raised" /></main>;
   if (!user) return <RedirectToSignIn />;
+
+  const titleOf = (id: string) => live.find((r) => r.id === id)?.title ?? id;
+  const slugOf = (id: string) => live.find((r) => r.id === id)?.slug;
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -41,8 +45,8 @@ function Page() {
         <h2 className="text-sm font-medium">Saved roles</h2>
         <ul className="mt-2 space-y-1 text-sm">
           {saved.map((id) => {
-            const r = ROLES.find((x) => x.id === id);
-            return <li key={id}>{r ? <Link to="/roles/$slug" params={{ slug: r.slug }} className="hover:text-signal">{r.title}</Link> : id}</li>;
+            const slug = slugOf(id);
+            return <li key={id}>{slug ? <Link to="/roles/$slug" params={{ slug }} className="hover:text-signal">{titleOf(id)}</Link> : titleOf(id)}</li>;
           })}
           {saved.length === 0 && <li className="text-mute">None yet.</li>}
         </ul>
@@ -52,7 +56,7 @@ function Page() {
         <ul className="mt-2 space-y-2 text-sm">
           {apps.map((a) => (
             <li key={a.id} className="rounded-sm border border-line px-3 py-2">
-              {ROLES.find((r) => r.id === a.role_id)?.title ?? a.role_id} · {a.stage}
+              {titleOf(a.role_id)} · {a.stage}
             </li>
           ))}
           {apps.length === 0 && <li className="text-mute">None yet.</li>}

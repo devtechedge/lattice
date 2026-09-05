@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RolesBoard } from "@/components/jobs/board";
 import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
-import { ROLES } from "@/lib/catalog/data";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 import { timeAgo } from "@/lib/utils";
 
 export const Route = createFileRoute("/roles/")({
@@ -11,12 +11,15 @@ export const Route = createFileRoute("/roles/")({
 
 function RolesPage() {
   const search = parseRoleSearch(Route.useSearch());
-  const newest = ROLES[0];
+  const { live } = useLiveRoles();
+  const newest = live[0];
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <p className="text-xs uppercase tracking-wider text-mute">Updated {newest ? timeAgo(newest.publishedAt) : "just now"} ago</p>
       <h1 className="mt-1 font-serif text-3xl tracking-tight">Roles</h1>
-      <p className="mt-2 text-sm text-mute">Filter by chain, role, remote region, token split, and seniority. Includes live listings from Coinbase’s public board. The URL is the filter.</p>
+      <p className="mt-2 text-sm text-mute">
+        Filter by chain, role, remote region, and seniority. Live listings from twenty crypto teams — apply on the employer’s site. The URL is the filter.
+      </p>
       <div className="mt-8">
         <RolesBoard initial={search} hideHero syncUrl />
       </div>

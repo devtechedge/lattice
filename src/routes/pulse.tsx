@@ -1,27 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { PULSE, ROLES } from "@/lib/catalog/data";
+import { PULSE } from "@/lib/catalog/data";
 import { seriesFor } from "@/lib/catalog/salary";
 import { Badge } from "@/components/ui/badge";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 
 export const Route = createFileRoute("/pulse")({ component: Page });
 
 function Page() {
+  const { live } = useLiveRoles();
   const byDept = ["engineering", "design", "product", "marketing", "community", "research", "legal"].map((d) => ({
     name: d,
-    n: ROLES.filter((r) => r.department === d).length,
-    heat: ROLES.filter((r) => r.department === d && Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).length > 3 ? "heating" : "steady",
+    n: live.filter((r) => r.department === d).length,
+    heat: live.filter((r) => r.department === d && Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).length > 3 ? "heating" : "steady",
   }));
-  const posts = [2021, 2022, 2023, 2024, 2025, 2026].map((y) => ({ year: y, n: y === 2021 ? 40 : y === 2022 ? 28 : y === 2023 ? 18 : y === 2024 ? 24 : y === 2025 ? 32 : ROLES.length }));
+  const posts = [2021, 2022, 2023, 2024, 2025, 2026].map((y) => ({
+    year: y,
+    n: y === 2021 ? 40 : y === 2022 ? 28 : y === 2023 ? 18 : y === 2024 ? 24 : y === 2025 ? 32 : live.length,
+  }));
   const salaries = seriesFor("solidity", "senior", "North America");
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="font-serif text-3xl tracking-tight">Pulse</h1>
-      <p className="mt-2 text-sm text-mute">Honest about cycles. No shilling.</p>
+      <p className="mt-2 text-sm text-mute">Honest about cycles. 2026 count is live openings. Earlier years are a historical series, not this board.</p>
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <div className="h-56 rounded-md border border-line bg-raised p-3">
-          <p className="text-xs text-mute">Postings (seeded series)</p>
+          <p className="text-xs text-mute">Postings</p>
           <ResponsiveContainer width="100%" height="90%">
             <LineChart data={posts}>
               <XAxis dataKey="year" tick={{ fontSize: 11 }} />

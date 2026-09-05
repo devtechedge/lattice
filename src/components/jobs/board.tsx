@@ -4,11 +4,11 @@ import { LayoutGrid, Rows3 } from "lucide-react";
 import { JobCard } from "./job-card";
 import { JobTable } from "./job-table";
 import { ActiveChips, RoleFiltersBar } from "./filters";
-import { COMPANIES, ROLES } from "@/lib/catalog/data";
+import { COMPANIES } from "@/lib/catalog/data";
 import { applyRoleFilters, toSearch } from "@/lib/catalog/filter-roles";
 import type { Role, RoleFilters, Company } from "@/lib/catalog/types";
 import { listBookmarks, listPostedRoles, toggleBookmark } from "@/lib/server/actions";
-import { listCoinbaseRoles } from "@/lib/server/coinbase";
+import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -67,7 +67,7 @@ export function RolesBoard({
 }) {
   const [filters, setFilters] = useState<RoleFilters>(initial);
   const [posted, setPosted] = useState<Role[]>([]);
-  const [live, setLive] = useState<Role[]>([]);
+  const { live, ready } = useLiveRoles();
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [limit, setLimit] = useState(40);
   const user = useCurrentUser();
@@ -83,9 +83,6 @@ export function RolesBoard({
     listPostedRoles()
       .then((rows) => setPosted(parsePosted(rows)))
       .catch(() => setPosted([]));
-    listCoinbaseRoles()
-      .then(setLive)
-      .catch(() => setLive([]));
   }, []);
 
   useEffect(() => {
@@ -103,7 +100,7 @@ export function RolesBoard({
     }
   };
 
-  const all = useMemo(() => [...posted, ...live, ...ROLES], [posted, live]);
+  const all = useMemo(() => [...posted, ...live], [posted, live]);
   const results = useMemo(() => applyRoleFilters(all, filters), [all, filters]);
   const shown = results.slice(0, limit);
 
@@ -151,15 +148,15 @@ export function RolesBoard({
     }
   });
 
-  const suggestions = ROLES.filter((r) => r.featured || r.remoteRegion === "eu").slice(0, 3);
+  const suggestions = live.slice(0, 3);
 
   return (
     <div className="space-y-5">
       <div className="flex items-end justify-between gap-3">
         <p className="text-sm text-mute" data-testid="roles-count">
-          <span className="font-mono tabular-nums text-fg">{results.length}</span> open roles
+          <span className="font-mono tabular-nums text-fg">{ready ? results.length : "…"}</span> open roles
           {posted.length ? ` · ${posted.length} posted this session` : ""}
-          {live.length ? ` · ${live.length} live from Coinbase` : ""}
+          {live.length ? ` · ${live.length} live listings` : ready ? "" : " · fetching boards"}
         </p>
         {!hideHero && (
           <div className="flex rounded-sm border border-line">
@@ -209,7 +206,9 @@ export function RolesBoard({
         }
       />
       <ActiveChips value={filters} onChange={push} />
-      {results.length === 0 ? (
+      {!ready && results.length === 0 ? (
+        <div className="h-40 animate-pulse rounded-md bg-raised" data-testid="roles-loading" />
+      ) : results.length === 0 ? (
         <div className="rounded-md border border-line bg-raised p-8">
           <p className="font-medium">No open roles match these filters. Loosen a chip, or post one.</p>
           <div className="mt-4 flex flex-wrap gap-2">

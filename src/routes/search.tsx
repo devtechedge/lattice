@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { COMPANIES, GIGS, LEARN, ROLES, TALENT } from "@/lib/catalog/data";
-import { listCoinbaseRoles } from "@/lib/server/coinbase";
+import { COMPANIES, GIGS, LEARN, TALENT } from "@/lib/catalog/data";
+import { listLiveRoles } from "@/lib/server/live";
 import type { Role } from "@/lib/catalog/types";
+
+const names = new Map(COMPANIES.map((c) => [c.id, c.name]));
 
 export const Route = createFileRoute("/search")({
   validateSearch: (s: Record<string, unknown>) => ({ q: typeof s.q === "string" ? s.q : "" }),
@@ -13,13 +15,14 @@ function Page() {
   const { q } = Route.useSearch();
   const [live, setLive] = useState<Role[]>([]);
   useEffect(() => {
-    listCoinbaseRoles()
+    listLiveRoles()
       .then(setLive)
       .catch(() => setLive([]));
   }, []);
   const needle = q.toLowerCase();
-  const pool = [...live, ...ROLES];
-  const roles = needle ? pool.filter((r) => `${r.title} ${r.tags.join(" ")}`.toLowerCase().includes(needle)).slice(0, 12) : [];
+  const roles = needle
+    ? live.filter((r) => `${r.title} ${names.get(r.companyId) ?? ""} ${r.tags.join(" ")}`.toLowerCase().includes(needle)).slice(0, 12)
+    : [];
   const companies = needle ? COMPANIES.filter((c) => c.name.toLowerCase().includes(needle)).slice(0, 6) : [];
   const talent = needle ? TALENT.filter((t) => t.privacy === "public" && t.displayName.toLowerCase().includes(needle)).slice(0, 6) : [];
   const gigs = needle ? GIGS.filter((g) => g.title.toLowerCase().includes(needle)).slice(0, 6) : [];
@@ -31,7 +34,13 @@ function Page() {
         <input name="q" defaultValue={q} placeholder="Roles, companies, talent, gigs, learn" className="h-10 w-full rounded-sm border border-line bg-raised px-3 text-sm" />
       </form>
       {!needle && <p className="mt-6 text-sm text-mute">Type a query. Or press ⌘K.</p>}
-      <Section title="Roles" items={roles.map((r) => ({ to: `/roles/${r.slug}`, label: r.source === "ats" ? `${r.title} · Coinbase` : r.title }))} />
+      <Section
+        title="Roles"
+        items={roles.map((r) => ({
+          to: `/roles/${r.slug}`,
+          label: names.get(r.companyId) ? `${r.title} · ${names.get(r.companyId)}` : r.title,
+        }))}
+      />
       <Section title="Companies" items={companies.map((c) => ({ to: `/companies/${c.slug}`, label: c.name }))} />
       <Section title="Talent" items={talent.map((t) => ({ to: `/talent/${t.slug}`, label: t.displayName }))} />
       <Section title="Gigs" items={gigs.map((g) => ({ to: `/gigs/${g.slug}`, label: g.title }))} />

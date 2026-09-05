@@ -43,7 +43,7 @@ export function JobCard({
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               {role.featured && <p className="text-[11px] font-medium text-gold">Featured</p>}
-              {role.source === "ats" && <p className="text-[11px] uppercase tracking-wider text-cyan">Live · Coinbase</p>}
+              {role.source === "ats" && <p className="text-[11px] uppercase tracking-wider text-cyan">Live · {company?.name ?? "ATS"}</p>}
               <Link to="/roles/$slug" params={{ slug: role.slug }} className="block truncate font-medium hover:text-signal">
                 {role.title}
               </Link>
