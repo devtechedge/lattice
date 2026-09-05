@@ -28,6 +28,10 @@ This is the **only** public repo for the product.
 
 **[Jobrow](https://jobrow.vercel.app)** indexes still-open **US tech** roles from public ATS boards. Lattice stays on **blockchain / crypto / Web3**. Source: [devtechedge/job-board](https://github.com/devtechedge/job-board).
 
+### Fresh openings
+
+**[Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring)** — live roundup of crypto/Web3 employers that posted in the last seven days. Also: [job hubs](https://lattice-devtechedge1.vercel.app/jobs) (Solidity, DeFi, Ethereum, remote) and the [salary observatory](https://lattice-devtechedge1.vercel.app/salaries).
+
 ---
 
 ## Screenshots
@@ -51,6 +55,7 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 ## Features
 
 - Editorial homepage: latest live role, twenty-team strip, new-this-week, companies hiring, manifesto
+- [Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring) — shareable 7-day roundup from live ATS crawls
 - Roles index with table and card views, persisted locally
 - Live openings from twenty first-party ATS boards (Greenhouse, Lever, Ashby). Apply on the employer’s site; pay is posted or inferred (`~`), never invented
 - Filters for chain, scene, department, seniority, remote region, benefits, pay-in-crypto
