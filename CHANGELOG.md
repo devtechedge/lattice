@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 — 2026-09-06
+
+- Linkable content: `/hiring` companies-hiring-this-week roundup (SSR live crawl, crawlable copy), stronger salaries/learn/pulse SEO, footer + sitemap + llms discovery.
+
+
 ## 1.4.0 — 2026-09-06
 
 - SEO job hubs: `/jobs` index plus `/jobs/solidity`, `/jobs/defi`, `/jobs/ethereum`, `/jobs/remote-web3` with crawlable copy, live filtered boards, sitemap + footer + llms links.

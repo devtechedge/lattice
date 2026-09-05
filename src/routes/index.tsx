@@ -137,7 +137,12 @@ function Home() {
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-7xl px-4 py-8">
-          <p className="text-xs uppercase tracking-wider text-mute">New this week</p>
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="text-xs uppercase tracking-wider text-mute">New this week</p>
+            <Link to="/hiring" className="text-xs text-signal underline underline-offset-4">
+              Full hiring roundup
+            </Link>
+          </div>
           <ul className="mt-3 grid gap-2 md:grid-cols-2">
             {week.map((r) => {
               const c = COMPANIES.find((x) => x.id === r.companyId);

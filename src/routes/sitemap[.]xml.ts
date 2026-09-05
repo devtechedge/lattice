@@ -30,6 +30,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/terms",
           "/search",
           "/pulse",
+          "/hiring",
           "/jobs",
           ...SEO_HUBS.map((h) => `/jobs/${h.slug}`),
           ...COMPANIES.map((c) => `/companies/${c.slug}`),

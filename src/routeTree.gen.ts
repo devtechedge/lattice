@@ -15,6 +15,7 @@ import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PulseRouteImport } from './routes/pulse'
+import { Route as HiringRouteImport } from './routes/hiring'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StudioRouteImport } from './routes/studio'
@@ -77,6 +78,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PulseRoute = PulseRouteImport.update({
   id: '/pulse',
   path: '/pulse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HiringRoute = HiringRouteImport.update({
+  id: '/hiring',
+  path: '/hiring',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -252,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
+  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
+  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -335,6 +343,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
+  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -378,6 +387,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/pulse'
+    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -419,6 +429,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/pulse'
+    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -460,6 +471,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/pulse'
+    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -502,6 +514,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   PulseRoute: typeof PulseRoute
+  HiringRoute: typeof HiringRoute
   SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudioRoute: typeof StudioRoute
@@ -579,6 +592,13 @@ declare module '@tanstack/react-router' {
       path: '/pulse'
       fullPath: '/pulse'
       preLoaderRoute: typeof PulseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hiring': {
+      id: '/hiring'
+      path: '/hiring'
+      fullPath: '/hiring'
+      preLoaderRoute: typeof HiringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -822,6 +842,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   PulseRoute: PulseRoute,
+  HiringRoute: HiringRoute,
   SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudioRoute: StudioRoute,

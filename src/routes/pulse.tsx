@@ -4,8 +4,18 @@ import { PULSE } from "@/lib/catalog/data";
 import { seriesFor } from "@/lib/catalog/salary";
 import { Badge } from "@/components/ui/badge";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/pulse")({ component: Page });
+export const Route = createFileRoute("/pulse")({
+  head: () =>
+    pageHead({
+      title: "Web3 Hiring Pulse — Market Notes | Lattice",
+      path: "/pulse",
+      description:
+        "Market pulse for crypto and Web3 hiring: live department heat, posting cycles, and short notes. Honest about boom and bust.",
+    }),
+  component: Page,
+});
 
 function Page() {
   const { live } = useLiveRoles();
