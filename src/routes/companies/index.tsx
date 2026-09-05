@@ -5,8 +5,17 @@ import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
 import { COMPANY_TYPES, SCENES } from "@/lib/catalog/types";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/companies/")({ component: Page });
+export const Route = createFileRoute("/companies/")({
+  head: () =>
+    pageHead({
+      title: "Companies — Lattice",
+      path: "/companies",
+      description: "Twenty crypto teams hiring from public Greenhouse, Ashby, and Lever boards.",
+    }),
+  component: Page,
+});
 
 function Page() {
   const [q, setQ] = useState("");

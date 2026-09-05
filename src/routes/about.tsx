@@ -1,6 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/about")({ component: Page });
+export const Route = createFileRoute("/about")({
+  head: () =>
+    pageHead({
+      title: "About — Lattice",
+      path: "/about",
+      description: "Public listings. Not an employer. Live Web3 roles from first-party ATS boards.",
+    }),
+  component: Page,
+});
 
 function Page() {
   return (
@@ -17,7 +26,7 @@ function Page() {
       </ul>
       <p className="mt-8 text-sm leading-relaxed text-mute">We did not take listing auctions, paid boosts, or resume paywalls. Everything here is the free tier. Featured roles are editorial, not checkout.</p>
       <p className="mt-6 text-sm leading-relaxed text-mute">
-        Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Lattice does not invent a salary. Aave and Chainlink are not on the board — they have no public ATS JSON we can fetch.
+        Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Pay is only shown when the board publishes it — inferred bands are marked ~. Public listings. Not an employer. Aave and Chainlink are not on the board — they have no public ATS JSON we can fetch.
       </p>
     </main>
   );

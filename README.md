@@ -20,7 +20,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 
 **https://lattice-beta-livid.vercel.app**
 
-> **Status:** Production is a **live job board**. Roles come from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards (Coinbase, Binance, OKX, Bybit, Ripple, Kraken, Fireblocks, Crypto.com, Chainalysis, Blockchain.com, BitGo, Gemini, Alchemy, Phantom, Circle, Uniswap Labs, Ledger, Consensys, Ethereum Foundation, Solana Labs). Apply on the employer’s site. Lattice does not invent pay — ATS compensation is “Not disclosed” unless the board publishes it. Talent, gigs, and learn remain a small editorial catalog. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Not an offering. No wallet connect.
+> **Status:** Production is a **live job board**. Roles come from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards (Coinbase, Binance, OKX, Bybit, Ripple, Kraken, Fireblocks, Crypto.com, Chainalysis, Blockchain.com, BitGo, Gemini, Alchemy, Phantom, Circle, Uniswap Labs, Ledger, Consensys, Ethereum Foundation, Solana Labs). Apply on the employer’s site. **Pay is only shown when the board publishes it** (posted metadata or inferred from the posting, marked `~`). Lattice does not invent a band. Talent, gigs, and learn remain a small editorial catalog. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Public listings. Not an employer. Not an offering. No wallet connect.
 
 This is the **only** public repo for the product.
 
@@ -48,7 +48,7 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 
 - Editorial homepage: latest live role, twenty-team strip, new-this-week, companies hiring, manifesto
 - Roles index with table and card views, persisted locally
-- Live openings from twenty first-party ATS boards (Greenhouse, Lever, Ashby). Apply on the employer’s site; no invented pay
+- Live openings from twenty first-party ATS boards (Greenhouse, Lever, Ashby). Apply on the employer’s site; pay is posted or inferred (`~`), never invented
 - Filters for chain, scene, department, seniority, remote region, benefits, pay-in-crypto
 - Compensation as cash + token + equity, with vesting and cliff on the card
 - Gigs marketplace and simulated digital contracts

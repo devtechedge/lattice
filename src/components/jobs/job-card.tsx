@@ -5,16 +5,27 @@ import { Badge } from "@/components/ui/badge";
 import type { Company, Role } from "@/lib/catalog/types";
 import { REMOTE_LABEL } from "@/lib/catalog/types";
 import { estimateSalary } from "@/lib/catalog/salary";
+import { formatPay } from "@/lib/catalog/salary-ats";
 import { formatCompactUsd, timeAgo } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-export function salaryLabel(role: Role) {
-  if (role.salaryMin && role.salaryMax) {
-    return `${formatCompactUsd(role.salaryMin)} – ${formatCompactUsd(role.salaryMax)}`;
+export function salaryLabel(role: Role): { text: string; inferred?: boolean; estimate?: boolean } {
+  if (role.source === "ats") {
+    return {
+      text: formatPay(
+        role.salaryMin != null ? Math.round(role.salaryMin * 100) : null,
+        role.salaryMax != null ? Math.round(role.salaryMax * 100) : null,
+        role.salaryCurrency,
+        role.salarySource ?? "none",
+      ),
+      inferred: role.salarySource === "inferred",
+    };
   }
-  if (role.source === "ats") return "Not disclosed";
+  if (role.salaryMin && role.salaryMax) {
+    return { text: `${formatCompactUsd(role.salaryMin)} – ${formatCompactUsd(role.salaryMax)}` };
+  }
   const est = estimateSalary({ department: role.department, seniority: role.seniority, remoteRegion: role.remoteRegion });
-  return { estimate: `${formatCompactUsd(est.min)} – ${formatCompactUsd(est.max)}` };
+  return { text: `${formatCompactUsd(est.min)} – ${formatCompactUsd(est.max)}`, estimate: true };
 }
 
 export function JobCard({
@@ -59,13 +70,21 @@ export function JobCard({
             </button>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
-            {typeof sal === "string" ? (
-              <span className="font-mono text-sm tabular-nums">{sal}</span>
-            ) : (
-              <span className="font-mono text-sm tabular-nums text-mute underline decoration-dashed decoration-mute/50 underline-offset-4" title="Estimated from Lattice’s observatory for this role, seniority, and region. Not an offer.">
-                {sal.estimate}
-              </span>
-            )}
+            <span
+              className={cn(
+                "font-mono text-sm tabular-nums",
+                (sal.inferred || sal.estimate) && "text-mute underline decoration-dashed decoration-mute/50 underline-offset-4",
+              )}
+              title={
+                sal.inferred
+                  ? "Inferred from posting text. Not an offer."
+                  : sal.estimate
+                    ? "Estimated from Lattice’s observatory for this role, seniority, and region. Not an offer."
+                    : undefined
+              }
+            >
+              {sal.text}
+            </span>
             <Badge>{role.locations[0] ?? (role.locationMode === "remote" && role.remoteRegion ? REMOTE_LABEL[role.remoteRegion] : role.locationMode)}</Badge>
             <Badge>{role.type}</Badge>
             <Badge tone="cyan">{role.scenes[0]}</Badge>

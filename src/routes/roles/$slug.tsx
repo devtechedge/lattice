@@ -9,15 +9,23 @@ import { Markdown } from "@/lib/markdown";
 import { COMPANIES, companyById } from "@/lib/catalog/data";
 import { BENEFIT_LABEL, REMOTE_LABEL } from "@/lib/catalog/types";
 import { formatUsd, timeAgo } from "@/lib/utils";
+import { formatPay } from "@/lib/catalog/salary-ats";
 import { listBookmarks, listPostedRoles, toggleBookmark } from "@/lib/server/actions";
 import { getLiveRole, listLiveRoles } from "@/lib/server/live";
 import { parseLiveSlug } from "@/lib/catalog/greenhouse";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
 import type { Role } from "@/lib/catalog/types";
+import { pageHead } from "@/lib/seo";
 
 const COMPANY_IDS = COMPANIES.map((c) => c.id);
 
 export const Route = createFileRoute("/roles/$slug")({
+  head: () =>
+    pageHead({
+      title: "Role — Lattice",
+      path: "/roles",
+      description: "Live Web3 role from a public employer board. Apply on the employer’s site. Lattice does not invent pay.",
+    }),
   component: RolePage,
 });
 
@@ -121,7 +129,25 @@ function RolePage() {
             <tbody>
               <tr className="border-b border-line">
                 <td className="px-3 py-2 text-mute">Cash</td>
-                <td className="px-3 py-2 font-mono tabular-nums">{role.salaryMin && role.salaryMax ? `${formatUsd(role.salaryMin)} – ${formatUsd(role.salaryMax)} / ${role.salaryPeriod}` : "Not disclosed"}</td>
+                <td className="px-3 py-2 font-mono tabular-nums">
+                  {role.source === "ats" ? (
+                    <>
+                      {formatPay(
+                        role.salaryMin != null ? Math.round(role.salaryMin * 100) : null,
+                        role.salaryMax != null ? Math.round(role.salaryMax * 100) : null,
+                        role.salaryCurrency,
+                        role.salarySource ?? "none",
+                      )}
+                      {role.salarySource === "inferred" && (
+                        <span className="mt-1 block text-xs font-sans text-mute">Inferred from posting text. Not an offer.</span>
+                      )}
+                    </>
+                  ) : role.salaryMin && role.salaryMax ? (
+                    `${formatUsd(role.salaryMin)} – ${formatUsd(role.salaryMax)} / ${role.salaryPeriod}`
+                  ) : (
+                    "—"
+                  )}
+                </td>
               </tr>
               <tr className="border-b border-line">
                 <td className="px-3 py-2 text-mute">Token</td>

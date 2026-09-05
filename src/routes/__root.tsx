@@ -6,6 +6,7 @@ import { Shell } from "@/components/shell";
 import { ThemeProvider } from "@/components/theme";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
+import { DEFAULT_DESCRIPTION } from "@/lib/seo";
 
 const APP_NAME = "Lattice";
 
@@ -24,7 +25,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "description", content: "One lattice. Every Web3 career. Roles, gigs, talent, and salaries — without five tabs and a paywall." },
+      { name: "description", content: DEFAULT_DESCRIPTION },
       { name: "theme-color", content: "#07080B" },
     ],
     links: [

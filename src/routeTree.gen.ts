@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StudioRouteImport } from './routes/studio'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApplyJobSlugRouteImport } from './routes/apply/$jobSlug'
@@ -79,6 +80,11 @@ const PulseRoute = PulseRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StudioRoute = StudioRouteImport.update({
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/apply/$jobSlug': typeof ApplyJobSlugRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/apply/$jobSlug': typeof ApplyJobSlugRoute
@@ -312,6 +320,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/apply/$jobSlug': typeof ApplyJobSlugRoute
@@ -352,6 +361,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/pulse'
     | '/search'
+    | '/sitemap.xml'
     | '/studio'
     | '/terms'
     | '/apply/$jobSlug'
@@ -390,6 +400,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/pulse'
     | '/search'
+    | '/sitemap.xml'
     | '/studio'
     | '/terms'
     | '/apply/$jobSlug'
@@ -428,6 +439,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/pulse'
     | '/search'
+    | '/sitemap.xml'
     | '/studio'
     | '/terms'
     | '/apply/$jobSlug'
@@ -467,6 +479,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   PulseRoute: typeof PulseRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudioRoute: typeof StudioRoute
   TermsRoute: typeof TermsRoute
   ApplyJobSlugRoute: typeof ApplyJobSlugRoute
@@ -547,6 +560,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/studio': {
@@ -763,6 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   PulseRoute: PulseRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudioRoute: StudioRoute,
   TermsRoute: TermsRoute,
   ApplyJobSlugRoute: ApplyJobSlugRoute,

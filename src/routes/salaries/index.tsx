@@ -9,8 +9,17 @@ import { Input, Label } from "@/components/ui/input";
 import { formatUsd } from "@/lib/utils";
 import { submitSalary } from "@/lib/server/actions";
 import { toast } from "sonner";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/salaries/")({ component: Page });
+export const Route = createFileRoute("/salaries/")({
+  head: () =>
+    pageHead({
+      title: "Salaries — Lattice",
+      path: "/salaries",
+      description: "Web3 salary observatory by role, seniority, and region. Aggregate market bands — not an offer.",
+    }),
+  component: Page,
+});
 
 function Page() {
   const [role, setRole] = useState<RoleKey>("solidity");

@@ -1,0 +1,21 @@
+# Lattice
+
+> Web3 roles, gigs, talent, and salaries from public employer ATS boards. Not a marketplace and not an employer.
+
+Lattice lists still-open roles pulled from Greenhouse, Ashby, and Lever JSON. Apply on the employer site. Pay is only shown when the board publishes it.
+
+## Site
+
+- Home: https://lattice-beta-livid.vercel.app/
+- Roles: https://lattice-beta-livid.vercel.app/roles
+- Companies: https://lattice-beta-livid.vercel.app/companies
+- Gigs: https://lattice-beta-livid.vercel.app/gigs
+- Talent: https://lattice-beta-livid.vercel.app/talent
+- Salaries: https://lattice-beta-livid.vercel.app/salaries
+- Learn: https://lattice-beta-livid.vercel.app/learn
+- About: https://lattice-beta-livid.vercel.app/about
+
+## Optional
+
+- Sitemap: https://lattice-beta-livid.vercel.app/sitemap.xml
+- Source: https://github.com/devtechedge/lattice

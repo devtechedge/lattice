@@ -3,9 +3,16 @@ import { RolesBoard } from "@/components/jobs/board";
 import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 import { timeAgo } from "@/lib/utils";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/roles/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
+  head: () =>
+    pageHead({
+      title: "Roles — Lattice",
+      path: "/roles",
+      description: "Live Web3 roles from twenty crypto teams. Filter by chain, seniority, and region. Apply on the employer’s site.",
+    }),
   component: RolesPage,
 });
 

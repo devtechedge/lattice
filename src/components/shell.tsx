@@ -122,7 +122,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <span className="text-sm font-medium">Lattice</span>
             </div>
             <p className="mt-3 max-w-xs font-serif text-lg leading-snug text-mute">The decentralized future is people.</p>
-            <p className="mt-3 text-xs text-mute">Free tier. No auctions. No resume paywall.</p>
+            <p className="mt-3 text-xs text-mute">Public listings. Not an employer. Free tier — no auctions, no resume paywall.</p>
             <a href="https://github.com/devtechedge/lattice" className="mt-3 inline-block text-xs text-mute hover:text-fg">
               GitHub @devtechedge/lattice
             </a>

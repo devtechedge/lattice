@@ -5,6 +5,7 @@ import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
 import { CHAINS, REMOTE_REGIONS, REMOTE_LABEL, SENIORITIES } from "@/lib/catalog/types";
 import { listPublicProfiles } from "@/lib/server/actions";
+import { pageHead } from "@/lib/seo";
 
 type Card = {
   id: string;
@@ -26,7 +27,15 @@ function hue(seed: string): number {
   return h;
 }
 
-export const Route = createFileRoute("/talent/")({ component: Page });
+export const Route = createFileRoute("/talent/")({
+  head: () =>
+    pageHead({
+      title: "Talent — Lattice",
+      path: "/talent",
+      description: "Public Web3 talent. Get discovered without a resume paywall.",
+    }),
+  component: Page,
+});
 
 function Page() {
   const [q, setQ] = useState("");

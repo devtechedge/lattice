@@ -3,8 +3,17 @@ import { useMemo, useState } from "react";
 import { GIGS, GIG_CATEGORIES, TALENT } from "@/lib/catalog/data";
 import { Badge } from "@/components/ui/badge";
 import { formatUsd } from "@/lib/utils";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/gigs/")({ component: GigsPage });
+export const Route = createFileRoute("/gigs/")({
+  head: () =>
+    pageHead({
+      title: "Gigs — Lattice",
+      path: "/gigs",
+      description: "Packaged Web3 gigs from Lattice talent. Demo contracts — not on-chain escrow.",
+    }),
+  component: GigsPage,
+});
 
 function GigsPage() {
   const [cat, setCat] = useState<string | "all">("all");

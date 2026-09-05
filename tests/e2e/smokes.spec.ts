@@ -44,3 +44,14 @@ test("coinbase company page lists live roles", async ({ page }) => {
   await expect(page.getByTestId("job-card").first()).toBeVisible({ timeout: 25_000 });
 });
 
+test("sitemap and llms.txt are public", async ({ request }) => {
+  const sm = await request.get("/sitemap.xml");
+  expect(sm.ok()).toBeTruthy();
+  const xml = await sm.text();
+  expect(xml).toContain("lattice-beta-livid.vercel.app");
+  expect(xml).toContain("/companies/coinbase");
+  const ll = await request.get("/llms.txt");
+  expect(ll.ok()).toBeTruthy();
+  expect(await ll.text()).toMatch(/Lattice/i);
+});
+

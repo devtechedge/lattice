@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Bookmark } from "lucide-react";
 import type { Company, Role } from "@/lib/catalog/types";
 import { REMOTE_LABEL } from "@/lib/catalog/types";
-import { formatCompactUsd, timeAgo } from "@/lib/utils";
+import { timeAgo } from "@/lib/utils";
 import { salaryLabel } from "./job-card";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,14 @@ export function JobTable({
                   </Link>
                 </td>
                 <td className="px-3 py-2.5 text-mute">{c?.name ?? "—"}</td>
-                <td className="px-3 py-2.5 font-mono tabular-nums">{typeof sal === "string" ? sal : <span className="text-mute underline decoration-dashed">{sal.estimate}</span>}</td>
+                <td className="px-3 py-2.5 font-mono tabular-nums">
+                  <span
+                    className={cn((sal.inferred || sal.estimate) && "text-mute underline decoration-dashed")}
+                    title={sal.inferred ? "Inferred from posting text. Not an offer." : undefined}
+                  >
+                    {sal.text}
+                  </span>
+                </td>
                 <td className="px-3 py-2.5 text-mute">{r.locations[0] ?? (r.locationMode === "remote" && r.remoteRegion ? REMOTE_LABEL[r.remoteRegion] : r.locationMode)}</td>
                 <td className="px-3 py-2.5 text-mute">{r.tags.slice(0, 3).join(", ")}</td>
                 <td className="px-3 py-2.5 font-mono text-xs text-mute">{timeAgo(r.publishedAt)}</td>

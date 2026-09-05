@@ -126,6 +126,38 @@ describe("mapGreenhouseJob", () => {
     assert.equal(parseLiveSlug(role.slug, COMPANY_IDS)?.jobId, "7684298");
     assert.ok(role.tags.includes("solana"));
   });
+
+  it("reads posted pay from metadata and infers from HTML", () => {
+    const posted = mapGreenhouseJob(
+      {
+        id: 1,
+        title: "Staff Engineer",
+        absolute_url: "https://www.coinbase.com/careers/positions/1",
+        location: { name: "Remote - USA" },
+        metadata: [
+          { name: "Pay Transparency Range", value: { min_value: 180000, max_value: 240000, unit: "USD" } },
+        ],
+      },
+      coinbase,
+    );
+    assert.equal(posted.salarySource, "posted");
+    assert.equal(posted.salaryMin, 180000);
+    assert.equal(posted.salaryMax, 240000);
+
+    const inferred = mapGreenhouseJob(
+      {
+        id: 2,
+        title: "Staff Engineer",
+        absolute_url: "https://www.coinbase.com/careers/positions/2",
+        location: { name: "Remote - USA" },
+        content: "<p>Estimated annual salary of $160,000 – $220,000.</p>",
+      },
+      coinbase,
+    );
+    assert.equal(inferred.salarySource, "inferred");
+    assert.equal(inferred.salaryMin, 160000);
+    assert.equal(inferred.salaryMax, 220000);
+  });
 });
 
 describe("mapLeverJob", () => {
@@ -172,5 +204,27 @@ describe("mapAshbyJob", () => {
     assert.equal(role.salaryMin, undefined);
     assert.equal(role.department, "engineering");
     assert.equal(role.locationMode, "remote");
+  });
+
+  it("reads Ashby compensation as posted pay", () => {
+    const role = mapAshbyJob(
+      {
+        id: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        title: "Software Engineer, Wallet",
+        jobUrl: "https://jobs.ashbyhq.com/phantom/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        department: "Engineering",
+        location: "Remote",
+        isRemote: true,
+        isListed: true,
+        compensation: {
+          summaryComponents: [{ compensationType: "Salary", currencyCode: "USD", minValue: 170000, maxValue: 210000 }],
+        },
+      },
+      phantom,
+    );
+    assert.ok(role);
+    assert.equal(role.salarySource, "posted");
+    assert.equal(role.salaryMin, 170000);
+    assert.equal(role.salaryMax, 210000);
   });
 });

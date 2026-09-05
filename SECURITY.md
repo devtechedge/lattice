@@ -47,7 +47,7 @@ Lattice is a free Web3 career board: live roles from twenty crypto teams’ publ
 - Public talent directory returns only profiles with `privacy === "public"`
 - Markdown links pass through `safeHref` (`http:` / `https:` / same-origin path). `javascript:`, `data:`, and protocol-relative URLs render as text
 - `applyUrl` on a posted role must be `https:`
-- Live ATS fetch is server-side only against `boards-api.greenhouse.io`, `api.lever.co`, and `api.ashbyhq.com`. Host allow-list, `redirect: error`, 7s abort, 10-minute in-memory cache. Apply URLs must be an ATS host or the company’s first-party careers host
+- Live ATS fetch is server-side only against `boards-api.greenhouse.io`, `api.lever.co`, and `api.ashbyhq.com`. Host allow-list, `redirect: error`, 12s abort, 10-minute in-memory cache. Greenhouse lists use `?content=true` (falls back without content). Ashby lists use `includeCompensation=true`. Apply URLs must be an ATS host or the company’s first-party careers host. ATS pay is only employer-published numbers.
 - Guest and authed listing payloads are size-capped (title, Markdown, arrays)
 - Application stage updates accept a fixed enum
 - Security headers (CSP, `nosniff`, `SAMEORIGIN`, COOP, Permissions-Policy, Referrer-Policy) via `vercel.json`

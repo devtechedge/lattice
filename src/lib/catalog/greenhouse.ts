@@ -1,6 +1,7 @@
 import { safeHttpsUrl } from "../sanitize.ts";
-import type { Benefit, Chain, Department, LocationMode, RemoteRegion, Role, RoleType, Scene, Seniority, Tag } from "./types";
+import type { Benefit, Chain, Currency, Department, LocationMode, RemoteRegion, Role, RoleType, Scene, Seniority, Tag } from "./types";
 import { ATS_APPLY_HOSTS, type LiveBoard } from "./boards.ts";
+import { centsToDollars, dollarsToCents, parseSalaryFromText, payFromMetaValue, type SalaryGuess } from "./salary-ats.ts";
 
 export type GreenhouseJob = {
   id: number | string;
@@ -11,7 +12,7 @@ export type GreenhouseJob = {
   content?: string;
   location?: { name?: string } | null;
   departments?: { name?: string }[] | null;
-  metadata?: { name?: string; value?: string | null }[] | null;
+  metadata?: { name?: string; value?: unknown }[] | null;
 };
 
 export type LeverJob = {
@@ -42,12 +43,52 @@ export type AshbyJob = {
   descriptionHtml?: string;
   descriptionPlain?: string;
   isListed?: boolean;
-  compensation?: { compensationTierSummary?: string; scrapeableCompensationSalarySummary?: string } | null;
+  compensation?: {
+    compensationTierSummary?: string;
+    scrapeableCompensationSalarySummary?: string;
+    summaryComponents?: Array<{
+      compensationType?: string;
+      currencyCode?: string;
+      minValue?: number | null;
+      maxValue?: number | null;
+    }>;
+  } | null;
 };
 
 export function metaValue(job: GreenhouseJob, name: string): string | undefined {
-  const hit = job.metadata?.find((m) => m.name === name && m.value);
-  return hit?.value ?? undefined;
+  const hit = job.metadata?.find((m) => m.name === name && m.value != null && m.value !== "");
+  if (hit?.value == null) return undefined;
+  return typeof hit.value === "string" ? hit.value : String(hit.value);
+}
+
+const PAY_META_RE = /salary|compensation|pay transparency|base pay|pay range|total base pay/i;
+
+export function payFromGhMetadata(job: GreenhouseJob): SalaryGuess {
+  let best: SalaryGuess = { minCents: null, maxCents: null, currency: "USD", source: "none" };
+  for (const row of job.metadata ?? []) {
+    const name = row?.name ?? "";
+    if (!PAY_META_RE.test(name)) continue;
+    const guessed = payFromMetaValue(row.value);
+    if (!guessed.minCents && !guessed.maxCents) continue;
+    if (guessed.minCents && guessed.maxCents) return { ...guessed, source: "posted" };
+    if (!best.minCents && !best.maxCents) best = { ...guessed, source: "posted" };
+  }
+  return best;
+}
+
+export function payFromAshbyComp(comp: AshbyJob["compensation"]): SalaryGuess {
+  const salary = (comp?.summaryComponents ?? []).find((row) => (row.compensationType ?? "").toLowerCase() === "salary");
+  const min = dollarsToCents(salary?.minValue ?? null);
+  const max = dollarsToCents(salary?.maxValue ?? null);
+  if (min || max) {
+    return { minCents: min, maxCents: max, currency: salary?.currencyCode ?? "USD", source: "posted" };
+  }
+  const summary = comp?.scrapeableCompensationSalarySummary || comp?.compensationTierSummary || "";
+  if (summary) {
+    const guessed = parseSalaryFromText(summary);
+    if (guessed.minCents || guessed.maxCents) return { ...guessed, source: "posted" };
+  }
+  return { minCents: null, maxCents: null, currency: "USD", source: "none" };
 }
 
 export function departmentOf(label: string, title = ""): Department {
@@ -237,6 +278,22 @@ function stubMd(board: LiveBoard, title: string, where?: string): string {
   return `## ${title}\n\nLive listing from ${board.name}${where ? ` · ${where}` : ""}. Application is on ${board.name} — Lattice does not collect a resume for this role.`;
 }
 
+function attachPay(role: Role, guess: SalaryGuess): Role {
+  if (guess.source === "none" || (!guess.minCents && !guess.maxCents)) {
+    return { ...role, salarySource: "none" };
+  }
+  const min = centsToDollars(guess.minCents);
+  const max = centsToDollars(guess.maxCents) ?? min;
+  const code = (guess.currency || "USD").toUpperCase();
+  return {
+    ...role,
+    salaryMin: min,
+    salaryMax: max,
+    salaryCurrency: code as Currency,
+    salarySource: guess.source,
+  };
+}
+
 function baseRole(board: LiveBoard, jobId: string, title: string, opts: {
   department: Department;
   loc: ReturnType<typeof parseLocation>;
@@ -273,6 +330,7 @@ function baseRole(board: LiveBoard, jobId: string, title: string, opts: {
     screeningQuestions: [],
     status: "open",
     source: "ats",
+    salarySource: "none",
   };
 }
 
@@ -282,15 +340,20 @@ export function mapGreenhouseJob(job: GreenhouseJob, board: LiveBoard): Role {
   const department = departmentOf(deptLabel, title);
   const loc = parseLocation(job.location?.name);
   const md = job.content ? htmlToMarkdown(job.content) : stubMd(board, title, job.location?.name);
-  return baseRole(board, String(job.id), title, {
-    department,
-    loc,
-    locationMode: loc.locationMode,
-    type: roleTypeOf(title),
-    applyUrl: applyUrlOf(job.absolute_url, board.applyHosts),
-    publishedAt: publishedIso(job.first_published || job.updated_at),
-    md,
-  });
+  let pay = payFromGhMetadata(job);
+  if (pay.source === "none") pay = parseSalaryFromText(md);
+  return attachPay(
+    baseRole(board, String(job.id), title, {
+      department,
+      loc,
+      locationMode: loc.locationMode,
+      type: roleTypeOf(title),
+      applyUrl: applyUrlOf(job.absolute_url, board.applyHosts),
+      publishedAt: publishedIso(job.first_published || job.updated_at),
+      md,
+    }),
+    pay,
+  );
 }
 
 export function mapLeverJob(job: LeverJob, board: LiveBoard): Role {
@@ -308,15 +371,18 @@ export function mapLeverJob(job: LeverJob, board: LiveBoard): Role {
     }),
   ].filter(Boolean);
   const md = parts.join("\n\n") || stubMd(board, title, locName);
-  return baseRole(board, job.id, title, {
-    department,
-    loc,
-    locationMode: locationModeOf(job.workplaceType, loc),
-    type: roleTypeOf(title, cat.commitment),
-    applyUrl: applyUrlOf(job.hostedUrl || job.applyUrl, board.applyHosts),
-    publishedAt: publishedIso(job.createdAt),
-    md,
-  });
+  return attachPay(
+    baseRole(board, job.id, title, {
+      department,
+      loc,
+      locationMode: locationModeOf(job.workplaceType, loc),
+      type: roleTypeOf(title, cat.commitment),
+      applyUrl: applyUrlOf(job.hostedUrl || job.applyUrl, board.applyHosts),
+      publishedAt: publishedIso(job.createdAt),
+      md,
+    }),
+    parseSalaryFromText(md),
+  );
 }
 
 export function mapAshbyJob(job: AshbyJob, board: LiveBoard): Role | null {
@@ -328,13 +394,18 @@ export function mapAshbyJob(job: AshbyJob, board: LiveBoard): Role | null {
   const type: RoleType = emp.includes("intern") ? "internship" : emp.includes("part") ? "part-time" : emp.includes("contract") ? "contract" : "full-time";
   const md = job.descriptionHtml ? htmlToMarkdown(job.descriptionHtml) : stubMd(board, title, job.location);
   const workplace = job.isRemote ? "remote" : job.workplaceType;
-  return baseRole(board, job.id, title, {
-    department,
-    loc,
-    locationMode: locationModeOf(workplace, loc),
-    type,
-    applyUrl: applyUrlOf(job.jobUrl || job.applyUrl, board.applyHosts),
-    publishedAt: publishedIso(job.publishedAt),
-    md,
-  });
+  let pay = payFromAshbyComp(job.compensation);
+  if (pay.source === "none") pay = parseSalaryFromText(md);
+  return attachPay(
+    baseRole(board, job.id, title, {
+      department,
+      loc,
+      locationMode: locationModeOf(workplace, loc),
+      type,
+      applyUrl: applyUrlOf(job.jobUrl || job.applyUrl, board.applyHosts),
+      publishedAt: publishedIso(job.publishedAt),
+      md,
+    }),
+    pay,
+  );
 }

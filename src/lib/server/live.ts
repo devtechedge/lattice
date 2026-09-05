@@ -13,7 +13,7 @@ import {
 import type { Role } from "@/lib/catalog/types";
 
 const TTL_MS = 10 * 60 * 1000;
-const FETCH_MS = 7000;
+const FETCH_MS = 12_000;
 
 type Cache<T> = { at: number; value: T };
 let listCache: Cache<Role[]> | undefined;
@@ -60,9 +60,9 @@ function isAshby(x: unknown): x is AshbyJob {
   return typeof j.id === "string" && typeof j.title === "string";
 }
 
-function ghUrl(token: string, extra = ""): URL {
+function ghUrl(token: string, extra = "", search = ""): URL {
   if (!/^[a-z0-9-]+$/i.test(token)) throw new Error("blocked token");
-  const u = httpsUrl("boards-api.greenhouse.io", `/v1/boards/${token}/jobs${extra}`);
+  const u = httpsUrl("boards-api.greenhouse.io", `/v1/boards/${token}/jobs${extra}${search}`);
   if (!u.pathname.startsWith("/v1/boards/")) throw new Error("blocked host");
   return u;
 }
@@ -74,12 +74,17 @@ function leverUrl(token: string, extra = ""): URL {
 
 function ashbyUrl(token: string): URL {
   if (!/^[a-z0-9._-]+$/i.test(token)) throw new Error("blocked token");
-  return httpsUrl("api.ashbyhq.com", `/posting-api/job-board/${token}`);
+  return httpsUrl("api.ashbyhq.com", `/posting-api/job-board/${token}?includeCompensation=true`);
 }
 
 async function loadBoard(board: LiveBoard): Promise<Role[]> {
   if (board.ats === "greenhouse") {
-    const data = (await getJson(ghUrl(board.board))) as { jobs?: unknown };
+    let data: { jobs?: unknown };
+    try {
+      data = (await getJson(ghUrl(board.board, "", "?content=true"))) as { jobs?: unknown };
+    } catch {
+      data = (await getJson(ghUrl(board.board))) as { jobs?: unknown };
+    }
     const jobs = Array.isArray(data.jobs) ? data.jobs.filter(isGh) : [];
     return jobs.map((j) => mapGreenhouseJob(j, board));
   }

@@ -1,2 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /me
+Disallow: /studio
+
+Sitemap: https://lattice-beta-livid.vercel.app/sitemap.xml
+# https://lattice-beta-livid.vercel.app/llms.txt

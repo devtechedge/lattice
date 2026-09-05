@@ -1,5 +1,7 @@
 {
-  "title": "Lattice",
+  "description": "Web3 roles, gigs, talent, and salaries. Public listings — not an employer.",
   "card": "custom",
-  "color": "07080B"
+  "color": "07080B",
+  "image": "/og.jpg",
+  "origin": "https://lattice-beta-livid.vercel.app"
 }

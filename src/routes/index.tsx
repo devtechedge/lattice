@@ -6,28 +6,46 @@ import { parseRoleSearch, searchRecord } from "@/lib/catalog/filter-roles";
 import { CompanyMark } from "@/components/company-mark";
 import { timeAgo } from "@/lib/utils";
 import { useLiveRoles } from "@/lib/catalog/use-live-roles";
+import { pageHead } from "@/lib/seo";
+import type { Role } from "@/lib/catalog/types";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
+  head: () =>
+    pageHead({
+      title: "Lattice — Web3 careers",
+      path: "/",
+      description: "Live Web3 roles from twenty crypto teams’ public boards. Gigs, talent, and salaries. Public listings — not an employer.",
+    }),
   component: Home,
 });
+
+function diverse(roles: Role[], n: number): Role[] {
+  const seen = new Set<string>();
+  const out: Role[] = [];
+  for (const r of roles) {
+    if (seen.has(r.companyId)) continue;
+    seen.add(r.companyId);
+    out.push(r);
+    if (out.length >= n) break;
+  }
+  return out;
+}
 
 function Home() {
   const search = parseRoleSearch(Route.useSearch());
   const { live, ready } = useLiveRoles();
   const featured = live[0];
-  const week = live.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000).slice(0, 8);
+  const week = diverse(
+    live.filter((r) => Date.now() - new Date(r.publishedAt).getTime() < 7 * 86400000),
+    8,
+  );
   const hiringIds = new Set(live.map((r) => r.companyId));
-  const hiring = COMPANIES.filter((c) => hiringIds.has(c.id)).slice(0, 20);
+  const hiring = COMPANIES.filter((c) => hiringIds.has(c.id)).slice(0, 8);
   const publicTalent = TALENT.filter((t) => t.privacy === "public").length;
-  const latest = live.slice(0, 3);
+  const latest = diverse(live, 3);
   const featuredCompany = COMPANIES.find((c) => c.id === featured?.companyId);
-  const seen = new Set<string>();
-  const livePreview = live.filter((r) => {
-    if (seen.has(r.companyId)) return false;
-    seen.add(r.companyId);
-    return true;
-  }).slice(0, 6);
+  const livePreview = diverse(live, 8);
 
   return (
     <div>
@@ -37,7 +55,7 @@ function Home() {
             <p className="text-xs uppercase tracking-[0.18em] text-mute">Web3 · crypto · blockchain</p>
             <h1 className="mt-3 font-serif text-4xl leading-[1.1] tracking-tight md:text-5xl">One lattice. Every Web3 career.</h1>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-mute">
-              Live roles from twenty crypto teams, pulled from their public boards. Apply on the employer’s site. Lattice does not invent pay.
+              Live roles from twenty crypto teams, pulled from their public boards. Apply on the employer’s site. Public listings. Not an employer. Lattice does not invent pay.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link to="/roles" className="inline-flex h-10 items-center rounded-sm bg-signal px-4 text-sm font-medium text-signal-fg">

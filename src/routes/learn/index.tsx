@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LEARN } from "@/lib/catalog/data";
 import { Badge } from "@/components/ui/badge";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/learn/")({ component: Page });
+export const Route = createFileRoute("/learn/")({
+  head: () =>
+    pageHead({
+      title: "Learn — Lattice",
+      path: "/learn",
+      description: "Short pieces on Web3 careers. No courseware theatre.",
+    }),
+  component: Page,
+});
 
 function Page() {
   return (

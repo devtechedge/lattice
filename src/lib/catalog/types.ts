@@ -263,6 +263,7 @@ export type Role = {
   salaryMax?: number;
   salaryCurrency: Currency;
   salaryPeriod: "year" | "month" | "hour";
+  salarySource?: "posted" | "inferred" | "none";
   tokenAllocation?: number;
   tokenTicker?: string;
   vestingMonths?: number;
