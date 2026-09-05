@@ -187,11 +187,11 @@ function HiringPage() {
         </p>
         <p className="mt-3">
           For skill-focused landings, see{" "}
-          <Link to="/jobs/solidity" className="text-signal underline underline-offset-4">
+          <Link to="/jobs/$slug" params={{ slug: "solidity" }} className="text-signal underline underline-offset-4">
             Solidity jobs
           </Link>
           ,{" "}
-          <Link to="/jobs/defi" className="text-signal underline underline-offset-4">
+          <Link to="/jobs/$slug" params={{ slug: "defi" }} className="text-signal underline underline-offset-4">
             DeFi jobs
           </Link>
           , and other{" "}
