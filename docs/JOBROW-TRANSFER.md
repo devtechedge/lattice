@@ -3,7 +3,7 @@
 **Audience:** implementer (agent or human) working on [devtechedge/lattice](https://github.com/devtechedge/lattice)  
 **Source of truth for learnings:** [devtechedge/job-board](https://github.com/devtechedge/job-board) (Jobrow), session ending ~2026-09-05  
 **Live Jobrow:** https://jobrow.vercel.app  
-**Live Lattice:** https://lattice-beta-livid.vercel.app  
+**Live Lattice:** https://lattice-devtechedge1.vercel.app  
 
 This doc transfers **product choices, UX patterns, and engineering fixes** from a deep Jobrow polish session into Lattice. It is not a blind port: Lattice is a **Web3 career lattice** (roles + gigs + talent + salaries + companies), while Jobrow is a **US-tech ATS register** of still-open employer-board roles. Apply only what fits.
 

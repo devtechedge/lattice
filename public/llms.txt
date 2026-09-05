@@ -6,16 +6,16 @@ Lattice lists still-open roles pulled from Greenhouse, Ashby, and Lever JSON. Ap
 
 ## Site
 
-- Home: https://lattice-beta-livid.vercel.app/
-- Roles: https://lattice-beta-livid.vercel.app/roles
-- Companies: https://lattice-beta-livid.vercel.app/companies
-- Gigs: https://lattice-beta-livid.vercel.app/gigs
-- Talent: https://lattice-beta-livid.vercel.app/talent
-- Salaries: https://lattice-beta-livid.vercel.app/salaries
-- Learn: https://lattice-beta-livid.vercel.app/learn
-- About: https://lattice-beta-livid.vercel.app/about
+- Home: https://lattice-devtechedge1.vercel.app/
+- Roles: https://lattice-devtechedge1.vercel.app/roles
+- Companies: https://lattice-devtechedge1.vercel.app/companies
+- Gigs: https://lattice-devtechedge1.vercel.app/gigs
+- Talent: https://lattice-devtechedge1.vercel.app/talent
+- Salaries: https://lattice-devtechedge1.vercel.app/salaries
+- Learn: https://lattice-devtechedge1.vercel.app/learn
+- About: https://lattice-devtechedge1.vercel.app/about
 
 ## Optional
 
-- Sitemap: https://lattice-beta-livid.vercel.app/sitemap.xml
+- Sitemap: https://lattice-devtechedge1.vercel.app/sitemap.xml
 - Source: https://github.com/devtechedge/lattice

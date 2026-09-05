@@ -307,16 +307,16 @@ test("vercel Host uses site.origin for custom og:image", () => {
   delete process.env.VITE_PUBLIC_HOSTNAME;
   try {
     const out = injectGrokPwaHead("<html><head><title>Lattice</title></head></html>", {
-      host: "lattice-beta-livid.vercel.app",
+      host: "lattice-devtechedge1.vercel.app",
       site: {
         card: "custom",
         image: "/og.jpg",
-        origin: "https://lattice-beta-livid.vercel.app",
+        origin: "https://lattice-devtechedge1.vercel.app",
       },
     });
     assert.match(
       out,
-      /property="og:image" content="https:\/\/lattice-beta-livid\.vercel\.app\/og\.jpg"/,
+      /property="og:image" content="https:\/\/lattice-devtechedge1\.vercel\.app\/og\.jpg"/,
     );
   } finally {
     if (prev === undefined) delete process.env.VITE_PUBLIC_HOSTNAME;

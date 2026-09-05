@@ -17,11 +17,11 @@ We will acknowledge valid reports and patch production before any write-up.
 
 ## What this app is
 
-Lattice is a free Web3 career board: live roles from twenty crypto teams’ public Greenhouse, Lever, and Ashby JSON, plus talent, gigs, and a salary observatory. Production is [lattice-beta-livid.vercel.app](https://lattice-beta-livid.vercel.app). Search does not require an account. ATS pay is whatever the employer publishes (usually undisclosed here). Lattice does not invent a band. Contracts on `/contracts` are a **demo state machine**, not on-chain escrow and not a financial product. Not an offering. No wallet connect.
+Lattice is a free Web3 career board: live roles from twenty crypto teams’ public Greenhouse, Lever, and Ashby JSON, plus talent, gigs, and a salary observatory. Production is [lattice-devtechedge1.vercel.app](https://lattice-devtechedge1.vercel.app). Search does not require an account. ATS pay is whatever the employer publishes (usually undisclosed here). Lattice does not invent a band. Contracts on `/contracts` are a **demo state machine**, not on-chain escrow and not a financial product. Not an offering. No wallet connect.
 
 ## In scope
 
-- https://lattice-beta-livid.vercel.app and the `devtechedge/lattice` codebase
+- https://lattice-devtechedge1.vercel.app and the `devtechedge/lattice` codebase
 - Stored XSS via Markdown in role / gig / talent copy (including guest-posted listings)
 - Auth bypass on bookmarks, applications, studio ATS, talent profiles, alerts, or contracts
 - SQL injection in search, applications, or studio

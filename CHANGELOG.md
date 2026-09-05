@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3 — 2026-09-06
+
+- Canonical production host is now  (shorter team alias). Updated site.json, SEO, robots, llms.txt, README, and related tests.
+
 ## 1.2.2 — 2026-09-06
 
 - Faster hard refresh for live roles: skip Greenhouse `?content=true` on the list path (metadata pay still works; role detail still fetches full HTML), 4s per-board timeout, stale-while-revalidate + in-flight dedupe on server and client, and SSR loaders on home / roles / companies so the first paint is not an empty shell when the isolate is warm.

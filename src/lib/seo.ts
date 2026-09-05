@@ -1,5 +1,5 @@
 /** Shared page meta for search + social + AI crawlers. */
-export const SITE_ORIGIN = "https://lattice-beta-livid.vercel.app";
+export const SITE_ORIGIN = "https://lattice-devtechedge1.vercel.app";
 
 export const DEFAULT_DESCRIPTION =
   "Web3 roles, gigs, talent, and salaries. Public listings — not an employer.";

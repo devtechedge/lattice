@@ -6,7 +6,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
   <img src="public/favicon.svg" width="48" height="48" alt="Lattice mark" />
 </p>
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://lattice-beta-livid.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://lattice-devtechedge1.vercel.app)
 [![CI](https://github.com/devtechedge/lattice/actions/workflows/ci.yml/badge.svg)](https://github.com/devtechedge/lattice/actions/workflows/ci.yml)
 [![TanStack Start](https://img.shields.io/badge/TanStack%20Start-black)](https://tanstack.com/start)
 [![React](https://img.shields.io/badge/React-19-0052CC?logo=react)](https://react.dev/)
@@ -18,7 +18,7 @@ One lattice. Every Web3 career. Roles, gigs, talent, salaries, and companies —
 
 ## Live Demo
 
-**https://lattice-beta-livid.vercel.app**
+**https://lattice-devtechedge1.vercel.app**
 
 > **Status:** Production is a **live job board**. Roles come from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards (Coinbase, Binance, OKX, Bybit, Ripple, Kraken, Fireblocks, Crypto.com, Chainalysis, Blockchain.com, BitGo, Gemini, Alchemy, Phantom, Circle, Uniswap Labs, Ledger, Consensys, Ethereum Foundation, Solana Labs). Apply on the employer’s site. **Pay is only shown when the board publishes it** (posted metadata or inferred from the posting, marked `~`). Lattice does not invent a band. Talent, gigs, and learn remain a small editorial catalog. Posted listings, applications, bookmarks, and salary submissions persist in Postgres when `DATABASE_URL` is set. Without it the app uses embedded PGLite and reseeds on cold start. Sign-in is optional (bookmarks, applications, and talent profiles). Public listings. Not an employer. Not an offering. No wallet connect.
 

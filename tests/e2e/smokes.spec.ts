@@ -48,7 +48,7 @@ test("sitemap and llms.txt are public", async ({ request }) => {
   const sm = await request.get("/sitemap.xml");
   expect(sm.ok()).toBeTruthy();
   const xml = await sm.text();
-  expect(xml).toContain("lattice-beta-livid.vercel.app");
+  expect(xml).toContain("lattice-devtechedge1.vercel.app");
   expect(xml).toContain("/companies/coinbase");
   const ll = await request.get("/llms.txt");
   expect(ll.ok()).toBeTruthy();
