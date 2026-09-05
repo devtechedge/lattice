@@ -21,7 +21,7 @@ test("role detail exposes the apply form", async ({ page }) => {
 
 test("salaries observatory renders the band and calculator", async ({ page }) => {
   await page.goto("/salaries");
-  await expect(page.getByRole("heading", { name: "Salaries" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Web3 salary observatory/i })).toBeVisible();
   await expect(page.getByTestId("comp-calc")).toBeVisible();
   await expect(page.getByText(/avg/i).first()).toBeVisible();
 });
