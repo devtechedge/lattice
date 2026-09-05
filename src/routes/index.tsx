@@ -164,7 +164,7 @@ function Home() {
           <div className="mt-3 flex gap-4 overflow-x-auto pb-2">
             {hiring.map((c) => (
               <Link key={c.id} to="/companies/$slug" params={{ slug: c.slug }} className="flex shrink-0 items-center gap-2 text-sm text-mute hover:text-fg">
-                <CompanyMark name={c.name} website={c.website} hue={c.hue} size={24} />
+                <CompanyMark name={c.name} logoUrl={c.logo} website={c.website} hue={c.hue} size={24} />
                 {c.name}
               </Link>
             ))}

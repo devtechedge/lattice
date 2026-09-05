@@ -222,6 +222,7 @@ export type Company = {
   id: string;
   slug: string;
   name: string;
+  logo: string;
   website: string;
   twitter: string;
   github: string;

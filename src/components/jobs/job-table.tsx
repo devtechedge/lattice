@@ -46,7 +46,7 @@ export function JobTable({
                 <td className="px-3 py-2.5 text-mute">
                   {c ? (
                     <span className="inline-flex items-center gap-2">
-                      <CompanyMark name={c.name} website={c.website} hue={c.hue} size={20} />
+                      <CompanyMark name={c.name} logoUrl={c.logo} website={c.website} hue={c.hue} size={20} />
                       <span className="truncate">{c.name}</span>
                     </span>
                   ) : (

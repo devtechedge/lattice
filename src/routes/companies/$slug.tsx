@@ -17,7 +17,7 @@ function Page() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <div className="flex items-start gap-4">
-        <CompanyMark name={c.name} website={c.website} hue={c.hue} size={56} />
+        <CompanyMark name={c.name} logoUrl={c.logo} website={c.website} hue={c.hue} size={56} />
         <div>
           <h1 className="font-serif text-3xl tracking-tight">{c.name}</h1>
           <p className="text-sm text-mute">{c.type} · {c.hq} · {c.size} · founded {c.foundedYear} {c.tokenTicker ? `· ${c.tokenTicker}` : ""}</p>

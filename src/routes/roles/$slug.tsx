@@ -98,7 +98,7 @@ function RolePage() {
     <main className="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_340px]">
       <article>
         <div className="flex items-start gap-3">
-          <CompanyMark name={company?.name ?? "Role"} website={company?.website} hue={company?.hue ?? 140} size={48} />
+          <CompanyMark name={company?.name ?? "Role"} logoUrl={company?.logo} website={company?.website} hue={company?.hue ?? 140} size={48} />
           <div>
             {role.featured && <p className="text-[11px] font-medium text-gold">Featured</p>}
             {role.source === "ats" && (

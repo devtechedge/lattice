@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.6 — 2026-09-06
+
+- Ship real company logos as same-origin assets under `public/logos/{id}.png` for all twenty boards. Marks no longer depend on third-party favicon CDNs (CSP/redirects kept breaking them).
+
 ## 1.2.5 — 2026-09-06
 
 - Fix broken company marks: Google’s favicon endpoint 301s to `*.gstatic.com` (blocked by CSP). Use DuckDuckGo icons first, gstatic V2 second, and only reveal the `<img>` after `onLoad` so a failed fetch never shows a broken-image glyph.

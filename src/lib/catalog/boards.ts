@@ -474,6 +474,7 @@ export const COMPANIES: Company[] = BOARDS.map((b) => ({
   id: b.id,
   slug: b.id,
   name: b.name,
+  logo: `/logos/${b.id}.png`,
   website: b.website,
   twitter: b.twitter,
   github: b.github,

@@ -1,32 +1,23 @@
 import { useMemo, useState } from "react";
-import { companyInitials, companyLogoFallbackSrc, companyLogoSrc } from "@/lib/logo";
+import { companyInitials } from "@/lib/logo";
 import { cn } from "@/lib/utils";
 
 export function CompanyMark({
   name,
-  website,
   logoUrl,
   hue = 140,
   size = 32,
 }: {
   name: string;
-  website?: string | null;
+  /** Same-origin path like `/logos/coinbase.png`, or any https URL. */
   logoUrl?: string | null;
+  website?: string | null; // kept for call-site compat; unused
   hue?: number;
   size?: number;
 }) {
-  const candidates = useMemo(() => {
-    const list: string[] = [];
-    const primary = companyLogoSrc({ logoUrl, website });
-    const secondary = companyLogoFallbackSrc(website);
-    if (primary) list.push(primary);
-    if (secondary && secondary !== primary) list.push(secondary);
-    return list;
-  }, [logoUrl, website]);
-
-  const [index, setIndex] = useState(0);
+  const src = useMemo(() => (logoUrl && logoUrl.trim() ? logoUrl.trim() : null), [logoUrl]);
   const [loaded, setLoaded] = useState(false);
-  const src = candidates[index] ?? null;
+  const [failed, setFailed] = useState(!src);
 
   const initials = (
     <span
@@ -43,7 +34,7 @@ export function CompanyMark({
     </span>
   );
 
-  if (!src) return initials;
+  if (failed || !src) return initials;
 
   return (
     <span className="relative inline-grid shrink-0 place-items-center" style={{ width: size, height: size }}>
@@ -51,23 +42,21 @@ export function CompanyMark({
         {initials}
       </span>
       <img
-        key={src}
         src={src}
         alt=""
         width={size}
         height={size}
         className={cn(
-          "relative z-[1] rounded-sm bg-raised object-contain",
+          "relative z-[1] rounded-sm bg-paper object-contain",
           loaded ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         style={{ width: size, height: size }}
         loading="lazy"
         decoding="async"
-        referrerPolicy="no-referrer"
         onLoad={() => setLoaded(true)}
         onError={() => {
           setLoaded(false);
-          setIndex((i) => i + 1);
+          setFailed(true);
         }}
       />
     </span>
