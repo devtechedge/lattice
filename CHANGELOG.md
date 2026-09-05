@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.8 — 2026-09-06
+
+- Enlarge the header Lattice mark (`size-5` → `size-7`) and slightly strengthen the wordmark.
+
 ## 1.2.7 — 2026-09-06
 
 - Fix above-the-fold company marks stuck on initials: cached logos could fire `onLoad` before React attached the handler, so the opacity gate never flipped. Show same-origin logos immediately; fall back to initials only on error.
