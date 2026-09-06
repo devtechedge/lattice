@@ -110,6 +110,10 @@ See [SECURITY.md](SECURITY.md) for the threat model, reporting, and residual ris
 
 ---
 
+## Security
+
+Lattice is hardened for a public Vercel deploy (parameterized SQL, same-site auth guards, CSP/HSTS headers, Markdown URL allow-lists, guest-post rate limits). **No public site is unhackable** — see [SECURITY.md](SECURITY.md) for the threat model, residual risk, and how to make this GitHub repo private later. SEO checklist: [docs/SEO.md](docs/SEO.md).
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

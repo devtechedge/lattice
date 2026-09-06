@@ -4,6 +4,7 @@ import { getSql } from "@/lib/db";
 import { authMiddleware } from "@/lib/auth/middleware";
 import { safeHttpsUrl } from "@/lib/sanitize";
 import type { Role } from "@/lib/catalog/types";
+import { guardPublicMutation } from "@/lib/server/guard-public-mutation.server";
 
 export type BookmarkRow = { role_id: string };
 export type ApplicationRow = {
@@ -36,17 +37,17 @@ export type ProfileRow = { user_id: string; payload_json: string };
 
 export const listPostedRoles = createServerFn({ method: "GET" }).handler(async () => {
   const sql = await getSql();
-  return sql<PostedRow>`select id, user_id, payload_json, published_at, status from posted_roles where status = 'open' order by published_at desc`;
+  return sql<PostedRow>`select id, user_id, payload_json, published_at, status from posted_roles where status = 'open' order by published_at desc limit 200`;
 });
 
 export const listPostedGigs = createServerFn({ method: "GET" }).handler(async () => {
   const sql = await getSql();
-  return sql<PostedRow>`select id, user_id, payload_json, published_at from posted_gigs order by published_at desc`;
+  return sql<PostedRow>`select id, user_id, payload_json, published_at from posted_gigs order by published_at desc limit 200`;
 });
 
 export const listPostedProjects = createServerFn({ method: "GET" }).handler(async () => {
   const sql = await getSql();
-  return sql<PostedRow>`select id, user_id, payload_json, published_at from posted_projects order by published_at desc`;
+  return sql<PostedRow>`select id, user_id, payload_json, published_at from posted_projects order by published_at desc limit 200`;
 });
 
 export const listSalarySubs = createServerFn({ method: "GET" }).handler(async () => {
@@ -158,6 +159,7 @@ const rolePayload = z.object({
 export const publishRole = createServerFn({ method: "POST" })
   .validator(rolePayload)
   .handler(async ({ data }) => {
+    guardPublicMutation("publish-role", 5, 60_000);
     const sql = await getSql();
     const id = crypto.randomUUID();
     const role: Partial<Role> & { companyName: string } = {
@@ -345,14 +347,15 @@ export const submitSalary = createServerFn({ method: "POST" })
       roleKey: z.string().max(40),
       seniority: z.string().max(40).optional(),
       region: z.string().max(40).optional(),
-      cash: z.number(),
-      tokenValue: z.number(),
-      equityValue: z.number(),
-      year: z.number(),
+      cash: z.number().finite().min(0).max(10_000_000),
+      tokenValue: z.number().finite().min(0).max(10_000_000),
+      equityValue: z.number().finite().min(0).max(10_000_000),
+      year: z.number().int().min(2000).max(2100),
       note: z.string().max(500).optional(),
     }),
   )
   .handler(async ({ data }) => {
+    guardPublicMutation("submit-salary", 10, 60_000);
     const sql = await getSql();
     const id = crypto.randomUUID();
     await sql`insert into salary_submissions (id, role_key, seniority, region, cash, token_value, equity_value, year, note)

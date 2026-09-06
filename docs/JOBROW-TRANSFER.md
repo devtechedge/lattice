@@ -7,7 +7,7 @@
 
 This doc transfers **product choices, UX patterns, and engineering fixes** from a deep Jobrow polish session into Lattice. It is not a blind port: Lattice is a **Web3 career lattice** (roles + gigs + talent + salaries + companies), while Jobrow is a **US-tech ATS register** of still-open employer-board roles. Apply only what fits.
 
-**Status (2026-09-06):** P0 (live pay + discovery) and P1 (20 crypto boards + home density) shipped on `main` in Lattice **1.1.0 / 1.2.0** (`dd16920`, `af71e4a`). Remaining work is P2/P3 only. Sections below keep the original plan for history; §2 and §7 reflect current `main`.
+**Status (2026-09-06):** P0/P1 shipped. Free SEO pass shipped (Search Console, role sitemap, /jobs hubs, /hiring, Jobrow cross-links, README). Remaining: P2 Closed roles, P3 polish. Custom domain deferred. See docs/SEO.md.
 
 ---
 
@@ -33,9 +33,9 @@ Reference commits on `job-board` `main` (newest first among the session):
 |-------|-------------------------|----------------|
 | Sort freshness | `7bf620e` | **Done** — roles default `newest` → `publishedAt` |
 | Screenshots / OG | `b8310e6` | **Done** in 1.2.0 — refresh again after future UI moves |
-| Real pay extraction | `1254a62` | **Done** — `salary-ats.ts` + Greenhouse `content=true` + Ashby `includeCompensation=true` |
+| Real pay extraction | `1254a62` | **Done** — `salary-ats.ts`; Greenhouse list omits content=true (speed); Ashby includeCompensation=true |
 | Docs counts / honesty | `7bcdaac` | **Done** — README + CHANGELOG 1.2.0 |
-| Discovery SEO | `a6511c3` | **Done** — sitemap, llms.txt, pageHead, robots, site.json origin |
+| Discovery SEO | `a6511c3` | **Done** — plus 2026-09 free SEO (see docs/SEO.md) |
 | Home density + nav | `e53a2fc` | **Done** — strips capped/diversified; Learn/Pulse last in NAV |
 | Seed scale | `d9d2e61` | **Done** — 20 verified crypto boards in `boards.ts` |
 | Closed roles | `d3490fe`, `93dcce9`, … | **Deferred** (P2) |
@@ -187,3 +187,9 @@ After implementing P0–P1 (done): README, CHANGELOG, screenshots were refreshed
 - **Deep session themes in one line:** honesty on pay, Posted-first sorting, tight home strips, Closed when crawl-backed, discovery (`sitemap`/`llms.txt`/OG), scale boards only with verified public ATS tokens, refresh GitHub visuals after product moves.
 
 When picking up again, prefer one PR/commit series per remaining phase (P2 closed → P3 polish → docs/screenshots if UI moved).
+
+---
+
+## SEO hand-off
+
+See [docs/SEO.md](SEO.md).

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 — 2026-09-06
+
+- Security: guest publishRole / anonymous submitSalary same-site + per-IP rate limits; salary Zod bounds; public posted-list limit 200; HSTS, CORP, tighter Permissions-Policy. Docs: SECURITY.md refresh, docs/SEO.md, JOBROW-TRANSFER + README security notes.
+
+
 ## 1.5.0 — 2026-09-06
 
 - Linkable content: `/hiring` companies-hiring-this-week roundup (SSR live crawl, crawlable copy), stronger salaries/learn/pulse SEO, footer + sitemap + llms discovery.

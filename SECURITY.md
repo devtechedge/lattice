@@ -34,7 +34,6 @@ Lattice is a free Web3 career board: live roles from twenty crypto teams’ publ
 - Rate limits on Vercel Hobby (in-memory, per-instance)
 - Seed-catalog talent / gig copy being editorial, and ATS pay being undisclosed unless the employer publishes it
 - The simulated gig/project contract flow (status changes only; no chain, no custody)
-- Missing `HSTS` until a custom domain is attached
 - Self-XSS
 - Reports that require physical access to the operator's Vercel / GitHub account
 - Third-party apply URLs after the visitor leaves this origin
@@ -47,12 +46,22 @@ Lattice is a free Web3 career board: live roles from twenty crypto teams’ publ
 - Public talent directory returns only profiles with `privacy === "public"`
 - Markdown links pass through `safeHref` (`http:` / `https:` / same-origin path). `javascript:`, `data:`, and protocol-relative URLs render as text
 - `applyUrl` on a posted role must be `https:`
-- Live ATS fetch is server-side only against `boards-api.greenhouse.io`, `api.lever.co`, and `api.ashbyhq.com`. Host allow-list, `redirect: error`, 12s abort, 10-minute in-memory cache. Greenhouse lists use `?content=true` (falls back without content). Ashby lists use `includeCompensation=true`. Apply URLs must be an ATS host or the company’s first-party careers host. ATS pay is only employer-published numbers.
+- Live ATS fetch is server-side only against `boards-api.greenhouse.io`, `api.lever.co`, and `api.ashbyhq.com`. Host allow-list, `redirect: error`, 12s abort, 10-minute in-memory cache. Greenhouse **list** fetches omit `?content=true` (detail can load bodies). Ashby lists use `includeCompensation=true`. Apply URLs must be an ATS host or the company’s first-party careers host. ATS pay is only employer-published numbers.
 - Guest and authed listing payloads are size-capped (title, Markdown, arrays)
 - Application stage updates accept a fixed enum
-- Security headers (CSP, `nosniff`, `SAMEORIGIN`, COOP, Permissions-Policy, Referrer-Policy) via `vercel.json`
+- Security headers via `vercel.json`: CSP, `nosniff`, `SAMEORIGIN`, COOP, CORP `same-origin`, Permissions-Policy (incl. `interest-cohort=()`), Referrer-Policy, `X-Permitted-Cross-Domain-Policies: none`, HSTS (`max-age=63072000; includeSubDomains; preload`)
+- Guest `publishRole` and anonymous `submitSalary` use `guardPublicMutation` (same-site Fetch-Metadata + per-IP in-memory rate limit)
+- Anonymous salary fields are Zod-bounded (finite amounts, year range); public posted lists capped at 200 rows
 - No file resume upload; applications are form fields only
 - No payments, no wallet connect, no seed phrases
+
+## Making the GitHub repo private
+
+1. GitHub → Settings → General → Danger zone → Change visibility → Private.
+2. Confirm Vercel still has access (GitHub App installed on the private repo).
+3. Keep private vulnerability reporting enabled.
+4. Rotate any secrets that were ever pasted into chat or screenshots.
+5. Private source reduces copy-paste of the attack surface; it does **not** replace the controls above. The live site remains public.
 
 ## Secrets the operator must set
 
@@ -70,7 +79,7 @@ No public internet app is “unhackable.” Remaining limits:
 - **Guest posting is on.** `/post/role` can insert a listing with `user_id` null so a visitor can post without an account. That is product intent (free, non-paid tier) and also accepted spam / XSS residual risk. Markdown is sanitized; it is not a moderation queue.
 - **Anonymous salary submissions** are on (no account). Figures are not verified. Size-capped.
 - CSP still allows `'unsafe-inline'` scripts because of the theme boot + TanStack hydration, and `https://grok.com` for the app-builder badge.
-- Vercel Hobby has no durable per-IP rate limit across isolates.
+- Vercel Hobby has no durable **global** per-IP rate limit across isolates (in-memory buckets are per-instance only).
 - Counsel has not reviewed the legal drafts on `/terms` and `/privacy`.
 
 If you run a fork, set `DATABASE_URL` before exposing sign-in to the public internet.
