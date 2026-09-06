@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ function Page() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="font-serif text-3xl tracking-tight">Alerts</h1>
-      <p className="mt-2 text-sm text-mute">Email, Telegram, Discord, and RSS. Telegram and Discord are simulated subscribe confirmations in this free tier — no real bots.</p>
+      <p className="mt-2 text-sm text-mute">Email and RSS for new roles that match your filters.</p>
       <form
         className="mt-6 space-y-3 rounded-md border border-line bg-raised p-4"
         onSubmit={async (e) => {
@@ -35,14 +35,12 @@ function Page() {
             return;
           }
           await createAlert({ data: { channel, cadence, filter: { sort: "newest" } } });
-          toast.success(channel === "telegram" || channel === "discord" ? `Subscribed to Lattice ${channel} (demo).` : "Alert saved.");
+          toast.success("Alert saved.");
           listMyAlerts().then(setItems).catch(() => {});
         }}
       >
         <select value={channel} onChange={(e) => setChannel(e.target.value)} className="h-10 w-full rounded-sm border border-line bg-raised px-3 text-sm">
           <option value="email">Email</option>
-          <option value="telegram">Telegram</option>
-          <option value="discord">Discord</option>
           <option value="rss">RSS snapshot</option>
         </select>
         <select value={cadence} onChange={(e) => setCadence(e.target.value)} className="h-10 w-full rounded-sm border border-line bg-raised px-3 text-sm">
