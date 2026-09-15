@@ -1,6 +1,6 @@
 import { getRequest } from "@tanstack/react-start/server";
 
-/** In-memory, per-isolate. Honest on Vercel Hobby — not a global edge rate limit. */
+/** In-memory, per-isolate. Honest on Vercel Hobby - not a global edge rate limit. */
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
 export class RateLimitError extends Error {

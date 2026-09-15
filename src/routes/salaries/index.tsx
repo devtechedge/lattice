@@ -14,9 +14,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/salaries/")({
   head: () =>
     pageHead({
-      title: "Web3 Salary Observatory — Crypto Pay Bands by Role | Lattice",
+      title: "Web3 Salary Observatory - Crypto Pay Bands by Role | Lattice",
       path: "/salaries",
-      description: "Web3 and crypto salary observatory: pay bands by role, seniority, and region, plus a comp calculator. Aggregate market figures — not an offer.",
+      description: "Web3 and crypto salary observatory: pay bands by role, seniority, and region, plus a comp calculator. Aggregate market figures - not an offer.",
     }),
   component: Page,
 });
@@ -44,7 +44,7 @@ function Page() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <h1 className="font-serif text-3xl tracking-tight">Web3 salary observatory</h1>
-      <p className="mt-2 max-w-2xl text-sm text-mute">Crypto and blockchain pay bands by role, seniority, and region — plus a calculator that applies cliff before vest. Aggregate market figures from Lattice’s observatory model. Estimated figures are not offers and not ATS-posted compensation.</p>
+      <p className="mt-2 max-w-2xl text-sm text-mute">Crypto and blockchain pay bands by role, seniority, and region - plus a calculator that applies cliff before vest. Aggregate market figures from Lattice’s observatory model. Estimated figures are not offers and not ATS-posted compensation.</p>
       <div className="mt-6 flex flex-wrap gap-2">
         <select value={role} onChange={(e) => setRole(e.target.value as RoleKey)} className="h-10 rounded-sm border border-line bg-raised px-3 text-sm">
           {ROLE_KEYS.map((k) => <option key={k} value={k}>{ROLE_KEY_LABEL[k]}</option>)}
@@ -168,7 +168,7 @@ function CareerTools({ cash, token, equity, role }: { cash: number; token: numbe
   return (
     <section className="mt-12">
       <h2 className="font-serif text-2xl tracking-tight">Career tools</h2>
-      <p className="mt-1 text-sm text-mute">Payslip, invoice, and a blind CV. Generated locally — nothing is emailed.</p>
+      <p className="mt-1 text-sm text-mute">Payslip, invoice, and a blind CV. Generated locally - nothing is emailed.</p>
       <div className="mt-4 flex gap-1">
         {(["payslip", "invoice", "cv"] as const).map((t) => (
           <button

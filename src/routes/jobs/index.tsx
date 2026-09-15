@@ -5,7 +5,7 @@ import { SEO_HUBS } from "@/lib/seo/hubs";
 export const Route = createFileRoute("/jobs/")({
   head: () =>
     pageHead({
-      title: "Web3 Job Hubs — Solidity, DeFi, Ethereum, Remote | Lattice",
+      title: "Web3 Job Hubs - Solidity, DeFi, Ethereum, Remote | Lattice",
       path: "/jobs",
       description:
         "Indexable hubs for Solidity, DeFi, Ethereum, and remote Web3 jobs. Live roles from public crypto employer boards on Lattice.",

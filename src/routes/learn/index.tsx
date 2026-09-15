@@ -6,9 +6,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/learn/")({
   head: () =>
     pageHead({
-      title: "Learn Web3 Careers — Guides for Crypto Jobs | Lattice",
+      title: "Learn Web3 Careers - Guides for Crypto Jobs | Lattice",
       path: "/learn",
-      description: "Short guides on Web3 and crypto careers — hiring norms, compensation, and how to read live ATS boards. No courseware theatre.",
+      description: "Short guides on Web3 and crypto careers - hiring norms, compensation, and how to read live ATS boards. No courseware theatre.",
     }),
   component: Page,
 });

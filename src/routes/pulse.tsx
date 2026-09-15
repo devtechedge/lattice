@@ -9,7 +9,7 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/pulse")({
   head: () =>
     pageHead({
-      title: "Web3 Hiring Pulse — Market Notes | Lattice",
+      title: "Web3 Hiring Pulse - Market Notes | Lattice",
       path: "/pulse",
       description:
         "Market pulse for crypto and Web3 hiring: live department heat, posting cycles, and short notes. Honest about boom and bust.",

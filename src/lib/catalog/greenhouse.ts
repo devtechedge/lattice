@@ -275,7 +275,7 @@ function locationModeOf(workplace: string | undefined, loc: ReturnType<typeof pa
 }
 
 function stubMd(board: LiveBoard, title: string, where?: string): string {
-  return `## ${title}\n\nLive listing from ${board.name}${where ? ` · ${where}` : ""}. Application is on ${board.name} — Lattice does not collect a resume for this role.`;
+  return `## ${title}\n\nLive listing from ${board.name}${where ? ` · ${where}` : ""}. Application is on ${board.name} - Lattice does not collect a resume for this role.`;
 }
 
 function attachPay(role: Role, guess: SalaryGuess): Role {

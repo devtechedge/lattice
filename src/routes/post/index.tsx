@@ -10,7 +10,7 @@ function Page() {
       <div className="mt-8 grid gap-3">
         <Link to="/post/role" className="rounded-md border border-line bg-raised p-5 hover:border-line-strong">
           <p className="font-medium">Post a role</p>
-          <p className="mt-1 text-sm text-mute">Employment — full-time, part-time, intern, bounty. Live in about a minute.</p>
+          <p className="mt-1 text-sm text-mute">Employment - full-time, part-time, intern, bounty. Live in about a minute.</p>
         </Link>
         <Link to="/post/contract" className="rounded-md border border-line bg-raised p-5 hover:border-line-strong">
           <p className="font-medium">Post a contract</p>

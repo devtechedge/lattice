@@ -127,7 +127,7 @@ export function RoleFiltersBar({
         ))}
       </div>
       <details className="text-sm">
-        <summary className="cursor-pointer text-mute">More filters — chains, scenes, benefits, cities</summary>
+        <summary className="cursor-pointer text-mute">More filters - chains, scenes, benefits, cities</summary>
         <div className="mt-3 space-y-2">
           <div className="flex flex-wrap gap-1.5">
             {CHAINS.map((d) => (

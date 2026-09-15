@@ -4,7 +4,7 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/about")({
   head: () =>
     pageHead({
-      title: "About — Lattice",
+      title: "About - Lattice",
       path: "/about",
       description: "Lattice is a free board for blockchain, crypto, and Web3 jobs. Public listings from first-party ATS boards. Not an employer.",
     }),
@@ -18,15 +18,15 @@ function Page() {
       <h1 className="mt-2 font-serif text-4xl tracking-tight">The decentralized future is people.</h1>
       <p className="mt-4 text-sm leading-relaxed text-mute">Lattice exists so the right ones find each other. Web3 hiring was split across five products. We took the slice each of them got right and dropped the rest.</p>
       <ul className="mt-8 space-y-4 text-sm leading-relaxed text-mute">
-        <li><span className="text-fg">CryptoJobsList</span> — density, salary submissions, RSS, tools, screening into an ATS.</li>
-        <li><span className="text-fg">Web3.Career</span> — tag taxonomy, salary observatory, remote-first IA, get discovered.</li>
-        <li><span className="text-fg">CryptocurrencyJobs.co</span> — editorial tone, Talent Collective privacy, designed cards, adult copy.</li>
-        <li><span className="text-fg">FindWeb3</span> — NFT/metaverse as a scene, remote-region chips, salary on the card.</li>
-        <li><span className="text-fg">LaborX</span> — roles, contracts, and gigs in one work graph, with a demo escrow timeline.</li>
+        <li><span className="text-fg">CryptoJobsList</span> - density, salary submissions, RSS, tools, screening into an ATS.</li>
+        <li><span className="text-fg">Web3.Career</span> - tag taxonomy, salary observatory, remote-first IA, get discovered.</li>
+        <li><span className="text-fg">CryptocurrencyJobs.co</span> - editorial tone, Talent Collective privacy, designed cards, adult copy.</li>
+        <li><span className="text-fg">FindWeb3</span> - NFT/metaverse as a scene, remote-region chips, salary on the card.</li>
+        <li><span className="text-fg">LaborX</span> - roles, contracts, and gigs in one work graph, with a demo escrow timeline.</li>
       </ul>
       <p className="mt-8 text-sm leading-relaxed text-mute">We did not take listing auctions, paid boosts, or resume paywalls. Everything here is the free tier. Featured roles are editorial, not checkout.</p>
       <p className="mt-6 text-sm leading-relaxed text-mute">
-        Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Pay is only shown when the board publishes it — inferred bands are marked ~. Public listings. Not an employer. Aave and Chainlink are not on the board — they have no public ATS JSON we can fetch.
+        Roles are live from twenty crypto teams’ public Greenhouse, Lever, and Ashby boards. Apply on the employer’s site. Pay is only shown when the board publishes it - inferred bands are marked ~. Public listings. Not an employer. Aave and Chainlink are not on the board - they have no public ATS JSON we can fetch.
       </p>
       <p className="mt-6 text-sm leading-relaxed text-mute">
         For still-open <span className="text-fg">US tech</span> roles (not Web3), see sister board{" "}

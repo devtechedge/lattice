@@ -8,9 +8,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/gigs/")({
   head: () =>
     pageHead({
-      title: "Gigs — Lattice",
+      title: "Gigs - Lattice",
       path: "/gigs",
-      description: "Packaged Web3 gigs from Lattice talent. Demo contracts — not on-chain escrow.",
+      description: "Packaged Web3 gigs from Lattice talent. Demo contracts - not on-chain escrow.",
     }),
   component: GigsPage,
 });
@@ -21,7 +21,7 @@ function GigsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <h1 className="font-serif text-3xl tracking-tight">Gigs</h1>
-      <p className="mt-2 text-sm text-mute">Packaged work from Lattice talent. Order creates a demo contract — recorded, not executed on-chain.</p>
+      <p className="mt-2 text-sm text-mute">Packaged work from Lattice talent. Order creates a demo contract - recorded, not executed on-chain.</p>
       <div className="mt-6 flex flex-wrap gap-1.5">
         <button type="button" onClick={() => setCat("all")} className={`rounded-full border px-2.5 py-1 text-[11px] ${cat === "all" ? "border-signal bg-signal text-signal-fg" : "border-line text-mute"}`}>All</button>
         {GIG_CATEGORIES.map((c) => (

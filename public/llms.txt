@@ -1,6 +1,6 @@
 # Lattice
 
-> Free board for blockchain, crypto, and Web3 jobs — live roles from public employer ATS boards. Not a marketplace and not an employer.
+> Free board for blockchain, crypto, and Web3 jobs - live roles from public employer ATS boards. Not a marketplace and not an employer.
 
 Lattice lists still-open Web3 / crypto / blockchain roles pulled from Greenhouse, Ashby, and Lever JSON. Apply on the employer site. Pay is only shown when the board publishes it.
 

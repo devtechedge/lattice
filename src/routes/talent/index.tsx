@@ -30,7 +30,7 @@ function hue(seed: string): number {
 export const Route = createFileRoute("/talent/")({
   head: () =>
     pageHead({
-      title: "Talent — Lattice",
+      title: "Talent - Lattice",
       path: "/talent",
       description: "Public Web3 talent. Get discovered without a resume paywall.",
     }),

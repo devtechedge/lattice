@@ -53,7 +53,7 @@ function Page() {
     };
     try {
       const res = user ? await publishRoleAuthed({ data: payload }) : await publishRole({ data: payload });
-      toast.success("Published. It’s live on Lattice — no invoice, no auction, no 30-day upsell.");
+      toast.success("Published. It’s live on Lattice - no invoice, no auction, no 30-day upsell.");
       nav({ to: "/roles/$slug", params: { slug: res.id } });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not publish");

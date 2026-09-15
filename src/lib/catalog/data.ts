@@ -134,7 +134,7 @@ export const LEARN: LearnArticle[] = [
 
 When the cash line is below market, the rest of the package is doing work. Ask for four facts in writing: allocation, implied price, cliff, vest, and what happens on a departure before TGE.
 
-Year-one token value is not the headline allocation. After a six-month cliff on a 24-month vest you have earned a quarter of the grant if you stay the year — and zero if you leave at month five.
+Year-one token value is not the headline allocation. After a six-month cliff on a 24-month vest you have earned a quarter of the grant if you stay the year - and zero if you leave at month five.
 
 Fully-diluted value is a ceiling, not a salary. Use it to compare offers, not to pay rent.
 
@@ -198,7 +198,7 @@ Name the role. Name one relevant piece of work. Name the constraint you already 
 export const PULSE: PulseEvent[] = [
   { id: "p1", date: isoAgo(4), kind: "hiring-spike", title: "Security and ZK seats warmed up", body: "Protocol teams posted more circuit and audit roles in the last two weeks than in the prior month. Staff-level still scarce." },
   { id: "p2", date: isoAgo(9), kind: "layoff", title: "A consumer wallet trimmed growth", body: "A 40-person consumer team cut a growth pod. Engineering was spared. Similar pattern to 2023, smaller magnitude." },
-  { id: "p3", date: isoAgo(14), kind: "funding", title: "RWA origination raised", body: "Two origination desks closed rounds. Legal/compliance roles followed within days — the tell that the money is for licenses, not slogans." },
+  { id: "p3", date: isoAgo(14), kind: "funding", title: "RWA origination raised", body: "Two origination desks closed rounds. Legal/compliance roles followed within days - the tell that the money is for licenses, not slogans." },
   { id: "p4", date: isoAgo(18), kind: "grant", title: "L2 grant season opened", body: "Arcadia and Praxis posted public milestone grants. DevRel and ecosystem seats usually trail by three weeks." },
   { id: "p5", date: isoAgo(22), kind: "hiring-spike", title: "Solana app layer is loud again", body: "Wren, Tidepool, and Nightjar all added application engineers. Rust plus product sense, not research." },
   { id: "p6", date: isoAgo(27), kind: "layoff", title: "An NFT marketplace folded a studio", body: "One marketplace shuttered an in-house art tool. Independent studios (Umbra, Canvas Mint) picked up two of the designers." },

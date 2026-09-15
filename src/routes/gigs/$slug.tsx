@@ -26,7 +26,7 @@ function GigPage() {
     }
     try {
       await createContract({ data: { kind: "gig", sourceId: gigId, talentId, payload: { title: gigTitle, package: pkg.name, amount: pkg.price, token: pkg.token } } });
-      toast.success("Contract opened — funded (demo). Track it under Me.");
+      toast.success("Contract opened - funded (demo). Track it under Me.");
     } catch {
       window.location.href = "/login";
     }

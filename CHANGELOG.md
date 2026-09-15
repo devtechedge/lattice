@@ -1,62 +1,62 @@
 # Changelog
 
-## 1.6.0 — 2026-09-06
+## 1.6.0 - 2026-09-06
 
 - Security: guest publishRole / anonymous submitSalary same-site + per-IP rate limits; salary Zod bounds; public posted-list limit 200; HSTS, CORP, tighter Permissions-Policy. Docs: SECURITY.md refresh, docs/SEO.md, JOBROW-TRANSFER + README security notes.
 
 
-## 1.5.0 — 2026-09-06
+## 1.5.0 - 2026-09-06
 
 - Linkable content: `/hiring` companies-hiring-this-week roundup (SSR live crawl, crawlable copy), stronger salaries/learn/pulse SEO, footer + sitemap + llms discovery.
 
 
-## 1.4.0 — 2026-09-06
+## 1.4.0 - 2026-09-06
 
 - SEO job hubs: `/jobs` index plus `/jobs/solidity`, `/jobs/defi`, `/jobs/ethereum`, `/jobs/remote-web3` with crawlable copy, live filtered boards, sitemap + footer + llms links.
 
 
-## 1.3.0 — 2026-09-06
+## 1.3.0 - 2026-09-06
 
 - Free SEO pass for Web3/crypto/blockchain job queries: stronger titles and descriptions, keywords meta, hero copy, company/role canonical paths, and sitemap entries for up to 5,000 live role URLs (plus companies). Domain stays on the Vercel host for now.
 
-## 1.2.9 — 2026-09-06
+## 1.2.9 - 2026-09-06
 
 - Enlarge the header Lattice mark again (`size-7` → `size-9`).
 
-## 1.2.8 — 2026-09-06
+## 1.2.8 - 2026-09-06
 
 - Enlarge the header Lattice mark (`size-5` → `size-7`) and slightly strengthen the wordmark.
 
-## 1.2.7 — 2026-09-06
+## 1.2.7 - 2026-09-06
 
 - Fix above-the-fold company marks stuck on initials: cached logos could fire `onLoad` before React attached the handler, so the opacity gate never flipped. Show same-origin logos immediately; fall back to initials only on error.
 
-## 1.2.6 — 2026-09-06
+## 1.2.6 - 2026-09-06
 
 - Ship real company logos as same-origin assets under `public/logos/{id}.png` for all twenty boards. Marks no longer depend on third-party favicon CDNs (CSP/redirects kept breaking them).
 
-## 1.2.5 — 2026-09-06
+## 1.2.5 - 2026-09-06
 
 - Fix broken company marks: Google’s favicon endpoint 301s to `*.gstatic.com` (blocked by CSP). Use DuckDuckGo icons first, gstatic V2 second, and only reveal the `<img>` after `onLoad` so a failed fetch never shows a broken-image glyph.
 
-## 1.2.4 — 2026-09-06
+## 1.2.4 - 2026-09-06
 
 - Fix company logos: allow Google/DuckDuckGo favicon hosts in CSP `img-src`, cascade favicon → DuckDuckGo → initials so marks never render empty.
 - Uniform job cards: fixed height, two-line title clamp, single-line meta row.
 
-## 1.2.3 — 2026-09-06
+## 1.2.3 - 2026-09-06
 
 - Canonical production host is now `https://lattice-devtechedge1.vercel.app` (shorter team alias). Updated site.json, SEO, robots, llms.txt, README, and related tests.
 
-## 1.2.2 — 2026-09-06
+## 1.2.2 - 2026-09-06
 
 - Faster hard refresh for live roles: skip Greenhouse `?content=true` on the list path (metadata pay still works; role detail still fetches full HTML), 4s per-board timeout, stale-while-revalidate + in-flight dedupe on server and client, and SSR loaders on home / roles / companies so the first paint is not an empty shell when the isolate is warm.
 
-## 1.2.1 — 2026-09-06
+## 1.2.1 - 2026-09-06
 
 - Show each company's real logo (site favicon) next to their postings, company strips, and company pages. Initials remain the fallback when the icon fails.
 
-## 1.2.0 — 2026-09-05
+## 1.2.0 - 2026-09-05
 
 - Extract real ATS pay from Greenhouse metadata / HTML and Ashby compensation. Inferred bands are marked `~`. Empty is an em dash. Never fill live rows from the salary observatory.
 - Greenhouse lists fetch `?content=true` (fall back without content). Ashby lists request `includeCompensation=true`.

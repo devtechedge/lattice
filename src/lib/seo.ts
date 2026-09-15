@@ -2,7 +2,7 @@
 export const SITE_ORIGIN = "https://lattice-devtechedge1.vercel.app";
 
 export const DEFAULT_DESCRIPTION =
-  "Find blockchain, crypto, and Web3 jobs from live employer boards — Coinbase, Binance, Ripple, and more. Public listings. Not an employer.";
+  "Find blockchain, crypto, and Web3 jobs from live employer boards - Coinbase, Binance, Ripple, and more. Public listings. Not an employer.";
 
 export const OG_IMAGE = `${SITE_ORIGIN}/og.jpg`;
 

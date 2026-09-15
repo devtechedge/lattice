@@ -18,7 +18,7 @@ export const Route = createFileRoute("/roles/")({
   },
   head: () =>
     pageHead({
-      title: "Web3 & Crypto Jobs — Live Open Roles | Lattice",
+      title: "Web3 & Crypto Jobs - Live Open Roles | Lattice",
       path: "/roles",
       description: "Browse live Web3 jobs and crypto careers. Filter by chain, seniority, and region. Listings from public Greenhouse, Ashby, and Lever boards.",
     }),
@@ -35,7 +35,7 @@ function RolesPage() {
       <p className="text-xs uppercase tracking-wider text-mute">Updated {newest ? timeAgo(newest.publishedAt) : "just now"} ago</p>
       <h1 className="mt-1 font-serif text-3xl tracking-tight">Roles</h1>
       <p className="mt-2 text-sm text-mute">
-        Filter by chain, role, remote region, and seniority. Live listings from twenty crypto teams — apply on the employer’s site. The URL is the filter.
+        Filter by chain, role, remote region, and seniority. Live listings from twenty crypto teams - apply on the employer’s site. The URL is the filter.
       </p>
       <div className="mt-8">
         <RolesBoard initial={search} hideHero syncUrl />

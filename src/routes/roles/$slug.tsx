@@ -22,7 +22,7 @@ const COMPANY_IDS = COMPANIES.map((c) => c.id);
 export const Route = createFileRoute("/roles/$slug")({
   head: ({ params }) =>
     pageHead({
-      title: "Web3 / Crypto Job — Lattice",
+      title: "Web3 / Crypto Job - Lattice",
       path: `/roles/${params.slug}`,
       description:
         "Live blockchain and crypto job from a public employer ATS board. Apply on the employer’s site. Lattice does not invent pay.",

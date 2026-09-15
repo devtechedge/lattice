@@ -1,6 +1,6 @@
 # Lattice
 
-**Web3 jobs, crypto careers, blockchain roles** — live from employer ATS boards. Roles, gigs, talent, salaries, and companies — without five tabs and a paywall.
+**Web3 jobs, crypto careers, blockchain roles** - live from employer ATS boards. Roles, gigs, talent, salaries, and companies - without five tabs and a paywall.
 
 <p align="left">
   <img src="public/favicon.svg" width="48" height="48" alt="Lattice mark" />
@@ -30,7 +30,7 @@ This is the **only** public repo for the product.
 
 ### Fresh openings
 
-**[Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring)** — live roundup of crypto/Web3 employers that posted in the last seven days. Also: [job hubs](https://lattice-devtechedge1.vercel.app/jobs) (Solidity, DeFi, Ethereum, remote) and the [salary observatory](https://lattice-devtechedge1.vercel.app/salaries).
+**[Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring)** - live roundup of crypto/Web3 employers that posted in the last seven days. Also: [job hubs](https://lattice-devtechedge1.vercel.app/jobs) (Solidity, DeFi, Ethereum, remote) and the [salary observatory](https://lattice-devtechedge1.vercel.app/salaries).
 
 ---
 
@@ -55,7 +55,7 @@ Share card: [docs/screenshots/social-preview.png](docs/screenshots/social-previe
 ## Features
 
 - Editorial homepage: latest live role, twenty-team strip, new-this-week, companies hiring, manifesto
-- [Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring) — shareable 7-day roundup from live ATS crawls
+- [Companies hiring this week](https://lattice-devtechedge1.vercel.app/hiring) - shareable 7-day roundup from live ATS crawls
 - Roles index with table and card views, persisted locally
 - Live openings from twenty first-party ATS boards (Greenhouse, Lever, Ashby). Apply on the employer’s site; pay is posted or inferred (`~`), never invented
 - Filters for chain, scene, department, seniority, remote region, benefits, pay-in-crypto
@@ -112,7 +112,7 @@ See [SECURITY.md](SECURITY.md) for the threat model, reporting, and residual ris
 
 ## Security
 
-Lattice is hardened for a public Vercel deploy (parameterized SQL, same-site auth guards, CSP/HSTS headers, Markdown URL allow-lists, guest-post rate limits). **No public site is unhackable** — see [SECURITY.md](SECURITY.md) for the threat model, residual risk, and how to make this GitHub repo private later. SEO checklist: [docs/SEO.md](docs/SEO.md).
+Lattice is hardened for a public Vercel deploy (parameterized SQL, same-site auth guards, CSP/HSTS headers, Markdown URL allow-lists, guest-post rate limits). **No public site is unhackable** - see [SECURITY.md](SECURITY.md) for the threat model, residual risk, and how to make this GitHub repo private later. SEO checklist: [docs/SEO.md](docs/SEO.md).
 
 ## License
 

@@ -55,12 +55,12 @@ export const REMOTE_REGIONS = ["global", "us", "eu", "apac", "latam", "africa"] 
 export type RemoteRegion = (typeof REMOTE_REGIONS)[number];
 
 export const REMOTE_LABEL: Record<RemoteRegion, string> = {
-  global: "Remote — Global",
-  us: "Remote — US",
-  eu: "Remote — EU",
-  apac: "Remote — APAC",
-  latam: "Remote — LATAM",
-  africa: "Remote — Africa",
+  global: "Remote - Global",
+  us: "Remote - US",
+  eu: "Remote - EU",
+  apac: "Remote - APAC",
+  latam: "Remote - LATAM",
+  africa: "Remote - Africa",
 };
 
 export const SCENES = [

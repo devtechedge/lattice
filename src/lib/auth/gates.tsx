@@ -9,9 +9,9 @@ const subscribeToNothing = () => () => {};
 const noGateSessionOnServer = () => false;
 
 /**
- * Auth state components — plain wrappers around `useCurrentUserState()`.
+ * Auth state components - plain wrappers around `useCurrentUserState()`.
  *
- * With auth on, visitors are signed out until they authenticate — in the sandbox
+ * With auth on, visitors are signed out until they authenticate - in the sandbox
  * live preview too, which does real sign-in. The shared dev user appears only
  * when auth is disabled (`VITE_AUTH_ENABLED=false`, the shipped default).
  * While the session is still resolving, gates that care about signed-out state
@@ -38,7 +38,7 @@ export function SignedOut({ children }: { children: ReactNode }) {
 }
 
 /**
- * Client-side redirect to the sign-in route (TanStack `<Navigate>` — NOT a full
+ * Client-side redirect to the sign-in route (TanStack `<Navigate>` - NOT a full
  * `window.location` reload). A hard navigation re-bootstraps the SPA and re-runs
  * session loading, which feels like a second "Loading…" on /login.
  *
@@ -84,7 +84,7 @@ export function SignInButtons() {
  * Minimal signed-in identity chip + sign-out. Restyle freely (see the
  * `design-ui` skill). Sign-out is only shown when auth is enabled (the
  * disabled-auth dev user has nothing to sign out of) and the session is not
- * gate-materialized — behind the gate the next request signs the viewer
+ * gate-materialized - behind the gate the next request signs the viewer
  * straight back in, so a sign-out control there is a broken loop.
  */
 export function UserButton() {

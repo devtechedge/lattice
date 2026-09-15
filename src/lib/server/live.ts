@@ -16,7 +16,7 @@ import type { Role } from "@/lib/catalog/types";
 const TTL_MS = 10 * 60 * 1000;
 /** Soft age: still return stale immediately while a refresh runs. */
 const STALE_MS = 60 * 60 * 1000;
-/** Per-board timeout for the list path (was 12s — too slow on hard refresh). */
+/** Per-board timeout for the list path (was 12s - too slow on hard refresh). */
 const LIST_FETCH_MS = 4_000;
 /** Detail fetches can afford a bit more. */
 const DETAIL_FETCH_MS = 8_000;

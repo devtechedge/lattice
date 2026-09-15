@@ -20,10 +20,10 @@ export const Route = createFileRoute("/hiring")({
   },
   head: () =>
     pageHead({
-      title: "Crypto Companies Hiring This Week — Web3 Jobs | Lattice",
+      title: "Crypto Companies Hiring This Week - Web3 Jobs | Lattice",
       path: "/hiring",
       description:
-        "Which crypto and Web3 companies posted live jobs this week. Fresh openings from public ATS boards — Coinbase, Binance, Ripple, and more. Updated from live crawls.",
+        "Which crypto and Web3 companies posted live jobs this week. Fresh openings from public ATS boards - Coinbase, Binance, Ripple, and more. Updated from live crawls.",
     }),
   component: HiringPage,
 });
@@ -70,7 +70,7 @@ function HiringPage() {
       <h1 className="mt-2 font-serif text-4xl tracking-tight">Crypto companies hiring this week</h1>
       <p className="mt-4 text-sm leading-relaxed text-mute">
         A living roundup of Web3 and crypto employers that published at least one still-open role in the last seven days.
-        Counts come from Lattice’s live crawl of public Greenhouse, Ashby, and Lever boards — not from another job site.
+        Counts come from Lattice’s live crawl of public Greenhouse, Ashby, and Lever boards - not from another job site.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-mute">
         Use this page when you want a shareable answer to “who’s hiring in crypto right now?” Apply always leaves Lattice for
