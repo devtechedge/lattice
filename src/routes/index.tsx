@@ -10,12 +10,22 @@ import { listLiveRoles } from "@/lib/server/live";
 import { pageHead } from "@/lib/seo";
 import type { Role } from "@/lib/catalog/types";
 
+/**
+ * How many roles to seed the SSR payload with.
+ *
+ * The full board used to be serialised into the document, which pushed the
+ * homepage HTML past 1.1 MB. `useLiveRoles` refetches the complete list on mount
+ * anyway, so the seed only has to cover the first paint. Category routes still
+ * render the full set for crawlers.
+ */
+const SSR_ROLE_PREVIEW = 24;
+
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => searchRecord(s),
   loader: async () => {
     try {
       const live = await listLiveRoles();
-      return { live };
+      return { live: live.slice(0, SSR_ROLE_PREVIEW) };
     } catch {
       return { live: [] as Awaited<ReturnType<typeof listLiveRoles>> };
     }
