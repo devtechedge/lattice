@@ -31,7 +31,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg text-fg">
+    <div className="flex min-h-dvh min-w-0 flex-col overflow-x-clip bg-bg text-fg">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-signal focus:px-3 focus:py-2 focus:text-signal-fg">
         Skip to content
       </a>
@@ -111,7 +111,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </nav>
         )}
       </header>
-      <div id="main" className="flex-1">
+      <div id="main" className="min-w-0 flex-1">
         {children}
       </div>
       <footer className="border-t border-line">

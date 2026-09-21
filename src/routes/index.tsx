@@ -70,7 +70,7 @@ function Home() {
   return (
     <div>
       <section className="border-b border-line">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-2 md:items-end md:py-14">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-2 md:items-end md:py-14 [&>*]:min-w-0">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-mute">Web3 · crypto · blockchain</p>
             <h1 className="mt-3 font-serif text-4xl leading-[1.1] tracking-tight md:text-5xl">One lattice. Every Web3 career.</h1>
@@ -89,7 +89,7 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="rounded-md border border-line bg-raised p-4">
+          <div className="min-w-0 overflow-hidden rounded-md border border-line bg-raised p-4">
             <p className="font-mono text-xs uppercase tracking-wider text-mute">Open now</p>
             <div className="mt-3 grid grid-cols-2 gap-3 font-mono tabular-nums">
               <Stat n={ready ? live.length : undefined} label="roles" to="/roles" />
@@ -99,11 +99,11 @@ function Home() {
             </div>
             <ul className="mt-4 space-y-3">
               {latest.map((r) => (
-                <li key={r.id} className="flex items-baseline justify-between gap-3 border-t border-line pt-3 text-sm">
-                  <Link to="/roles/$slug" params={{ slug: r.slug }} className="truncate hover:text-signal">
+                <li key={r.id} className="flex min-w-0 items-baseline justify-between gap-3 border-t border-line pt-3 text-sm">
+                  <Link to="/roles/$slug" params={{ slug: r.slug }} className="min-w-0 truncate hover:text-signal">
                     {r.title}
                   </Link>
-                  <span className="shrink-0 font-mono text-[11px] text-mute">{timeAgo(r.publishedAt)}</span>
+                  <span className="ml-auto shrink-0 font-mono text-[11px] text-mute">{timeAgo(r.publishedAt)}</span>
                 </li>
               ))}
             </ul>
@@ -153,12 +153,12 @@ function Home() {
               Full hiring roundup
             </Link>
           </div>
-          <ul className="mt-3 grid gap-2 md:grid-cols-2">
+          <ul className="mt-3 grid min-w-0 gap-2 md:grid-cols-2">
             {week.map((r) => {
               const c = COMPANIES.find((x) => x.id === r.companyId);
               return (
                 <li key={r.id}>
-                  <Link to="/roles/$slug" params={{ slug: r.slug }} className="flex items-center justify-between gap-3 rounded-sm border border-line px-3 py-2.5 text-sm hover:border-line-strong">
+                  <Link to="/roles/$slug" params={{ slug: r.slug }} className="flex min-w-0 items-center justify-between gap-3 rounded-sm border border-line px-3 py-2.5 text-sm hover:border-line-strong">
                     <span className="min-w-0 truncate">
                       <span className="text-fg">{r.title}</span>
                       <span className="text-mute"> · {c?.name}</span>
@@ -176,7 +176,7 @@ function Home() {
       <section className="border-b border-line">
         <div className="mx-auto max-w-7xl px-4 py-6">
           <p className="text-xs uppercase tracking-wider text-mute">Companies hiring now</p>
-          <div className="mt-3 flex gap-4 overflow-x-auto pb-2">
+          <div className="mt-3 flex min-w-0 gap-4 overflow-x-auto pb-2">
             {hiring.map((c) => (
               <Link key={c.id} to="/companies/$slug" params={{ slug: c.slug }} className="flex shrink-0 items-center gap-2 text-sm text-mute hover:text-fg">
                 <CompanyMark name={c.name} logoUrl={c.logo} website={c.website} hue={c.hue} size={24} />

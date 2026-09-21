@@ -79,7 +79,7 @@ export function JobCard({
           </div>
         </div>
       </div>
-      <div className="mt-2 flex h-6 items-center gap-1.5 overflow-hidden">
+      <div className="mt-2 flex h-6 min-w-0 items-center gap-1.5 overflow-hidden">
         <span
           className={cn(
             "shrink-0 font-mono text-sm tabular-nums",
