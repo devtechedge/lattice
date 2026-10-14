@@ -91,6 +91,12 @@ export function Markdown({ source }: { source: string }) {
       para.push(lines[i]);
       i++;
     }
+    if (para.length === 0) {
+      // e.g. "# H1" or "#### H4": not matched above and excluded from paragraphs.
+      // Always consume the line so the loop can't spin forever (OOM on SSR).
+      para.push(line.replace(/^#+\s*/, ""));
+      i++;
+    }
     blocks.push(<p key={key++} className="mt-3 text-[15px] leading-relaxed text-mute">{inline(para.join(" "))}</p>);
   }
   return <Fragment>{blocks}</Fragment>;

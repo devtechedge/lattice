@@ -12,10 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as HiringRouteImport } from './routes/hiring'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PulseRouteImport } from './routes/pulse'
-import { Route as HiringRouteImport } from './routes/hiring'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StudioRouteImport } from './routes/studio'
@@ -29,10 +29,10 @@ import { Route as ContractsSlugRouteImport } from './routes/contracts/$slug'
 import { Route as DepartmentsSlugRouteImport } from './routes/departments/$slug'
 import { Route as GigsIndexRouteImport } from './routes/gigs/index'
 import { Route as GigsSlugRouteImport } from './routes/gigs/$slug'
-import { Route as LearnIndexRouteImport } from './routes/learn/index'
-import { Route as LearnSlugRouteImport } from './routes/learn/$slug'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
 import { Route as JobsSlugRouteImport } from './routes/jobs/$slug'
+import { Route as LearnIndexRouteImport } from './routes/learn/index'
+import { Route as LearnSlugRouteImport } from './routes/learn/$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations/index'
 import { Route as LocationsSlugRouteImport } from './routes/locations/$slug'
 import { Route as MeIndexRouteImport } from './routes/me/index'
@@ -65,6 +65,11 @@ const AlertsRoute = AlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HiringRoute = HiringRouteImport.update({
+  id: '/hiring',
+  path: '/hiring',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -78,11 +83,6 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PulseRoute = PulseRouteImport.update({
   id: '/pulse',
   path: '/pulse',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HiringRoute = HiringRouteImport.update({
-  id: '/hiring',
-  path: '/hiring',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -150,16 +150,6 @@ const GigsSlugRoute = GigsSlugRouteImport.update({
   path: '/gigs/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LearnIndexRoute = LearnIndexRouteImport.update({
-  id: '/learn/',
-  path: '/learn/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LearnSlugRoute = LearnSlugRouteImport.update({
-  id: '/learn/$slug',
-  path: '/learn/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const JobsIndexRoute = JobsIndexRouteImport.update({
   id: '/jobs/',
   path: '/jobs/',
@@ -168,6 +158,16 @@ const JobsIndexRoute = JobsIndexRouteImport.update({
 const JobsSlugRoute = JobsSlugRouteImport.update({
   id: '/jobs/$slug',
   path: '/jobs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnIndexRoute = LearnIndexRouteImport.update({
+  id: '/learn/',
+  path: '/learn/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnSlugRoute = LearnSlugRouteImport.update({
+  id: '/learn/$slug',
+  path: '/learn/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocationsIndexRoute = LocationsIndexRouteImport.update({
@@ -255,10 +255,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/alerts': typeof AlertsRoute
+  '/hiring': typeof HiringRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
-  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -269,8 +269,8 @@ export interface FileRoutesByFullPath {
   '/contracts/$slug': typeof ContractsSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
-  '/learn/$slug': typeof LearnSlugRoute
   '/jobs/$slug': typeof JobsSlugRoute
+  '/learn/$slug': typeof LearnSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -283,8 +283,8 @@ export interface FileRoutesByFullPath {
   '/companies/': typeof CompaniesIndexRoute
   '/contracts/': typeof ContractsIndexRoute
   '/gigs/': typeof GigsIndexRoute
-  '/learn/': typeof LearnIndexRoute
   '/jobs/': typeof JobsIndexRoute
+  '/learn/': typeof LearnIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/me/': typeof MeIndexRoute
   '/post/': typeof PostIndexRoute
@@ -297,10 +297,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/alerts': typeof AlertsRoute
+  '/hiring': typeof HiringRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
-  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -311,8 +311,8 @@ export interface FileRoutesByTo {
   '/contracts/$slug': typeof ContractsSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
-  '/learn/$slug': typeof LearnSlugRoute
   '/jobs/$slug': typeof JobsSlugRoute
+  '/learn/$slug': typeof LearnSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -325,8 +325,8 @@ export interface FileRoutesByTo {
   '/companies': typeof CompaniesIndexRoute
   '/contracts': typeof ContractsIndexRoute
   '/gigs': typeof GigsIndexRoute
-  '/learn': typeof LearnIndexRoute
   '/jobs': typeof JobsIndexRoute
+  '/learn': typeof LearnIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/me': typeof MeIndexRoute
   '/post': typeof PostIndexRoute
@@ -340,10 +340,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/alerts': typeof AlertsRoute
+  '/hiring': typeof HiringRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/pulse': typeof PulseRoute
-  '/hiring': typeof HiringRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
@@ -354,8 +354,8 @@ export interface FileRoutesById {
   '/contracts/$slug': typeof ContractsSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/gigs/$slug': typeof GigsSlugRoute
-  '/learn/$slug': typeof LearnSlugRoute
   '/jobs/$slug': typeof JobsSlugRoute
+  '/learn/$slug': typeof LearnSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/me/profile': typeof MeProfileRoute
   '/post/contract': typeof PostContractRoute
@@ -368,8 +368,8 @@ export interface FileRoutesById {
   '/companies/': typeof CompaniesIndexRoute
   '/contracts/': typeof ContractsIndexRoute
   '/gigs/': typeof GigsIndexRoute
-  '/learn/': typeof LearnIndexRoute
   '/jobs/': typeof JobsIndexRoute
+  '/learn/': typeof LearnIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/me/': typeof MeIndexRoute
   '/post/': typeof PostIndexRoute
@@ -384,10 +384,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/alerts'
+    | '/hiring'
     | '/login'
     | '/privacy'
     | '/pulse'
-    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -398,8 +398,8 @@ export interface FileRouteTypes {
     | '/contracts/$slug'
     | '/departments/$slug'
     | '/gigs/$slug'
-    | '/learn/$slug'
     | '/jobs/$slug'
+    | '/learn/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -412,8 +412,8 @@ export interface FileRouteTypes {
     | '/companies/'
     | '/contracts/'
     | '/gigs/'
-    | '/learn/'
     | '/jobs/'
+    | '/learn/'
     | '/locations/'
     | '/me/'
     | '/post/'
@@ -426,10 +426,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/alerts'
+    | '/hiring'
     | '/login'
     | '/privacy'
     | '/pulse'
-    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -440,8 +440,8 @@ export interface FileRouteTypes {
     | '/contracts/$slug'
     | '/departments/$slug'
     | '/gigs/$slug'
-    | '/learn/$slug'
     | '/jobs/$slug'
+    | '/learn/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -454,8 +454,8 @@ export interface FileRouteTypes {
     | '/companies'
     | '/contracts'
     | '/gigs'
-    | '/learn'
     | '/jobs'
+    | '/learn'
     | '/locations'
     | '/me'
     | '/post'
@@ -468,10 +468,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/alerts'
+    | '/hiring'
     | '/login'
     | '/privacy'
     | '/pulse'
-    | '/hiring'
     | '/search'
     | '/sitemap.xml'
     | '/studio'
@@ -482,8 +482,8 @@ export interface FileRouteTypes {
     | '/contracts/$slug'
     | '/departments/$slug'
     | '/gigs/$slug'
-    | '/learn/$slug'
     | '/jobs/$slug'
+    | '/learn/$slug'
     | '/locations/$slug'
     | '/me/profile'
     | '/post/contract'
@@ -496,8 +496,8 @@ export interface FileRouteTypes {
     | '/companies/'
     | '/contracts/'
     | '/gigs/'
-    | '/learn/'
     | '/jobs/'
+    | '/learn/'
     | '/locations/'
     | '/me/'
     | '/post/'
@@ -511,10 +511,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AlertsRoute: typeof AlertsRoute
+  HiringRoute: typeof HiringRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   PulseRoute: typeof PulseRoute
-  HiringRoute: typeof HiringRoute
   SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudioRoute: typeof StudioRoute
@@ -525,9 +525,8 @@ export interface RootRouteChildren {
   ContractsSlugRoute: typeof ContractsSlugRoute
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
   GigsSlugRoute: typeof GigsSlugRoute
-  LearnSlugRoute: typeof LearnSlugRoute
-  JobsIndexRoute: typeof JobsIndexRoute
   JobsSlugRoute: typeof JobsSlugRoute
+  LearnSlugRoute: typeof LearnSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   MeProfileRoute: typeof MeProfileRoute
   PostContractRoute: typeof PostContractRoute
@@ -540,6 +539,7 @@ export interface RootRouteChildren {
   CompaniesIndexRoute: typeof CompaniesIndexRoute
   ContractsIndexRoute: typeof ContractsIndexRoute
   GigsIndexRoute: typeof GigsIndexRoute
+  JobsIndexRoute: typeof JobsIndexRoute
   LearnIndexRoute: typeof LearnIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   MeIndexRoute: typeof MeIndexRoute
@@ -573,6 +573,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hiring': {
+      id: '/hiring'
+      path: '/hiring'
+      fullPath: '/hiring'
+      preLoaderRoute: typeof HiringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -592,13 +599,6 @@ declare module '@tanstack/react-router' {
       path: '/pulse'
       fullPath: '/pulse'
       preLoaderRoute: typeof PulseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hiring': {
-      id: '/hiring'
-      path: '/hiring'
-      fullPath: '/hiring'
-      preLoaderRoute: typeof HiringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -692,13 +692,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GigsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/learn/': {
-      id: '/learn/'
-      path: '/learn'
-      fullPath: '/learn/'
-      preLoaderRoute: typeof LearnIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/jobs/': {
       id: '/jobs/'
       path: '/jobs'
@@ -711,6 +704,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs/$slug'
       fullPath: '/jobs/$slug'
       preLoaderRoute: typeof JobsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/': {
+      id: '/learn/'
+      path: '/learn'
+      fullPath: '/learn/'
+      preLoaderRoute: typeof LearnIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/$slug': {
@@ -839,10 +839,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AlertsRoute: AlertsRoute,
+  HiringRoute: HiringRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   PulseRoute: PulseRoute,
-  HiringRoute: HiringRoute,
   SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudioRoute: StudioRoute,
@@ -853,9 +853,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContractsSlugRoute: ContractsSlugRoute,
   DepartmentsSlugRoute: DepartmentsSlugRoute,
   GigsSlugRoute: GigsSlugRoute,
-  LearnSlugRoute: LearnSlugRoute,
-  JobsIndexRoute: JobsIndexRoute,
   JobsSlugRoute: JobsSlugRoute,
+  LearnSlugRoute: LearnSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   MeProfileRoute: MeProfileRoute,
   PostContractRoute: PostContractRoute,
@@ -868,6 +867,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompaniesIndexRoute: CompaniesIndexRoute,
   ContractsIndexRoute: ContractsIndexRoute,
   GigsIndexRoute: GigsIndexRoute,
+  JobsIndexRoute: JobsIndexRoute,
   LearnIndexRoute: LearnIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   MeIndexRoute: MeIndexRoute,

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ApplyForm } from "@/components/jobs/apply-form";
@@ -19,47 +19,62 @@ import { pageHead } from "@/lib/seo";
 
 const COMPANY_IDS = COMPANIES.map((c) => c.id);
 
+async function loadRole(slug: string): Promise<Role | null> {
+  if (parseLiveSlug(slug, COMPANY_IDS)) {
+    return (await getLiveRole({ data: { slug } })) ?? null;
+  }
+  const rows = await listPostedRoles();
+  const hit = rows.find((r) => r.id === slug);
+  return hit ? (JSON.parse(hit.payload_json) as Role) : null;
+}
+
+function plain(md: string | undefined, max = 220): string {
+  const t = (md ?? "").replace(/[#*_`>\[\]()!-]+/g, " ").replace(/\s+/g, " ").trim();
+  return t.length > max ? `${t.slice(0, max - 1).trimEnd()}…` : t;
+}
+
 export const Route = createFileRoute("/roles/$slug")({
-  head: ({ params }) =>
-    pageHead({
-      title: "Web3 / Crypto Job - Lattice",
+  // Server-render the role so crawlers get real content; unknown slugs are a real 404.
+  loader: async ({ params }) => {
+    const role = await loadRole(params.slug);
+    if (!role) throw notFound();
+    return { role };
+  },
+  head: ({ params, loaderData }) => {
+    const role = loaderData?.role;
+    if (!role) {
+      return { meta: [{ title: "Role not found - Lattice" }, { name: "robots", content: "noindex" }] };
+    }
+    const company = companyById(role.companyId);
+    const at = company?.name ? ` at ${company.name}` : "";
+    const where =
+      role.locationMode === "remote" && role.remoteRegion
+        ? REMOTE_LABEL[role.remoteRegion]
+        : role.locations[0] ?? role.locationMode;
+    const lead = `${role.title}${at}${where ? ` (${where})` : ""}. Apply on the employer’s site via Lattice.`;
+    const body = plain(role.descriptionMarkdown);
+    return pageHead({
+      title: `${role.title}${at} - Web3 Job | Lattice`,
       path: `/roles/${params.slug}`,
-      description:
-        "Live blockchain and crypto job from a public employer ATS board. Apply on the employer’s site. Lattice does not invent pay.",
-    }),
+      ogType: "article",
+      description: body ? `${lead} ${body}`.slice(0, 300) : lead,
+    });
+  },
+  notFoundComponent: () => (
+    <main className="mx-auto max-w-3xl px-4 py-16">
+      <h1 className="font-serif text-3xl">Role not found</h1>
+      <Link to="/roles" className="mt-4 inline-block text-sm text-signal">Back to roles</Link>
+    </main>
+  ),
   component: RolePage,
 });
 
 function RolePage() {
-  const { slug } = Route.useParams();
-  const [role, setRole] = useState<Role | undefined>(undefined);
-  const [pending, setPending] = useState(true);
+  const { role } = Route.useLoaderData();
   const [saved, setSaved] = useState(false);
   const [similarLive, setSimilarLive] = useState<Role[]>([]);
   const user = useCurrentUser();
-  const company = role ? companyById(role.companyId) ?? COMPANIES.find((c) => c.id === role.companyId) : undefined;
-
-  useEffect(() => {
-    let on = true;
-    setPending(true);
-    setRole(undefined);
-    const load = parseLiveSlug(slug, COMPANY_IDS)
-      ? getLiveRole({ data: { slug } }).then((r) => {
-          if (on) setRole(r ?? undefined);
-        })
-      : listPostedRoles().then((rows) => {
-          const hit = rows.find((r) => r.id === slug);
-          if (on && hit) setRole(JSON.parse(hit.payload_json) as Role);
-        });
-    load.catch(() => {
-      if (on) setRole(undefined);
-    }).finally(() => {
-      if (on) setPending(false);
-    });
-    return () => {
-      on = false;
-    };
-  }, [slug]);
+  const company = companyById(role.companyId) ?? COMPANIES.find((c) => c.id === role.companyId);
 
   useEffect(() => {
     if (!role || role.source !== "ats") return;
@@ -80,18 +95,6 @@ function RolePage() {
       .then((rows) => setSaved(rows.some((r) => r.role_id === role.id)))
       .catch(() => {});
   }, [user, role]);
-
-  if (!role) {
-    if (pending) {
-      return <main className="mx-auto max-w-3xl px-4 py-16"><div className="h-40 animate-pulse rounded-md bg-raised" /></main>;
-    }
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-16">
-        <h1 className="font-serif text-3xl">Role not found</h1>
-        <Link to="/roles" className="mt-4 inline-block text-sm text-signal">Back to roles</Link>
-      </main>
-    );
-  }
 
   const similar = role.source === "ats" ? similarLive : [];
 

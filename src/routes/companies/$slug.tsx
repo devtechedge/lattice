@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { COMPANIES } from "@/lib/catalog/data";
 import { CompanyMark } from "@/components/company-mark";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,13 @@ import { useLiveRoles } from "@/lib/catalog/use-live-roles";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/companies/$slug")({
+  loader: ({ params }) => {
+    if (!COMPANIES.some((x) => x.slug === params.slug)) throw notFound();
+    return null;
+  },
+  notFoundComponent: () => (
+    <main className="mx-auto max-w-3xl px-4 py-16"><h1 className="font-serif text-3xl">Not found</h1></main>
+  ),
   head: ({ params }) => {
     const c = COMPANIES.find((x) => x.slug === params.slug);
     const name = c?.name ?? "Company";
