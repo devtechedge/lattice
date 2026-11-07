@@ -16,6 +16,13 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # better-auth 1.7 moves generic OAuth to the core /callback/:id route and
+      # drops the genericOAuthClient plugin. Taking it needs the auth broker to
+      # accept the new redirect URI first, so hold the 1.6 line for now.
+      - dependency-name: "better-auth"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "@better-auth/*"
+        update-types: ["version-update:semver-minor"]
 
   - package-ecosystem: github-actions
     directory: /
